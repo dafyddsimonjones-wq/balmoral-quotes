@@ -426,6 +426,73 @@ body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--tex
 .qp-row-val{font-family:'Montserrat',sans-serif;font-size:11px;color:var(--navy);white-space:nowrap;flex-shrink:0;}
 .quote-preview{border:1px solid var(--border);border-radius:10px;overflow:hidden;}
 
+/* ═══ NOTES & VISITS TAB ═══ */
+.notes-two-col{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
+@media(max-width:900px){.notes-two-col{grid-template-columns:1fr;}}
+
+.notes-add-btn{display:flex;align-items:center;gap:7px;margin-top:12px;padding:8px 16px;border-radius:20px;border:1.5px dashed var(--border);background:transparent;color:var(--text-light);font-size:11px;font-family:'Montserrat',sans-serif;font-weight:500;cursor:pointer;transition:all .18s;letter-spacing:.3px;}
+.notes-add-btn:hover{border-color:var(--gold);color:var(--navy);background:#fff;}
+
+/* Pending quotes */
+.notes-pending-grid{display:flex;flex-direction:column;gap:10px;}
+.pending-card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:16px 18px;display:flex;align-items:flex-start;gap:14px;position:relative;transition:box-shadow .2s;}
+.pending-card:hover{box-shadow:0 4px 20px rgba(44,61,107,.08);}
+.pending-icon{width:38px;height:38px;border-radius:10px;background:var(--cream);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;}
+.pending-info{flex:1;min-width:0;}
+.pending-builder{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;letter-spacing:-.2px;}
+.pending-model{font-size:11px;color:var(--text-mid);margin-bottom:6px;}
+.pending-meta{display:flex;gap:10px;flex-wrap:wrap;}
+.pending-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:8px;letter-spacing:.3px;}
+.pending-tag.expected{background:rgba(201,168,76,.12);color:#8a6e1c;}
+.pending-tag.visited{background:rgba(61,140,111,.1);color:var(--green);}
+.pending-tag.contacted{background:rgba(58,124,165,.1);color:var(--clarendon-col);}
+.pending-notes{font-size:11px;color:var(--text-mid);margin-top:6px;line-height:1.5;font-style:italic;}
+.pending-delete{position:absolute;top:10px;right:10px;width:22px;height:22px;border:none;background:none;cursor:pointer;color:var(--text-light);font-size:16px;line-height:1;border-radius:4px;opacity:0;transition:opacity .15s;}
+.pending-card:hover .pending-delete{opacity:1;}
+.pending-delete:hover{color:var(--coral-col);background:rgba(212,99,74,.08);}
+
+/* Visit log */
+.notes-visits-list{display:flex;flex-direction:column;gap:10px;}
+.visit-card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:16px 18px;position:relative;transition:box-shadow .2s;}
+.visit-card:hover{box-shadow:0 4px 20px rgba(44,61,107,.08);}
+.visit-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.visit-date{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.5px;text-transform:uppercase;background:rgba(201,168,76,.1);padding:3px 9px;border-radius:8px;}
+.visit-builder{font-size:13px;font-weight:700;color:var(--navy);flex:1;letter-spacing:-.2px;}
+.visit-who{font-size:10px;color:var(--text-light);font-weight:500;}
+.visit-body{font-size:12px;color:var(--text-mid);line-height:1.6;}
+.visit-action{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;}
+.visit-action-item{font-size:10px;font-weight:600;padding:3px 9px;border-radius:8px;background:rgba(212,99,74,.08);color:var(--coral-col);letter-spacing:.3px;}
+.visit-delete{position:absolute;top:10px;right:10px;width:22px;height:22px;border:none;background:none;cursor:pointer;color:var(--text-light);font-size:16px;line-height:1;border-radius:4px;opacity:0;transition:opacity .15s;}
+.visit-card:hover .visit-delete{opacity:1;}
+.visit-delete:hover{color:var(--coral-col);}
+
+/* General notes */
+.notes-general-card{background:#fff;border-radius:12px;border:1px solid var(--border);overflow:hidden;}
+.notes-textarea{width:100%;min-height:320px;padding:18px 20px;border:none;outline:none;font-size:13px;font-family:'Montserrat',sans-serif;color:var(--text);line-height:1.7;resize:vertical;background:transparent;font-weight:400;}
+.notes-textarea::placeholder{color:var(--text-light);}
+
+/* Note modal */
+.note-modal-overlay{position:fixed;inset:0;background:rgba(44,61,107,.45);z-index:600;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .22s;}
+.note-modal-overlay.open{opacity:1;pointer-events:all;}
+.note-modal{background:#fff;border-radius:16px;width:480px;max-width:95vw;max-height:90vh;overflow-y:auto;transform:translateY(14px) scale(.98);transition:transform .22s;}
+.note-modal-overlay.open .note-modal{transform:none;}
+.note-modal-header{background:var(--navy);padding:20px 22px 14px;display:flex;align-items:center;justify-content:space-between;}
+.note-modal-title{font-size:16px;font-weight:700;color:#fff;letter-spacing:-.2px;}
+.note-modal-close{background:rgba(255,255,255,.12);border:none;border-radius:7px;width:28px;height:28px;cursor:pointer;color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.note-modal-close:hover{background:rgba(255,255,255,.22);}
+.note-modal-body{padding:22px;}
+.note-field{margin-bottom:16px;}
+.note-field label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-light);margin-bottom:7px;}
+.note-field input,.note-field textarea,.note-field select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;font-family:'Montserrat',sans-serif;color:var(--text);outline:none;transition:border-color .18s;background:var(--cream);}
+.note-field input:focus,.note-field textarea:focus,.note-field select:focus{border-color:var(--gold);background:#fff;}
+.note-field textarea{resize:vertical;min-height:80px;line-height:1.6;}
+.note-field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.note-modal-actions{display:flex;gap:8px;margin-top:20px;}
+.note-save-btn{flex:1;padding:10px;background:var(--navy);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:600;font-family:'Montserrat',sans-serif;cursor:pointer;transition:background .18s;}
+.note-save-btn:hover{background:var(--gold);color:var(--navy);}
+.note-cancel-btn{padding:10px 18px;background:transparent;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:'Montserrat',sans-serif;cursor:pointer;color:var(--text-mid);transition:all .18s;}
+.note-cancel-btn:hover{background:var(--cream);}
+
 #bgLayer{position:fixed;inset:0;z-index:-1;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity .4s;}
 #bgLayer.visible{opacity:1;}
 .hidden-file{display:none;}
@@ -439,52 +506,14 @@ th.col-new{background:rgba(139,92,246,.2)!important;}
 </head>
 <body>
 
-<style>
-#pw-gate{position:fixed;inset:0;z-index:9999;background:#2c3d6b;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;}
-#pw-gate.hidden{display:none;}
-.pw-box{background:#fff;border-radius:20px;padding:44px 48px;width:360px;max-width:92vw;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.3);}
-.pw-logo{font-size:28px;margin-bottom:6px;}
-.pw-title{font-size:17px;font-weight:700;color:#2c3d6b;margin-bottom:4px;letter-spacing:-.3px;}
-.pw-sub{font-size:12px;color:#96a3b8;margin-bottom:28px;font-weight:400;}
-.pw-input{width:100%;padding:12px 16px;border:1.5px solid #eeebe4;border-radius:10px;font-size:14px;font-family:'Montserrat',sans-serif;font-weight:500;outline:none;text-align:center;letter-spacing:2px;color:#2c3d6b;transition:border-color .18s;}
-.pw-input:focus{border-color:#c9a84c;}
-.pw-btn{margin-top:14px;width:100%;padding:12px;background:#2c3d6b;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:'Montserrat',sans-serif;cursor:pointer;letter-spacing:.5px;transition:background .18s;}
-.pw-btn:hover{background:#c9a84c;color:#2c3d6b;}
-.pw-error{margin-top:10px;font-size:12px;color:#d4634a;font-weight:500;min-height:18px;}
-</style>
+<!-- PASSWORD GATE -->
 <div id="pw-gate">
   <div class="pw-box">
     <div class="pw-logo">🏡</div>
     <div class="pw-title">32 Grosvenor Street</div>
-    <div class="pw-sub">Balmoral — Build Quote Dashboard</div>
-    <input class="pw-input" id="pwInput" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkPw()">
+    <div class="pw-sub">Balmoral QLD · Build Quote Dashboard</div>
+    <input class="pw-input" id="pw-input" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkPw()" autofocus>
     <button class="pw-btn" onclick="checkPw()">View Dashboard →</button>
-    <div class="pw-error" id="pwError"></div>
-  </div>
-</div>
-<script>
-(function(){
-  const HASH='65f7086400ea9687fe61de8e4a7259c2d682843ddcbb6a3ccf32a9bae694dfbb';
-  async function sha256(msg){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(msg));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
-  window.checkPw=async function(){
-    const val=document.getElementById('pwInput').value;
-    const h=await sha256(val);
-    if(h===HASH){document.getElementById('pw-gate').classList.add('hidden');sessionStorage.setItem('balmoral_auth','1');}
-    else{document.getElementById('pwError').textContent='Incorrect password — try again';document.getElementById('pwInput').value='';}
-  };
-  if(sessionStorage.getItem('balmoral_auth')==='1')document.getElementById('pw-gate').classList.add('hidden');
-})();
-</script>
-
-
-<!-- PASSWORD GATE -->
-<div id="pw-gate">
-  <div class="pw-box">
-    <div class="pw-logo">Build Comparison</div>
-    <div class="pw-title">32 Grosvenor Street</div>
-    <div class="pw-sub">Balmoral QLD · Enter password to continue</div>
-    <input class="pw-input" id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
-    <button class="pw-btn" onclick="checkPw()">Continue →</button>
     <div class="pw-error" id="pw-error"></div>
     <div class="pw-addr">Simon Jones &amp; Emma Stewart · March 2026</div>
   </div>
@@ -546,6 +575,17 @@ function checkPw(){
   </div>
 </div>
 
+<!-- NOTE MODAL -->
+<div class="note-modal-overlay" id="noteModal" onclick="if(event.target===this)closeNoteModal()">
+  <div class="note-modal">
+    <div class="note-modal-header">
+      <div class="note-modal-title" id="noteModalTitle">Log a Visit</div>
+      <button class="note-modal-close" onclick="closeNoteModal()">×</button>
+    </div>
+    <div class="note-modal-body" id="noteModalBody"></div>
+  </div>
+</div>
+
 <div class="app-shell">
   <div class="main-col">
 
@@ -587,6 +627,10 @@ function checkPw(){
       <button class="tab-btn" id="tab-builders" onclick="switchTab('builders')">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Builders
+      </button>
+      <button class="tab-btn" id="tab-notes" onclick="switchTab('notes')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+        Notes &amp; Visits
       </button>
     </div>
 
@@ -637,6 +681,38 @@ function checkPw(){
       <!-- BUILDERS TAB -->
       <div class="tab-panel" id="panel-builders">
         <div class="bld-grid" id="buildersGrid"></div>
+      </div>
+
+      <!-- NOTES & VISITS TAB -->
+      <div class="tab-panel" id="panel-notes">
+        <div class="notes-two-col">
+
+          <!-- LEFT: PENDING QUOTES + VISITS -->
+          <div>
+            <div class="section-label">Pending Quotes</div>
+            <div id="pendingGrid" class="notes-pending-grid"></div>
+            <button class="notes-add-btn" onclick="openNoteModal('pending')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Pending Quote
+            </button>
+
+            <div class="section-label" style="margin-top:28px">Visit Log</div>
+            <div id="visitsList" class="notes-visits-list"></div>
+            <button class="notes-add-btn" onclick="openNoteModal('visit')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Log a Visit
+            </button>
+          </div>
+
+          <!-- RIGHT: GENERAL NOTES -->
+          <div>
+            <div class="section-label">General Notes</div>
+            <div class="notes-general-card">
+              <textarea id="generalNotes" class="notes-textarea" placeholder="Questions to ask builders, things to check, decisions to make, impressions from visits…" oninput="saveGeneralNotes()"></textarea>
+            </div>
+          </div>
+
+        </div>
       </div>
 
     </div>
@@ -769,9 +845,213 @@ function switchTab(tab){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id===`panel-${tab}`));
   const fc=document.getElementById('filterControls');
   fc.style.display=tab==='comparison'?'flex':'none';
-  if(tab==='floorplans')renderFloorplans();
-  if(tab==='builders')renderBuilders();
+  if(tab==='floorplans') renderFloorplans();
+  if(tab==='builders')   renderBuilders();
+  if(tab==='notes')      renderNotes();
 }
+
+// ═══ NOTES & VISITS ═══════════════════════════════════════════════
+const NSK = { visits:'balmoral_visits', pending:'balmoral_pending', general:'balmoral_general' };
+let visits  = [];
+let pending = [];
+
+function loadNotes(){
+  try{ visits  = JSON.parse(localStorage.getItem(NSK.visits)  || '[]'); }catch(e){ visits=[]; }
+  try{ pending = JSON.parse(localStorage.getItem(NSK.pending) || '[]'); }catch(e){ pending=[]; }
+}
+function saveVisits(){  try{localStorage.setItem(NSK.visits,  JSON.stringify(visits));}catch(e){} }
+function savePending(){ try{localStorage.setItem(NSK.pending, JSON.stringify(pending));}catch(e){} }
+function saveGeneralNotes(){
+  const v = document.getElementById('generalNotes')?.value || '';
+  try{localStorage.setItem(NSK.general, v);}catch(e){}
+}
+
+function renderNotes(){
+  loadNotes();
+  renderPending();
+  renderVisits();
+  const gn = document.getElementById('generalNotes');
+  if(gn) gn.value = localStorage.getItem(NSK.general) || '';
+}
+
+function renderPending(){
+  const grid = document.getElementById('pendingGrid');
+  if(!grid) return;
+  if(pending.length === 0){
+    grid.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-light);font-size:12px;background:#fff;border-radius:12px;border:1px solid var(--border)">No pending quotes yet — add builders you've visited who haven't quoted yet</div>`;
+    return;
+  }
+  grid.innerHTML = pending.map((p,i) => `
+    <div class="pending-card">
+      <div class="pending-icon">${p.emoji || '🏗️'}</div>
+      <div class="pending-info">
+        <div class="pending-builder">${p.builder}</div>
+        <div class="pending-model">${p.model || 'Model TBC'}</div>
+        <div class="pending-meta">
+          ${p.status ? `<span class="pending-tag ${p.status}">${p.status.charAt(0).toUpperCase()+p.status.slice(1)}</span>` : ''}
+          ${p.expectedDate ? `<span class="pending-tag expected">Quote expected ${p.expectedDate}</span>` : ''}
+          ${p.visitDate ? `<span style="font-size:10px;color:var(--text-light)">Visited ${p.visitDate}</span>` : ''}
+        </div>
+        ${p.notes ? `<div class="pending-notes">${p.notes}</div>` : ''}
+      </div>
+      <button class="pending-delete" onclick="deletePending(${i})" title="Remove">×</button>
+    </div>`).join('');
+}
+
+function renderVisits(){
+  const list = document.getElementById('visitsList');
+  if(!list) return;
+  if(visits.length === 0){
+    list.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-light);font-size:12px;background:#fff;border-radius:12px;border:1px solid var(--border)">No visits logged yet</div>`;
+    return;
+  }
+  // Sort newest first
+  const sorted = [...visits].sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  list.innerHTML = sorted.map((v, i) => `
+    <div class="visit-card">
+      <div class="visit-header">
+        <span class="visit-date">${formatDate(v.date)}</span>
+        <span class="visit-builder">${v.builder}</span>
+        ${v.who ? `<span class="visit-who">· ${v.who}</span>` : ''}
+      </div>
+      ${v.location ? `<div style="font-size:11px;color:var(--text-light);margin-bottom:6px">📍 ${v.location}</div>` : ''}
+      ${v.notes ? `<div class="visit-body">${v.notes}</div>` : ''}
+      ${v.actions ? `<div class="visit-action">${v.actions.split(',').map(a=>`<span class="visit-action-item">${a.trim()}</span>`).join('')}</div>` : ''}
+      <button class="visit-delete" onclick="deleteVisit(${visits.indexOf(v)})" title="Remove">×</button>
+    </div>`).join('');
+}
+
+function formatDate(d){
+  if(!d) return '—';
+  try{ const dt=new Date(d); return dt.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}); }
+  catch(e){ return d; }
+}
+
+function deletePending(i){ pending.splice(i,1); savePending(); renderPending(); }
+function deleteVisit(i)  { visits.splice(i,1);  saveVisits();  renderVisits();  }
+
+// ─── Note modal ───
+let _noteModalType = 'visit';
+function openNoteModal(type){
+  loadNotes();
+  _noteModalType = type;
+  const modal = document.getElementById('noteModal');
+  const title = document.getElementById('noteModalTitle');
+  const body  = document.getElementById('noteModalBody');
+  modal.classList.add('open');
+
+  if(type === 'visit'){
+    title.textContent = 'Log a Builder Visit';
+    body.innerHTML = `
+      <div class="note-field-row">
+        <div class="note-field">
+          <label>Date of Visit</label>
+          <input type="date" id="nf-date" value="${new Date().toISOString().slice(0,10)}">
+        </div>
+        <div class="note-field">
+          <label>Who Attended</label>
+          <input type="text" id="nf-who" placeholder="e.g. Simon & Emma">
+        </div>
+      </div>
+      <div class="note-field">
+        <label>Builder / Display Home</label>
+        <input type="text" id="nf-builder" placeholder="e.g. Coral Homes, Clarendon Homes, GJ Gardner…">
+      </div>
+      <div class="note-field">
+        <label>Location</label>
+        <input type="text" id="nf-location" placeholder="e.g. Coral Homes display village, Yarrabilba">
+      </div>
+      <div class="note-field">
+        <label>Notes & Impressions</label>
+        <textarea id="nf-notes" placeholder="What stood out, concerns, things to follow up, overall impression…"></textarea>
+      </div>
+      <div class="note-field">
+        <label>Action Items (comma separated)</label>
+        <input type="text" id="nf-actions" placeholder="e.g. Request facade options, Ask about H1 vs H2 slab">
+      </div>
+      <div class="note-modal-actions">
+        <button class="note-save-btn" onclick="saveNote()">Save Visit</button>
+        <button class="note-cancel-btn" onclick="closeNoteModal()">Cancel</button>
+      </div>`;
+  } else {
+    title.textContent = 'Add Pending Quote';
+    body.innerHTML = `
+      <div class="note-field">
+        <label>Builder Name</label>
+        <input type="text" id="nf-builder" placeholder="e.g. GJ Gardner, Metricon, Plantation Homes…">
+      </div>
+      <div class="note-field-row">
+        <div class="note-field">
+          <label>Home Model (if known)</label>
+          <input type="text" id="nf-model" placeholder="e.g. Hampshire 32">
+        </div>
+        <div class="note-field">
+          <label>Status</label>
+          <select id="nf-status">
+            <option value="visited">Visited</option>
+            <option value="contacted">Contacted</option>
+            <option value="expected">Quote Expected</option>
+          </select>
+        </div>
+      </div>
+      <div class="note-field-row">
+        <div class="note-field">
+          <label>Visit Date</label>
+          <input type="date" id="nf-visitdate" value="${new Date().toISOString().slice(0,10)}">
+        </div>
+        <div class="note-field">
+          <label>Quote Expected By</label>
+          <input type="date" id="nf-expecteddate">
+        </div>
+      </div>
+      <div class="note-field">
+        <label>Notes</label>
+        <textarea id="nf-notes" placeholder="Key interest areas, pricing discussed, next steps…"></textarea>
+      </div>
+      <div class="note-modal-actions">
+        <button class="note-save-btn" onclick="saveNote()">Save Pending Quote</button>
+        <button class="note-cancel-btn" onclick="closeNoteModal()">Cancel</button>
+      </div>`;
+  }
+}
+
+function closeNoteModal(){
+  document.getElementById('noteModal').classList.remove('open');
+}
+
+function g(id){ return document.getElementById(id)?.value?.trim() || ''; }
+
+function saveNote(){
+  if(_noteModalType === 'visit'){
+    visits.push({
+      date:     g('nf-date'),
+      who:      g('nf-who'),
+      builder:  g('nf-builder'),
+      location: g('nf-location'),
+      notes:    g('nf-notes'),
+      actions:  g('nf-actions'),
+    });
+    saveVisits();
+  } else {
+    const emojis = {'Coral':'🟠','Clarendon':'🔵','GJ':'🟢','Metricon':'🟣','Plantation':'🟡'};
+    const b = g('nf-builder');
+    const emoji = Object.keys(emojis).find(k=>b.toLowerCase().includes(k.toLowerCase()));
+    pending.push({
+      builder:      b,
+      model:        g('nf-model'),
+      status:       g('nf-status'),
+      visitDate:    g('nf-visitdate'),
+      expectedDate: g('nf-expecteddate'),
+      notes:        g('nf-notes'),
+      emoji:        emoji ? emojis[emoji] : '🏗️',
+    });
+    savePending();
+  }
+  closeNoteModal();
+  renderNotes();
+}
+
+
 
 // ═══ RENDER COMPARISON ════════════════════════════════════════════
 function renderAll(){renderCards();renderBarChart();renderTable();updateHeaderBadges();}
