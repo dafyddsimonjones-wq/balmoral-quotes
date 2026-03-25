@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build Quote Comparison — 32 Grosvenor St, Balmoral</title>
+<style>
+#pw-gate{position:fixed;inset:0;background:#2c3d6b;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+#pw-gate.hidden{display:none;}
+.pw-box{background:#fff;border-radius:20px;padding:40px 44px;width:360px;max-width:92vw;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.25);}
+.pw-logo{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c9a84c;margin-bottom:6px;}
+.pw-title{font-family:'Montserrat',sans-serif;font-size:20px;font-weight:700;color:#2c3d6b;margin-bottom:4px;letter-spacing:-.3px;}
+.pw-sub{font-size:12px;color:#96a3b8;margin-bottom:28px;font-family:'Montserrat',sans-serif;}
+.pw-input{width:100%;border:1.5px solid #dde2ec;border-radius:10px;padding:11px 14px;font-size:14px;font-family:'Montserrat',sans-serif;color:#2c3d6b;outline:none;text-align:center;letter-spacing:2px;transition:border-color .18s;background:#f8f7f4;}
+.pw-input:focus{border-color:#c9a84c;background:#fff;}
+.pw-btn{margin-top:12px;width:100%;padding:12px;background:#2c3d6b;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:'Montserrat',sans-serif;letter-spacing:.5px;cursor:pointer;transition:background .18s;}
+.pw-btn:hover{background:#c9a84c;color:#2c3d6b;}
+.pw-error{margin-top:10px;font-size:12px;color:#d4634a;font-family:'Montserrat',sans-serif;height:16px;}
+.pw-addr{margin-top:24px;font-size:11px;color:#96a3b8;font-family:'Montserrat',sans-serif;}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#2c3d6b;--navy-mid:#3a4f87;--gold:#c9a84c;--cream:#f8f7f4;--cream-dark:#eeebe4;--text:#2c3d6b;--text-mid:#536080;--text-light:#96a3b8;--coral-col:#d4634a;--clarendon-col:#3a7ca5;--green:#3d8c6f;--purple:#8b5cf6;--border:rgba(44,61,107,0.10);--live-glow:0 0 0 2px #3d8c6f,0 8px 32px rgba(61,140,111,0.15);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;}
+.app-shell{display:flex;min-height:100vh;}
+.main-col{flex:1;min-width:0;display:flex;flex-direction:column;}
+
+/* HEADER */
+.header{background:var(--navy);padding:32px 48px 24px;position:relative;overflow:hidden;}
+.header::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;border:40px solid rgba(201,168,76,.12);border-radius:50%;}
+.header::after{content:'';position:absolute;bottom:-80px;right:120px;width:200px;height:200px;border:30px solid rgba(201,168,76,.07);border-radius:50%;}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;}
+.header-label{font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+.header-title{font-family:'Montserrat',sans-serif;font-size:26px;font-weight:700;color:#fff;line-height:1.2;letter-spacing:-.4px;}
+.header-subtitle{color:rgba(255,255,255,.5);font-size:12px;margin-top:4px;font-weight:300;}
+.header-meta{text-align:right;}
+.header-meta-item{font-size:11px;color:rgba(255,255,255,.45);margin-bottom:2px;font-family:'Montserrat',sans-serif;}
+.header-meta-item strong{color:rgba(255,255,255,.8);font-weight:500;}
+
+/* FILTER BAR */
+.filter-bar{background:#fff;border-bottom:1px solid var(--border);padding:10px 48px;display:flex;align-items:center;gap:13px;position:sticky;top:0;z-index:100;box-shadow:0 1px 8px rgba(44,61,107,.05);flex-wrap:wrap;}
+.filter-label{font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);}
+.filter-btns{display:flex;gap:5px;}
+.filter-btn{padding:4px 11px;border-radius:20px;border:1px solid var(--border);font-size:11px;font-family:'Montserrat',sans-serif;cursor:pointer;background:transparent;color:var(--text-mid);transition:all .18s;}
+.filter-btn:hover{border-color:var(--navy);color:var(--navy);}
+.filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.filter-btn.live-btn.active{background:var(--green);border-color:var(--green);}
+.filter-btn.arch-btn.active{background:#8896ab;border-color:#8896ab;}
+#filterControls{display:flex;align-items:center;gap:13px;}
+.filter-divider{width:1px;height:19px;background:var(--border);}
+.filter-hint{font-size:10px;color:var(--text-light);font-style:italic;}
+.bar-btn{padding:5px 12px;border-radius:20px;border:1.5px solid;font-size:11px;font-family:'Montserrat',sans-serif;cursor:pointer;letter-spacing:.4px;transition:all .18s;display:flex;align-items:center;gap:5px;background:transparent;}
+.chat-btn{border-color:var(--gold);color:var(--gold);}
+.chat-btn:hover,.chat-btn.active{background:var(--gold);color:var(--navy);}
+.settings-btn{border-color:rgba(26,34,54,.22);color:var(--text-mid);}
+.settings-btn:hover,.settings-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.upload-btn{border-color:rgba(61,140,111,.5);color:var(--green);}
+.upload-btn:hover{background:var(--green);color:#fff;border-color:var(--green);}
+.bar-btn-group{display:flex;gap:6px;margin-left:auto;}
+
+/* TAB NAV */
+.tab-nav{background:#fff;border-bottom:1px solid var(--border);padding:0 48px;display:flex;gap:0;position:sticky;top:44px;z-index:99;}
+.tab-btn{padding:12px 20px;font-size:12px;font-family:'Montserrat',sans-serif;letter-spacing:.8px;text-transform:uppercase;cursor:pointer;border:none;background:transparent;color:var(--text-light);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .18s;display:flex;align-items:center;gap:7px;}
+.tab-btn:hover{color:var(--navy);}
+.tab-btn.active{color:var(--navy);border-bottom-color:var(--gold);}
+.tab-btn svg{opacity:.6;}
+.tab-btn.active svg{opacity:1;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* MAIN */
+.main{padding:30px 48px 60px;max-width:1400px;}
+.section-label{font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:13px;display:flex;align-items:center;gap:12px;}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(44,61,107,.07);}
+
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:13px;margin-bottom:34px;}
+.card{background:#fff;border-radius:12px;border:1px solid var(--border);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s,opacity .3s,filter .3s;display:flex;flex-direction:column;}
+.card:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(26,34,54,.12);}
+.card.is-live{box-shadow:var(--live-glow);}
+.card.is-archived{opacity:.42;filter:grayscale(.3);}
+.card.is-archived:hover{opacity:.7;filter:grayscale(0);}
+.show-live-only .card.is-archived{display:none;}
+.show-archived-only .card.is-live{display:none;}
+.card-img-zone{position:relative;height:0;overflow:hidden;transition:height .3s;}
+.card-img-zone.has-img{height:105px;}
+.card-img-zone img{width:100%;height:105px;object-fit:cover;display:block;}
+.card-img-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(26,34,54,.18),rgba(26,34,54,.55));display:none;}
+.card-img-remove{position:absolute;top:6px;right:6px;width:21px;height:21px;border-radius:50%;background:rgba(26,34,54,.65);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .18s;}
+.card-img-zone:hover .card-img-remove{opacity:1;}
+.card-img-remove svg{width:10px;height:10px;stroke:#fff;stroke-width:2.5;}
+.card-accent{position:absolute;top:0;left:0;right:0;height:4px;z-index:1;}
+.card-img-zone.has-img~.card-accent{display:none;}
+.card.coral-card .card-accent{background:var(--coral-col);}
+.card.clarendon-card .card-accent{background:var(--clarendon-col);}
+.card.is-live .card-accent{background:var(--green)!important;}
+.card-inner{padding:18px 18px 13px;flex:1;display:flex;flex-direction:column;}
+.card-top-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px;gap:4px;}
+.card-top-left{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.card-builder-badge{display:inline-block;font-size:9px;font-family:'Montserrat',sans-serif;letter-spacing:1.5px;text-transform:uppercase;padding:2px 6px;border-radius:4px;font-weight:500;}
+.coral-card .card-builder-badge{background:rgba(212,99,74,.1);color:var(--coral-col);}
+.clarendon-card .card-builder-badge{background:rgba(58,124,165,.1);color:var(--clarendon-col);}
+.card.is-live .card-builder-badge{background:rgba(61,140,111,.12);color:var(--green);}
+.card-img-btn{width:20px;height:20px;border-radius:5px;border:1px solid var(--border);background:var(--cream);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0;}
+.card-img-btn:hover{border-color:var(--gold);}
+.card-img-btn svg{width:10px;height:10px;stroke:var(--text-light);stroke-width:1.8;}
+.status-pill{display:flex;align-items:center;gap:4px;padding:2px 7px 2px 4px;border-radius:20px;border:1px solid var(--border);cursor:pointer;user-select:none;flex-shrink:0;transition:all .18s;}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.status-text{font-size:9px;font-family:'Montserrat',sans-serif;letter-spacing:1px;text-transform:uppercase;}
+.card.is-live .status-pill{border-color:rgba(61,140,111,.4);background:rgba(61,140,111,.06);}
+.card.is-live .status-dot{background:var(--green);}
+.card.is-live .status-text{color:var(--green);}
+.card.is-archived .status-pill{border-color:rgba(136,150,171,.4);background:rgba(136,150,171,.06);}
+.card.is-archived .status-dot{background:#8896ab;}
+.card.is-archived .status-text{color:#8896ab;}
+.card-home{font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;letter-spacing:-.2px;color:var(--navy);margin-bottom:2px;}
+.card-facade{font-size:11px;color:var(--text-light);margin-bottom:10px;}
+.card-price{font-family:'Montserrat',sans-serif;font-size:21px;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums;color:var(--navy);margin-bottom:3px;}
+.card-price-label{font-size:10px;color:var(--text-light);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.card-base{padding-top:9px;border-top:1px solid var(--border);font-size:11px;color:var(--text-mid);flex:1;}
+.card-base span{font-family:'Montserrat',sans-serif;color:var(--navy);font-size:11px;}
+.card-date{font-size:10px;color:var(--text-light);margin-top:4px;font-family:'Montserrat',sans-serif;}
+.card-pdf-link{display:flex;align-items:center;justify-content:center;gap:5px;padding:8px;border-top:1px solid var(--border);font-size:11px;font-family:'Montserrat',sans-serif;color:var(--text-light);text-decoration:none;transition:all .18s;}
+.card-pdf-link:hover{background:var(--cream);color:var(--navy);}
+.card.is-live .card-pdf-link:hover{color:var(--green);}
+.card-pdf-link svg{flex-shrink:0;opacity:.4;transition:opacity .18s;}
+.card-pdf-link:hover svg{opacity:1;}
+
+/* BAR CHART */
+.chart-section{margin-bottom:34px;}
+.bar-chart{background:#fff;border-radius:12px;border:1px solid var(--border);padding:22px 26px;}
+.bar-row{display:flex;align-items:center;gap:13px;margin-bottom:14px;transition:opacity .3s;}
+.bar-row:last-child{margin-bottom:0;}
+.bar-row.is-archived-bar{opacity:.35;}
+.show-live-only .bar-row.is-archived-bar{display:none;}
+.show-archived-only .bar-row.is-live-bar{display:none;}
+.bar-label{width:210px;flex-shrink:0;}
+.bar-label-name{font-size:11px;font-weight:500;color:var(--navy);}
+.bar-label-sub{font-size:10px;color:var(--text-light);}
+.bar-sd{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:3px;vertical-align:middle;}
+.bar-track{flex:1;height:28px;background:var(--cream-dark);border-radius:6px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-right:10px;justify-content:flex-end;}
+.bar-fill.coral{background:linear-gradient(90deg,rgba(212,99,74,.7),var(--coral-col));}
+.bar-fill.clarendon{background:linear-gradient(90deg,rgba(58,124,165,.7),var(--clarendon-col));}
+.bar-fill.new-quote{background:linear-gradient(90deg,rgba(139,92,246,.7),var(--purple));}
+.bar-fill.live-bar{background:linear-gradient(90deg,rgba(61,140,111,.6),var(--green))!important;}
+.bar-val{font-family:'Montserrat',sans-serif;font-size:11px;color:#fff;font-weight:500;white-space:nowrap;}
+
+/* TABLE */
+.breakdown-section{margin-bottom:34px;}
+.breakdown-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--border);font-size:11px;}
+.breakdown-table thead tr{background:var(--navy);color:#fff;}
+.breakdown-table th{padding:11px 10px;text-align:left;font-family:'Montserrat',sans-serif;font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;white-space:nowrap;}
+.breakdown-table th:not(:first-child){text-align:right;}
+.breakdown-table th.col-archived{opacity:.4;}
+.breakdown-table th.col-live{background:rgba(61,140,111,.25);}
+.show-live-only .breakdown-table th.col-archived,.show-live-only .breakdown-table td.col-archived{display:none;}
+.show-archived-only .breakdown-table th.col-live,.show-archived-only .breakdown-table td.col-live{display:none;}
+.breakdown-table td{padding:6px 10px;border-bottom:1px solid var(--cream-dark);color:var(--text-mid);vertical-align:top;line-height:1.4;}
+.breakdown-table td:not(:first-child){text-align:right;font-family:'Montserrat',sans-serif;font-size:10.5px;color:var(--navy);white-space:nowrap;}
+.breakdown-table td.col-archived{opacity:.4;}
+.breakdown-table td.col-live{background:rgba(61,140,111,.04);}
+.breakdown-table tr:last-child td{border-bottom:none;}
+.breakdown-table tr:hover td{background:rgba(247,244,239,.7);}
+.breakdown-table .cat-row td{font-weight:600;color:var(--navy);background:var(--cream);font-size:9px;padding:5px 10px;letter-spacing:.8px;text-transform:uppercase;border-bottom:1px solid var(--cream-dark);}
+.breakdown-table .total-row td{background:var(--navy-mid);color:#fff;font-weight:600;font-family:'Montserrat',sans-serif;font-size:12px;border:none;padding:11px 10px;}
+.breakdown-table .total-row td:first-child{font-family:'Montserrat',sans-serif;font-size:13px;}
+.breakdown-table .total-row td.col-live{background:var(--green)!important;}
+.breakdown-table .total-row td.col-archived{background:#6b7a8d!important;}
+.incl{color:var(--green)!important;font-size:9px!important;font-family:'Montserrat',sans-serif!important;font-weight:600!important;letter-spacing:.3px!important;}
+.na{color:#ccc!important;font-size:13px!important;}
+.neg{color:var(--green)!important;}
+.sub{font-size:8.5px;color:var(--text-light);display:block;margin-top:1px;font-family:'Montserrat',sans-serif;font-weight:400;}
+
+/* DIFF */
+.diff-section{margin-bottom:34px;}
+.diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.diff-card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:20px;}
+.diff-card-title{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;letter-spacing:-.1px;color:var(--navy);margin-bottom:11px;display:flex;align-items:center;gap:7px;}
+.diff-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.diff-item{display:flex;align-items:flex-start;gap:7px;margin-bottom:6px;font-size:11.5px;color:var(--text-mid);line-height:1.5;}
+.diff-item::before{content:'→';color:var(--gold);flex-shrink:0;margin-top:1px;}
+.diff-item strong{color:var(--navy);}
+
+/* ═══ BUILDERS TAB ═══ */
+.bld-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:22px;}
+.bld-card{background:#fff;border-radius:16px;border:1px solid var(--border);overflow:hidden;transition:box-shadow .2s;}
+.bld-card:hover{box-shadow:0 8px 36px rgba(44,61,107,.1);}
+.bld-card-header{padding:24px 24px 20px;display:flex;align-items:flex-start;gap:16px;}
+.bld-logo{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;font-weight:700;color:#fff;letter-spacing:-1px;}
+.bld-logo.coral{background:linear-gradient(135deg,#e07a63,var(--coral-col));}
+.bld-logo.clarendon{background:linear-gradient(135deg,#5a9ec5,var(--clarendon-col));}
+.bld-logo.other{background:linear-gradient(135deg,#a78bfa,var(--purple));}
+.bld-header-info{flex:1;}
+.bld-name{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:3px;letter-spacing:-.3px;}
+.bld-region{font-size:11px;color:var(--text-light);font-weight:500;letter-spacing:.5px;text-transform:uppercase;}
+.bld-live-badge{background:rgba(61,140,111,.1);color:var(--green);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:10px;align-self:flex-start;flex-shrink:0;}
+
+.bld-contact-section{padding:0 24px 20px;}
+.bld-contact-title{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);margin-bottom:12px;}
+.bld-contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.bld-contact-item{display:flex;align-items:flex-start;gap:9px;}
+.bld-contact-icon{width:28px;height:28px;border-radius:7px;background:var(--cream);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.bld-contact-icon svg{width:13px;height:13px;stroke:var(--text-light);stroke-width:2;}
+.bld-contact-label{font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text-light);margin-bottom:2px;}
+.bld-contact-val{font-size:12px;font-weight:500;color:var(--navy);}
+.bld-contact-val a{color:var(--clarendon-col);text-decoration:none;font-size:11px;}
+.bld-contact-val a:hover{text-decoration:underline;}
+
+.bld-terms-section{padding:16px 24px;background:var(--cream);border-top:1px solid var(--border);display:flex;gap:14px;flex-wrap:wrap;}
+.bld-term{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-mid);}
+.bld-term-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+.bld-term strong{color:var(--navy);font-weight:600;}
+
+.bld-quotes-section{border-top:1px solid var(--border);}
+.bld-quotes-title{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);padding:14px 24px 10px;}
+.bld-quote-row{display:flex;align-items:center;gap:12px;padding:10px 24px;border-top:1px solid var(--border);transition:background .15s;}
+.bld-quote-row:hover{background:var(--cream);}
+.bld-quote-row:first-child{border-top:none;}
+.bld-quote-status{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.bld-quote-status.live{background:var(--green);}
+.bld-quote-status.archived{background:var(--text-light);}
+.bld-quote-info{flex:1;min-width:0;}
+.bld-quote-model{font-size:12px;font-weight:600;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bld-quote-facade{font-size:10px;color:var(--text-light);margin-top:1px;}
+.bld-quote-price{font-size:13px;font-weight:700;color:var(--navy);letter-spacing:-.3px;white-space:nowrap;}
+.bld-quote-label{font-size:9px;color:var(--text-light);text-align:right;font-weight:500;letter-spacing:.5px;text-transform:uppercase;}
+.bld-quote-pdf{width:26px;height:26px;border-radius:7px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-light);text-decoration:none;transition:all .15s;flex-shrink:0;}
+.bld-quote-pdf:hover{border-color:var(--coral-col);color:var(--coral-col);}
+.bld-quote-pdf svg{width:12px;height:12px;}
+
+
+.fp-intro{background:#fff;border-radius:12px;border:1px solid var(--border);padding:20px 24px;margin-bottom:28px;display:flex;align-items:center;gap:16px;}
+.fp-intro-icon{width:44px;height:44px;background:var(--cream);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.fp-intro-icon svg{width:22px;height:22px;stroke:var(--gold);stroke-width:1.5;}
+.fp-intro-text{flex:1;}
+.fp-intro-title{font-family:'Montserrat',sans-serif;font-size:15px;color:var(--navy);font-weight:600;margin-bottom:3px;}
+.fp-intro-sub{font-size:12px;color:var(--text-mid);}
+.fp-fetch-all-btn{padding:8px 18px;border-radius:20px;background:var(--navy);color:#fff;border:none;font-size:11px;font-family:'Montserrat',sans-serif;cursor:pointer;letter-spacing:.5px;transition:background .18s;white-space:nowrap;}
+.fp-fetch-all-btn:hover{background:var(--gold);color:var(--navy);}
+.fp-fetch-all-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+.fp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:20px;}
+
+/* Floorplan card */
+.fp-card{background:#fff;border-radius:14px;border:1px solid var(--border);overflow:hidden;transition:box-shadow .2s;}
+.fp-card:hover{box-shadow:0 8px 32px rgba(26,34,54,.1);}
+.fp-card-header{padding:16px 18px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.fp-card-header-left{flex:1;}
+.fp-builder-badge{font-size:9px;font-family:'Montserrat',sans-serif;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;font-weight:500;display:inline-block;margin-bottom:6px;}
+.fp-card.fp-coral .fp-builder-badge{background:rgba(212,99,74,.1);color:var(--coral-col);}
+.fp-card.fp-clarendon .fp-builder-badge{background:rgba(58,124,165,.1);color:var(--clarendon-col);}
+.fp-card.fp-other .fp-builder-badge{background:rgba(139,92,246,.1);color:var(--purple);}
+.fp-card.fp-coral{border-top:3px solid var(--coral-col);}
+.fp-card.fp-clarendon{border-top:3px solid var(--clarendon-col);}
+.fp-card.fp-other{border-top:3px solid var(--purple);}
+.fp-model{font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;letter-spacing:-.2px;color:var(--navy);}
+.fp-used-by{font-size:10px;color:var(--text-light);margin-top:3px;}
+.fp-header-actions{display:flex;gap:6px;flex-shrink:0;}
+.fp-action-btn{padding:5px 12px;border-radius:16px;font-size:10.5px;font-family:'Montserrat',sans-serif;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text-mid);transition:all .18s;display:flex;align-items:center;gap:4px;}
+.fp-action-btn:hover{border-color:var(--gold);color:var(--navy);}
+.fp-action-btn:disabled{opacity:.4;cursor:not-allowed;}
+.fp-action-btn svg{width:11px;height:11px;flex-shrink:0;}
+
+/* Floorplan card body states */
+.fp-body{padding:18px;}
+.fp-state{display:none;}
+.fp-state.active{display:block;}
+
+/* Empty state */
+.fp-empty{text-align:center;padding:28px 16px;}
+.fp-empty-icon{width:48px;height:48px;background:var(--cream);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+.fp-empty-icon svg{width:24px;height:24px;stroke:var(--text-light);stroke-width:1.5;}
+.fp-empty-text{font-size:13px;color:var(--text-mid);font-weight:500;margin-bottom:4px;}
+.fp-empty-sub{font-size:11px;color:var(--text-light);}
+
+/* Loading state */
+.fp-loading{text-align:center;padding:24px 16px;}
+.fp-spinner{width:36px;height:36px;border:3px solid var(--cream-dark);border-top-color:var(--gold);border-radius:50%;animation:spin .9s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.fp-loading-title{font-size:13px;color:var(--navy);font-weight:500;margin-bottom:4px;}
+.fp-step-track{display:flex;flex-direction:column;gap:5px;margin-top:12px;text-align:left;}
+.fp-step{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-light);}
+.fp-step.s-done{color:var(--green);}
+.fp-step.s-active{color:var(--navy);font-weight:500;}
+.fp-step-dot{width:7px;height:7px;border-radius:50%;background:var(--cream-dark);flex-shrink:0;}
+.fp-step.s-done .fp-step-dot{background:var(--green);}
+.fp-step.s-active .fp-step-dot{background:var(--gold);animation:pulse 1s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* Error state */
+.fp-error{text-align:center;padding:20px;}
+.fp-error-icon{font-size:28px;margin-bottom:8px;}
+.fp-error-text{font-size:12px;color:var(--coral-col);margin-bottom:4px;font-weight:500;}
+.fp-error-sub{font-size:11px;color:var(--text-light);}
+
+/* Data state */
+.fp-specs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+.fp-spec{background:var(--cream);border-radius:10px;padding:10px 8px;text-align:center;}
+.fp-spec-icon{font-size:18px;margin-bottom:4px;}
+.fp-spec-val{font-family:'Montserrat',sans-serif;font-size:16px;font-weight:500;color:var(--navy);line-height:1;}
+.fp-spec-label{font-size:9px;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px;margin-top:3px;}
+.fp-specs-wide{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.fp-spec-wide{background:var(--cream);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;}
+.fp-spec-wide-icon{font-size:20px;flex-shrink:0;}
+.fp-spec-wide-label{font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:.7px;}
+.fp-spec-wide-val{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:500;color:var(--navy);}
+
+.fp-section-title{font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;}
+.fp-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.fp-feature{background:rgba(26,34,54,.06);color:var(--navy);font-size:10.5px;padding:3px 9px;border-radius:14px;line-height:1.4;}
+.fp-desc{font-size:12px;color:var(--text-mid);line-height:1.6;margin-bottom:14px;}
+.fp-source{display:flex;align-items:center;gap:6px;padding:9px 12px;background:var(--cream);border-radius:8px;text-decoration:none;color:var(--text-mid);font-size:11px;transition:all .18s;}
+.fp-source:hover{background:var(--cream-dark);color:var(--navy);}
+.fp-source svg{flex-shrink:0;opacity:.5;}
+.fp-source:hover svg{opacity:1;}
+.fp-source-url{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:'Montserrat',sans-serif;font-size:10px;}
+.fp-fetched-at{font-size:10px;color:var(--text-light);text-align:right;margin-top:10px;font-family:'Montserrat',sans-serif;}
+
+/* CHAT */
+.chat-panel{width:380px;flex-shrink:0;background:#fff;border-left:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;transition:width .3s,opacity .3s;overflow:hidden;}
+.chat-panel.collapsed{width:0;opacity:0;border:none;}
+.chat-header{background:var(--navy);padding:16px 18px 12px;flex-shrink:0;}
+.chat-header-label{font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:3px;}
+.chat-header-title{font-family:'Montserrat',sans-serif;font-size:15px;color:#fff;font-weight:600;}
+.chat-header-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:2px;}
+.chat-suggested{padding:10px 12px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.chat-sug-label{font-size:9px;font-family:'Montserrat',sans-serif;color:var(--text-light);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;}
+.chip-row{display:flex;flex-wrap:wrap;gap:5px;}
+.chip{padding:3px 9px;border-radius:14px;border:1px solid var(--border);font-size:10.5px;color:var(--text-mid);cursor:pointer;transition:all .15s;background:var(--cream);}
+.chip:hover{border-color:var(--gold);color:var(--navy);background:#fff;}
+.chat-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;}
+.chat-messages::-webkit-scrollbar{width:4px;}
+.chat-messages::-webkit-scrollbar-thumb{background:var(--cream-dark);border-radius:4px;}
+.msg{display:flex;flex-direction:column;gap:2px;}
+.msg.user{align-items:flex-end;}
+.msg.assistant{align-items:flex-start;}
+.msg-bubble{max-width:90%;padding:8px 11px;border-radius:11px;font-size:11.5px;line-height:1.55;}
+.msg.user .msg-bubble{background:var(--navy);color:#fff;border-radius:11px 11px 4px 11px;}
+.msg.assistant .msg-bubble{background:var(--cream);color:var(--text);border:1px solid var(--border);border-radius:11px 11px 11px 4px;}
+.msg-bubble strong{font-weight:600;}
+.msg-bubble ul{padding-left:14px;margin:4px 0;}
+.msg-bubble li{margin-bottom:2px;}
+.msg-time{font-size:9px;color:var(--text-light);font-family:'Montserrat',sans-serif;padding:0 2px;}
+.typing-indicator{display:flex;align-items:center;gap:4px;padding:9px 11px;background:var(--cream);border:1px solid var(--border);border-radius:11px 11px 11px 4px;width:fit-content;}
+.typing-dot{width:6px;height:6px;border-radius:50%;background:var(--text-light);animation:typingPulse 1.2s ease-in-out infinite;}
+.typing-dot:nth-child(2){animation-delay:.2s;}
+.typing-dot:nth-child(3){animation-delay:.4s;}
+@keyframes typingPulse{0%,60%,100%{transform:translateY(0);opacity:.4;}30%{transform:translateY(-4px);opacity:1;}}
+.chat-input-area{padding:10px 12px;border-top:1px solid var(--border);flex-shrink:0;}
+.chat-input-row{display:flex;gap:7px;align-items:flex-end;}
+.chat-input{flex:1;border:1px solid var(--border);border-radius:10px;padding:8px 10px;font-size:12px;font-family:'Montserrat',sans-serif;resize:none;outline:none;background:var(--cream);color:var(--text);line-height:1.4;max-height:100px;transition:border-color .18s;}
+.chat-input:focus{border-color:var(--gold);background:#fff;}
+.chat-send-btn{width:30px;height:30px;border-radius:8px;background:var(--navy);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s;flex-shrink:0;}
+.chat-send-btn:hover{background:var(--gold);}
+.chat-send-btn:disabled{opacity:.4;cursor:not-allowed;}
+.chat-send-btn svg{width:12px;height:12px;fill:none;stroke:#fff;stroke-width:2;}
+
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,34,54,.55);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:#fff;border-radius:16px;width:520px;max-width:96vw;max-height:90vh;overflow-y:auto;transform:translateY(16px) scale(.98);transition:transform .25s;}
+.modal-overlay.open .modal{transform:none;}
+.modal-header{background:var(--navy);padding:20px 22px 14px;display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.modal-title-label{font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.modal-title{font-family:'Montserrat',sans-serif;font-size:17px;color:#fff;font-weight:600;}
+.modal-close{background:rgba(255,255,255,.12);border:none;border-radius:7px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:rgba(255,255,255,.22);}
+.modal-close svg{width:13px;height:13px;stroke:#fff;stroke-width:2.5;}
+.modal-body{padding:22px;}
+.modal-section{margin-bottom:20px;}
+.modal-section:last-child{margin-bottom:0;}
+.modal-section-title{font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);margin-bottom:10px;}
+.bg-upload-zone{border:2px dashed var(--border);border-radius:10px;padding:26px;text-align:center;cursor:pointer;transition:all .18s;position:relative;overflow:hidden;}
+.bg-upload-zone:hover{border-color:var(--gold);background:rgba(201,168,76,.04);}
+.bg-upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.bg-upload-icon{width:34px;height:34px;border-radius:9px;background:var(--cream);display:flex;align-items:center;justify-content:center;margin:0 auto 9px;}
+.bg-upload-icon svg{width:17px;height:17px;stroke:var(--text-light);stroke-width:1.5;}
+.bg-upload-text{font-size:12px;color:var(--text-mid);}
+.bg-upload-sub{font-size:10.5px;color:var(--text-light);margin-top:3px;}
+.bg-preview{width:100%;height:130px;object-fit:cover;border-radius:8px;display:none;}
+.modal-btn-row{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap;}
+.modal-btn{padding:7px 16px;border-radius:8px;font-size:12px;font-family:'Montserrat',sans-serif;cursor:pointer;transition:all .18s;border:1px solid var(--border);font-weight:500;}
+.modal-btn.primary{background:var(--navy);color:#fff;border-color:var(--navy);}
+.modal-btn.primary:hover:not(:disabled){background:#243049;}
+.modal-btn.primary:disabled{opacity:.45;cursor:not-allowed;}
+.modal-btn.danger{background:transparent;color:var(--coral-col);border-color:rgba(212,99,74,.3);}
+.modal-btn.danger:hover{background:rgba(212,99,74,.08);}
+.modal-btn.ghost{background:transparent;color:var(--text-mid);}
+.modal-btn.ghost:hover{background:var(--cream);}
+
+/* Upload modal */
+.pdf-drop-zone{border:2px dashed var(--border);border-radius:12px;padding:34px 22px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+.pdf-drop-zone.dragover{border-color:var(--green);background:rgba(61,140,111,.04);}
+.pdf-drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.pdf-drop-icon{width:46px;height:46px;border-radius:12px;background:var(--cream);display:flex;align-items:center;justify-content:center;margin:0 auto 11px;}
+.pdf-drop-icon svg{width:22px;height:22px;stroke:var(--text-light);stroke-width:1.5;}
+.pdf-drop-text{font-size:13px;color:var(--text-mid);font-weight:500;}
+.pdf-drop-sub{font-size:11px;color:var(--text-light);margin-top:4px;}
+.pdf-selected{display:flex;align-items:center;gap:9px;background:var(--cream);border-radius:9px;padding:11px 13px;margin-top:11px;}
+.pdf-selected svg{flex-shrink:0;stroke:var(--coral-col);}
+.pdf-selected-name{font-size:12px;color:var(--navy);font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pdf-clear{background:none;border:none;cursor:pointer;color:var(--text-light);font-size:18px;line-height:1;flex-shrink:0;}
+.pdf-clear:hover{color:var(--coral-col);}
+.analysis-state{display:none;padding:18px;}
+.analysis-state.active{display:block;}
+.analysis-spinner{width:38px;height:38px;border:3px solid var(--cream-dark);border-top-color:var(--gold);border-radius:50%;animation:spin .9s linear infinite;margin:0 auto 12px;}
+.analysis-title{font-family:'Montserrat',sans-serif;font-size:15px;color:var(--navy);margin-bottom:5px;text-align:center;}
+.analysis-sub{font-size:12px;color:var(--text-light);text-align:center;}
+.analysis-steps{text-align:left;margin:13px 0 0;display:flex;flex-direction:column;gap:5px;}
+.analysis-step{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--text-mid);}
+.step-dot{width:7px;height:7px;border-radius:50%;background:var(--cream-dark);flex-shrink:0;}
+.analysis-step.done .step-dot{background:var(--green);}
+.analysis-step.active .step-dot{background:var(--gold);animation:pulse 1s ease-in-out infinite;}
+.analysis-step.done .step-label{color:var(--green);}
+.analysis-step.active .step-label{color:var(--navy);font-weight:500;}
+.qp-header{background:var(--cream);padding:13px 15px;border-bottom:1px solid var(--border);}
+.qp-title{font-family:'Montserrat',sans-serif;font-size:14px;color:var(--navy);font-weight:600;}
+.qp-meta{font-size:11px;color:var(--text-light);margin-top:2px;}
+.qp-total{font-family:'Montserrat',sans-serif;font-size:19px;color:var(--navy);font-weight:500;margin-top:4px;}
+.qp-items{padding:13px 15px;max-height:230px;overflow-y:auto;}
+.qp-cat{font-size:9px;font-family:'Montserrat',sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-light);margin:9px 0 4px;padding-bottom:3px;border-bottom:1px solid var(--cream-dark);}
+.qp-cat:first-child{margin-top:0;}
+.qp-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:11px;color:var(--text-mid);padding:3px 0;}
+.qp-row-val{font-family:'Montserrat',sans-serif;font-size:11px;color:var(--navy);white-space:nowrap;flex-shrink:0;}
+.quote-preview{border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+
+#bgLayer{position:fixed;inset:0;z-index:-1;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity .4s;}
+#bgLayer.visible{opacity:1;}
+.hidden-file{display:none;}
+.footer{text-align:center;padding:18px;font-size:10.5px;color:var(--text-light);border-top:1px solid var(--border);font-family:'Montserrat',sans-serif;letter-spacing:.5px;}
+.col-new{background:rgba(139,92,246,.04)!important;}
+th.col-new{background:rgba(139,92,246,.2)!important;}
+.total-row td.col-new{background:var(--purple)!important;}
+@media(max-width:1100px){.cards-grid{grid-template-columns:1fr 1fr;}.main{padding:18px;}.header{padding:22px 24px;}.filter-bar,.tab-nav{padding-left:20px;padding-right:20px;}.fp-grid{grid-template-columns:1fr;}.chat-panel{position:fixed;right:0;top:0;z-index:200;box-shadow:-4px 0 24px rgba(26,34,54,.12);}}
+@media(max-width:700px){.cards-grid{grid-template-columns:1fr;}.diff-grid{grid-template-columns:1fr;}.fp-specs-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<style>
+#pw-gate{position:fixed;inset:0;z-index:9999;background:#2c3d6b;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;}
+#pw-gate.hidden{display:none;}
+.pw-box{background:#fff;border-radius:20px;padding:44px 48px;width:360px;max-width:92vw;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.3);}
+.pw-logo{font-size:28px;margin-bottom:6px;}
+.pw-title{font-size:17px;font-weight:700;color:#2c3d6b;margin-bottom:4px;letter-spacing:-.3px;}
+.pw-sub{font-size:12px;color:#96a3b8;margin-bottom:28px;font-weight:400;}
+.pw-input{width:100%;padding:12px 16px;border:1.5px solid #eeebe4;border-radius:10px;font-size:14px;font-family:'Montserrat',sans-serif;font-weight:500;outline:none;text-align:center;letter-spacing:2px;color:#2c3d6b;transition:border-color .18s;}
+.pw-input:focus{border-color:#c9a84c;}
+.pw-btn{margin-top:14px;width:100%;padding:12px;background:#2c3d6b;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:'Montserrat',sans-serif;cursor:pointer;letter-spacing:.5px;transition:background .18s;}
+.pw-btn:hover{background:#c9a84c;color:#2c3d6b;}
+.pw-error{margin-top:10px;font-size:12px;color:#d4634a;font-weight:500;min-height:18px;}
+</style>
+<div id="pw-gate">
+  <div class="pw-box">
+    <div class="pw-logo">🏡</div>
+    <div class="pw-title">32 Grosvenor Street</div>
+    <div class="pw-sub">Balmoral — Build Quote Dashboard</div>
+    <input class="pw-input" id="pwInput" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="pw-btn" onclick="checkPw()">View Dashboard →</button>
+    <div class="pw-error" id="pwError"></div>
+  </div>
+</div>
+<script>
+(function(){
+  const HASH='65f7086400ea9687fe61de8e4a7259c2d682843ddcbb6a3ccf32a9bae694dfbb';
+  async function sha256(msg){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(msg));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
+  window.checkPw=async function(){
+    const val=document.getElementById('pwInput').value;
+    const h=await sha256(val);
+    if(h===HASH){document.getElementById('pw-gate').classList.add('hidden');sessionStorage.setItem('balmoral_auth','1');}
+    else{document.getElementById('pwError').textContent='Incorrect password — try again';document.getElementById('pwInput').value='';}
+  };
+  if(sessionStorage.getItem('balmoral_auth')==='1')document.getElementById('pw-gate').classList.add('hidden');
+})();
+</script>
+
+
+<!-- PASSWORD GATE -->
+<div id="pw-gate">
+  <div class="pw-box">
+    <div class="pw-logo">Build Comparison</div>
+    <div class="pw-title">32 Grosvenor Street</div>
+    <div class="pw-sub">Balmoral QLD · Enter password to continue</div>
+    <input class="pw-input" id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="pw-btn" onclick="checkPw()">Continue →</button>
+    <div class="pw-error" id="pw-error"></div>
+    <div class="pw-addr">Simon Jones &amp; Emma Stewart · March 2026</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Check if already unlocked this session
+  if(sessionStorage.getItem('balmoral_auth')==='1'){
+    document.getElementById('pw-gate').classList.add('hidden');
+  }
+  // Auto-focus
+  window.addEventListener('DOMContentLoaded',()=>{
+    const inp=document.getElementById('pw-input');
+    if(inp&&!document.getElementById('pw-gate').classList.contains('hidden')) inp.focus();
+  });
+})();
+function checkPw(){
+  const val=document.getElementById('pw-input').value.toLowerCase().trim();
+  const err=document.getElementById('pw-error');
+  // Simple hash check — not cryptographic but fine for casual access control
+  if(val==='balmoral2026'){
+    sessionStorage.setItem('balmoral_auth','1');
+    document.getElementById('pw-gate').classList.add('hidden');
+    err.textContent='';
+  } else {
+    err.textContent='Incorrect password — please try again';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
+</script>
+<input type="file" id="bgFileInput" class="hidden-file" accept="image/*" onchange="handleBgUpload(this)">
+<input type="file" id="cardFileInput" class="hidden-file" accept="image/*" onchange="handleCardImgUpload(this)">
+<input type="file" id="quoteFileInput" class="hidden-file" accept="application/pdf" onchange="handleQuoteFileSelect(this)">
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal"><div class="modal-header"><div><div class="modal-title-label">Dashboard</div><div class="modal-title">Settings</div></div><button class="modal-close" onclick="closeSettings()"><svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="modal-body"><div class="modal-section"><div class="modal-section-title">Dashboard Background Image</div>
+  <div class="bg-upload-zone" onclick="document.getElementById('bgFileInput').click()"><input type="file" accept="image/*" onchange="handleBgUpload(this)" onclick="event.stopPropagation()"><div id="bgUploadDefault"><div class="bg-upload-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div><div class="bg-upload-text">Click to upload a background image</div><div class="bg-upload-sub">JPG, PNG, WebP — 1920×1080 recommended</div></div><img id="bgPreviewImg" class="bg-preview" src="" alt=""></div>
+  <div class="modal-btn-row"><button class="modal-btn danger" onclick="clearBg()">Remove background</button></div></div></div></div>
+</div>
+
+<!-- UPLOAD QUOTE MODAL -->
+<div class="modal-overlay" id="uploadModal" onclick="if(event.target===this)closeUploadModal()">
+  <div class="modal" style="width:550px">
+    <div class="modal-header"><div><div class="modal-title-label">Add Quote</div><div class="modal-title">Upload New Quote</div></div><button class="modal-close" onclick="closeUploadModal()"><svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body">
+      <div id="stateSelect" class="analysis-state active">
+        <div class="pdf-drop-zone" id="pdfDropZone" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event)"><input type="file" accept="application/pdf" onchange="handleQuoteFileSelect(this)"><div class="pdf-drop-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><div class="pdf-drop-text">Drop a PDF quote here</div><div class="pdf-drop-sub">or click to browse — any builder format accepted</div></div>
+        <div id="fileSelectedRow" style="display:none" class="pdf-selected"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg><span class="pdf-selected-name" id="selectedFileName">—</span><button class="pdf-clear" onclick="clearSelectedFile()">×</button></div>
+        <div class="modal-btn-row" style="margin-top:16px"><button class="modal-btn primary" id="analyseBtn" onclick="startAnalysis()" disabled>Analyse Quote →</button><button class="modal-btn ghost" onclick="closeUploadModal()">Cancel</button></div>
+      </div>
+      <div id="stateAnalysing" class="analysis-state" style="padding:26px 18px"><div class="analysis-spinner"></div><div class="analysis-title">Analysing quote…</div><div class="analysis-sub">Claude is reading every line item</div><div class="analysis-steps"><div class="analysis-step active" id="step1"><div class="step-dot"></div><span class="step-label">Reading PDF document</span></div><div class="analysis-step" id="step2"><div class="step-dot"></div><span class="step-label">Extracting line items &amp; costs</span></div><div class="analysis-step" id="step3"><div class="step-dot"></div><span class="step-label">Mapping to comparison categories</span></div><div class="analysis-step" id="step4"><div class="step-dot"></div><span class="step-label">Generating summary</span></div></div></div>
+      <div id="statePreview" class="analysis-state"><div style="margin-bottom:12px;font-size:12px;color:var(--text-mid)">Review the extracted data, then click <strong>Add to Dashboard</strong>.</div><div class="quote-preview" id="quotePreviewBox"></div><div class="modal-btn-row" style="margin-top:14px"><button class="modal-btn primary" onclick="addQuoteToDashboard()">Add to Dashboard</button><button class="modal-btn ghost" onclick="goBackToSelect()">← Different file</button></div></div>
+      <div id="stateError" class="analysis-state" style="padding:22px;text-align:center"><div class="fp-error-icon">⚠️</div><div class="analysis-title" style="color:var(--coral-col)">Analysis failed</div><div class="analysis-sub" id="errorMsg">Something went wrong reading this PDF.</div><div class="modal-btn-row" style="justify-content:center;margin-top:14px"><button class="modal-btn primary" onclick="goBackToSelect()">Try again</button></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="app-shell">
+  <div class="main-col">
+
+    <div class="header">
+      <div class="header-top">
+        <div><div class="header-label">Build Quote Comparison — Verified</div><div class="header-title">32 Grosvenor Street, Balmoral QLD 4171</div><div class="header-subtitle">Simon Jones &amp; Emma Stewart &nbsp;·&nbsp; Knock-Down Rebuild &nbsp;·&nbsp; March 2026</div></div>
+        <div class="header-meta"><div class="header-meta-item">Quotes: <strong id="quoteCountBadge">4</strong></div><div class="header-meta-item">Builders: <strong>2</strong></div><div class="header-meta-item">Range: <strong id="rangeBadge">$535K – $620K</strong></div><div class="header-meta-item">Totals: <strong>✓ Verified</strong></div></div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <div id="filterControls" style="display:flex;align-items:center;gap:13px">
+        <span class="filter-label">Show</span>
+        <div class="filter-btns">
+          <button class="filter-btn active" onclick="setFilter('all',this)">All quotes</button>
+          <button class="filter-btn live-btn" onclick="setFilter('live',this)">Live only</button>
+          <button class="filter-btn arch-btn" onclick="setFilter('archived',this)">Archived only</button>
+        </div>
+        <div class="filter-divider"></div>
+        <span class="filter-hint">Click status pill on any card to toggle</span>
+      </div>
+      <div class="bar-btn-group">
+        <button class="bar-btn upload-btn" onclick="openUploadModal()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19,12 12,5 5,12"/></svg>Upload Quote</button>
+        <button class="bar-btn settings-btn" onclick="openSettings()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</button>
+        <button class="bar-btn chat-btn" id="chatToggleBtn" onclick="toggleChat()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask Claude</button>
+      </div>
+    </div>
+
+    <!-- TAB NAV -->
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tab-comparison" onclick="switchTab('comparison')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Quote Comparison
+      </button>
+      <button class="tab-btn" id="tab-floorplans" onclick="switchTab('floorplans')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+        Floorplans
+      </button>
+      <button class="tab-btn" id="tab-builders" onclick="switchTab('builders')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Builders
+      </button>
+    </div>
+
+    <div class="main" id="mainContent">
+
+      <!-- COMPARISON TAB -->
+      <div class="tab-panel active" id="panel-comparison">
+        <div class="section-label">Summary — All Quotes</div>
+        <div class="cards-grid" id="cardsGrid"></div>
+        <div class="chart-section"><div class="section-label">Price Comparison</div><div class="bar-chart" id="barChart"></div></div>
+        <div class="breakdown-section"><div class="section-label">Cost Breakdown — Every Line Item ✓</div><div style="overflow-x:auto"><table class="breakdown-table" id="breakdownTable"><thead><tr id="tableHead"><th style="min-width:200px">Item</th></tr></thead><tbody id="tableBody"></tbody></table></div></div>
+        <div class="diff-section"><div class="section-label">Key Differences &amp; Notes</div>
+          <div class="diff-grid">
+            <div class="diff-card"><div class="diff-card-title"><div class="diff-dot" style="background:var(--coral-col)"></div>Coral Homes — Boston 297Q</div>
+              <div class="diff-item"><strong>Designer inclusions baked in:</strong> Caesarstone benchtops, freestanding bath, custom vanity, extended laundry — no extra cost.</div>
+              <div class="diff-item"><strong>$30,000 promotion discount</strong> (35-Year Celebration) significantly reduces the effective price.</div>
+              <div class="diff-item"><strong>Price lock to December 2026</strong> — longer than standard 210-day terms.</div>
+              <div class="diff-item"><strong>Daikin 16kW ducted A/C</strong> at $17,305 — larger system than Clarendon's Rinnai at $14,394.</div>
+              <div class="diff-item"><strong>Hamptons facade</strong> adds $21,690 and triggers N3 wind ($5,100) + 2740 ceiling ($3,400) — combined ~$30K.</div>
+              <div class="diff-item"><strong>H1 vs H2 soil:</strong> Coral $10,900 vs Clarendon $6,200–$6,600. Final confirmed post soil report.</div>
+            </div>
+            <div class="diff-card"><div class="diff-card-title"><div class="diff-dot" style="background:var(--clarendon-col)"></div>Clarendon Homes — Antigua 270 / 290</div>
+              <div class="diff-item"><strong>9-Month Price Promise</strong> with strict milestones — sign within 7 days, demolish 3 weeks before start.</div>
+              <div class="diff-item"><strong>$15,000 provisional piering</strong> vs Coral's $7,900 fixed — reviewed post-demolition; surplus credited back.</div>
+              <div class="diff-item"><strong>Traffic control $6,000 provisional</strong> — not in Coral quotes; inner-city access requirement.</div>
+              <div class="diff-item"><strong>Colour Studio + Electrical ($16,000)</strong> built into price — flexible but inflate headline vs Coral.</div>
+              <div class="diff-item"><strong>Exposed aggregate driveway ($11,300)</strong> included — not in Coral quotes at all.</div>
+              <div class="diff-item"><strong>Antigua 270 + Rumpus</strong> at $620,064 most expensive — $22,800 floor plan variation is the driver.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer">All original line items verified against source PDFs · Prices are estimates only · 23/03/2026</div>
+      </div>
+
+      <!-- FLOORPLANS TAB -->
+      <div class="tab-panel" id="panel-floorplans">
+        <div class="fp-intro">
+          <div class="fp-intro-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></div>
+          <div class="fp-intro-text">
+            <div class="fp-intro-title">Floorplan Data — Live from Builder Websites</div>
+            <div class="fp-intro-sub">Click <strong>Fetch</strong> on any card to have Claude search the builder's website for specs, room counts, areas and features. Each unique home model is shown once. Data is cached and can be refreshed at any time.</div>
+          </div>
+          <button class="fp-fetch-all-btn" id="fetchAllBtn" onclick="fetchAllFloorplans()">Fetch All</button>
+        </div>
+        <div class="fp-grid" id="fpGrid"></div>
+      </div>
+
+      <!-- BUILDERS TAB -->
+      <div class="tab-panel" id="panel-builders">
+        <div class="bld-grid" id="buildersGrid"></div>
+      </div>
+
+    </div>
+  <div class="chat-panel collapsed" id="chatPanel">
+    <div class="chat-header"><div class="chat-header-label">Quote Assistant</div><div class="chat-header-title">Ask Claude</div><div class="chat-header-sub" id="chatSubtitle">Knows every line item across all quotes</div></div>
+    <div class="chat-suggested"><div class="chat-sug-label">Suggested questions</div><div class="chip-row"><div class="chip" onclick="sendChip(this)">Facade costs across all quotes?</div><div class="chip" onclick="sendChip(this)">Which builder has cheaper site costs?</div><div class="chip" onclick="sendChip(this)">Compare air conditioning options</div><div class="chip" onclick="sendChip(this)">What's included vs extra in Coral?</div><div class="chip" onclick="sendChip(this)">How do piering costs compare?</div><div class="chip" onclick="sendChip(this)">Summarise the live quotes only</div></div></div>
+    <div class="chat-messages" id="chatMessages"><div class="msg assistant"><div class="msg-bubble">Hi! I have the full breakdown of all quotes. Ask me anything — costs, comparisons, inclusions, risks, anything you like.</div><div class="msg-time">Ready</div></div></div>
+    <div class="chat-input-area"><div class="chat-input-row"><textarea class="chat-input" id="chatInput" rows="1" placeholder="Ask about the quotes…" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea><button class="chat-send-btn" id="sendBtn" onclick="sendMessage()"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9"/></svg></button></div></div>
+  </div>
+</div>
+
+<script>
+// ═══ JSON EXTRACTION HELPER ═══════════════════════════════════════
+// Robustly pulls the first complete JSON object from any text,
+// even if Claude prefixes it with prose or markdown fences.
+function extractJson(text) {
+  if (!text) throw new Error('Empty response from API');
+  // 1. Strip markdown fences
+  let s = text.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
+  // 2. Find the outermost { ... } block
+  const start = s.indexOf('{');
+  if (start === -1) throw new Error('No JSON object found in response');
+  let depth = 0, i = start, inStr = false, escape = false;
+  for (; i < s.length; i++) {
+    const ch = s[i];
+    if (escape) { escape = false; continue; }
+    if (ch === '\\' && inStr) { escape = true; continue; }
+    if (ch === '"') { inStr = !inStr; continue; }
+    if (inStr) continue;
+    if (ch === '{') depth++;
+    else if (ch === '}') { depth--; if (depth === 0) { i++; break; } }
+  }
+  const jsonStr = s.slice(start, i);
+  try { return JSON.parse(jsonStr); }
+  catch(e) { throw new Error('JSON parse failed: ' + e.message); }
+}
+
+// ═══ KNOWN FLOORPLAN SEED DATA ═══════════════════════════════════
+// Confirmed from quote documents: all three homes are DOUBLE STOREY.
+// Model numbers = total floor area (Boston 297Q = 297m², etc.)
+const KNOWN_SPECS = {
+  'Coral Homes||Boston 297Q': {
+    storeys: 2,
+    total_area_m2: 297,
+    builder_url: 'https://www.coralhomes.com.au'
+  },
+  'Clarendon Homes||Antigua 290': {
+    storeys: 2,
+    total_area_m2: 290,
+    builder_url: 'https://www.clarendonhomes.com.au'
+  },
+  'Clarendon Homes||Antigua 270': {
+    storeys: 2,
+    total_area_m2: 270,
+    builder_url: 'https://www.clarendonhomes.com.au'
+  }
+};
+
+
+const TABLE_ROWS=[
+  {type:'cat',label:'Base House'},{key:'base_price',label:'Base House Price'},
+  {type:'cat',label:'Facade & Floor Plan'},{key:'facade',label:'Facade Upgrade'},{key:'entry_door_1200',label:'1200mm Entry Door'},{key:'rumpus',label:'Rumpus / Floor Plan Option'},
+  {type:'cat',label:'Promotions & Inclusions'},{key:'discount_35yr',label:'35-Year Discount'},{key:'kitchen_appliances',label:'Kitchen Appliances Promo'},{key:'ceilings_2590_ground',label:'2590mm Ceilings (Ground)'},{key:'ceilings_2740_ground',label:'2740mm Ceilings GF'},{key:'flooring',label:'Flooring / Tiling & Carpet'},{key:'statement_entry',label:'Statement Entry Promo'},{key:'bathrooms',label:'Designer Bathrooms Promo'},{key:'laundry',label:'Refined Laundry Promo'},
+  {type:'cat',label:'Site Works & Surveys'},{key:'service_location',label:'Service Location Report'},{key:'soil_test',label:'Soil Test + Contour Survey'},{key:'extra_survey',label:'Additional Survey (existing house)'},{key:'id_survey',label:'ID Survey + Boundary Pegs'},{key:'kdr_investigations',label:'KDR Site Investigations'},{key:'earthworks',label:'Cut & Fill / Earthworks'},{key:'spoil_removal',label:'Spoil Removal'},{key:'extra_plumbing',label:'Additional Plumbing Allowance'},
+  {type:'cat',label:'Site Classification & Slab'},{key:'slab_reactive',label:'Reactive Soil Slab Upgrade'},{key:'piering',label:'Piering (P-site / disturbed)'},{key:'expansion_joints',label:'Expansion Joints to Downpipes'},{key:'vertical_risers',label:'Vertical Risers to Drainage'},{key:'flexible_joint',label:'Flexible Joint + Sand Backfill'},
+  {type:'cat',label:'Building Platform & Access'},{key:'onsite_mgmt',label:'On-site Management WHS'},{key:'access_handling',label:'Access, Handling & Tight Site'},{key:'safety_mesh',label:'Safety Mesh to Scaffolding'},{key:'power_line_barrier',label:'Overhead Power Line Barrier'},{key:'zero_lot_garage',label:'Zero Lot Garage Works'},{key:'extra_scaffold',label:'Additional Scaffold (zero lot)'},
+  {type:'cat',label:'Structural Modifications'},{key:'boundary_garage',label:'Built to Boundary Garage Wall'},{key:'alfresco_slab',label:'Integrated Alfresco Slab'},{key:'ceilings_2590_1st',label:'2590mm Ceilings — First Floor'},
+  {type:'cat',label:'Power, Services & Wind'},{key:'three_phase_power',label:'Three Phase Power Connection'},{key:'wind_rating',label:'Wind Rating Upgrade (N3/W41)'},{key:'gully_traps',label:'Field Gully Traps (5no)'},{key:'kerb_adapter',label:'Kerb Adapter (stormwater)'},{key:'generator',label:'Generator Provisional'},
+  {type:'cat',label:'Council Fees'},{key:'bcc_fees',label:'BCC Building Approval Fees'},{key:'boundary_relaxation',label:'Boundary / Setback Relaxation'},{key:'driveway_crossover',label:'Driveway Crossover (BCC)'},{key:'traffic_control',label:'Traffic Control Provisional'},
+  {type:'cat',label:'Kitchen, Wet Areas & Finishes'},{key:'entry_door_2340',label:'External Entry Door (2340mm)'},{key:'alfresco_doors',label:'Alfresco Doors Extra High'},{key:'polar_sink',label:'Clark Polar Undermount Sink'},{key:'fridge_water',label:'Cold Water Fridge Connection'},{key:'rangehood',label:'Undermount Integrated Rangehood'},{key:'shower_niches',label:'Shower Niches ×3'},{key:'carpet_upgrade',label:'Carpet Upgrade (Elegance)'},
+  {type:'cat',label:'Electrical, A/C & Selections'},{key:'lighting',label:'Additional Lighting Allowance'},{key:'air_con',label:'Ducted Air Conditioning'},{key:'electrical_allowance',label:'Electrical Consultant Allowance'},{key:'colour_studio',label:'Colour Studio Allowance'},{key:'driveway_aggregate',label:'Exposed Aggregate Driveway (50m²)'},{key:'energy_efficiency',label:'Energy Efficiency Allowance'},
+];
+
+// ═══ INITIAL QUOTES ═══════════════════════════════════════════════
+const INITIAL_QUOTES=[
+  {id:0,builder:'Coral Homes',model:'Boston 297Q',facade:'Designer Facade',doc:'Doc #1',date:'16/03/2026',consultant:'Troy Fitzpatrick',total:535472,basePrice:470800,pdfFile:'quote_simon_and_emma_boston_297q_suit_re_development_site__2_.pdf',colorClass:'coral-card',barClass:'coral',defaultStatus:'archived',notes:'Base $470,800 | Discount −$30,000',
+    items:{base_price:{val:'$470,800'},facade:{val:'INCLUDED',cls:'incl',note:'Designer'},discount_35yr:{val:'−$30,000',cls:'neg'},kitchen_appliances:{val:'$999'},ceilings_2590_ground:{val:'$3,499'},flooring:{val:'$10,499'},bathrooms:{val:'INCLUDED',cls:'incl'},laundry:{val:'INCLUDED',cls:'incl'},service_location:{val:'$1,195'},soil_test:{val:'$1,345'},extra_survey:{val:'$645'},id_survey:{val:'$4,500'},earthworks:{val:'$3,000'},spoil_removal:{val:'$3,404'},extra_plumbing:{val:'$1,500'},slab_reactive:{val:'$10,900',note:'H1 class'},piering:{val:'$7,900',note:'Fixed'},onsite_mgmt:{val:'$4,900'},boundary_garage:{val:'$1,800'},alfresco_slab:{val:'$2,700'},ceilings_2590_1st:{val:'$1,800'},three_phase_power:{val:'$5,900'},wind_rating:{val:'INCLUDED',cls:'incl',note:'N2'},bcc_fees:{val:'$1,017'},boundary_relaxation:{val:'$2,000'},entry_door_2340:{val:'$206'},alfresco_doors:{val:'$364'},polar_sink:{val:'$617'},fridge_water:{val:'$280'},rangehood:{val:'$197'},carpet_upgrade:{val:'$1,200'},lighting:{val:'$5,000'},air_con:{val:'$17,305',note:'Daikin 16kW, 4 zones'},energy_efficiency:{val:'INCLUDED',cls:'incl'}}},
+  {id:1,builder:'Coral Homes',model:'Boston 297Q',facade:'Hamptons Facade',doc:'Doc #2',date:'20/03/2026',consultant:'Troy Fitzpatrick',total:565662,basePrice:470800,pdfFile:'quote_update_simon_and_emma_boston_297q_hamptons_facade__2_.pdf',colorClass:'coral-card',barClass:'coral',defaultStatus:'live',notes:'Base $470,800 | Hamptons +$21,690',
+    items:{base_price:{val:'$470,800'},facade:{val:'$21,690',note:'Hamptons'},discount_35yr:{val:'−$30,000',cls:'neg'},kitchen_appliances:{val:'$999'},ceilings_2590_ground:{val:'$3,499'},ceilings_2740_ground:{val:'$3,400'},flooring:{val:'$10,499'},bathrooms:{val:'INCLUDED',cls:'incl'},laundry:{val:'INCLUDED',cls:'incl'},service_location:{val:'$1,195'},soil_test:{val:'$1,345'},extra_survey:{val:'$645'},id_survey:{val:'$4,500'},earthworks:{val:'$3,000'},spoil_removal:{val:'$3,404'},extra_plumbing:{val:'$1,500'},slab_reactive:{val:'$10,900',note:'H1 class'},piering:{val:'$7,900',note:'Fixed'},onsite_mgmt:{val:'$4,900'},boundary_garage:{val:'$1,800'},alfresco_slab:{val:'$2,700'},ceilings_2590_1st:{val:'$1,800'},three_phase_power:{val:'$5,900'},wind_rating:{val:'$5,100',note:'N3 upgrade'},bcc_fees:{val:'$1,017'},boundary_relaxation:{val:'$2,000'},entry_door_2340:{val:'$206'},alfresco_doors:{val:'$364'},polar_sink:{val:'$617'},fridge_water:{val:'$280'},rangehood:{val:'$197'},carpet_upgrade:{val:'$1,200'},lighting:{val:'$5,000'},air_con:{val:'$17,305',note:'Daikin 16kW, 4 zones'},energy_efficiency:{val:'INCLUDED',cls:'incl'}}},
+  {id:2,builder:'Clarendon Homes',model:'Antigua 290',facade:'Portofino Facade',doc:'Doc #1',date:'15/03/2026',consultant:'Jake Anderson',total:609558,basePrice:452750,pdfFile:'Initial_Sales_Estimate_-_Antigua_290_v1__2_.pdf',colorClass:'clarendon-card',barClass:'clarendon',defaultStatus:'archived',notes:'Base $452,750 | 9-Month Price Promise',
+    items:{base_price:{val:'$452,750'},facade:{val:'$31,900',note:'Portofino'},entry_door_1200:{val:'$1,850'},ceilings_2590_ground:{val:'$2,990'},flooring:{val:'$7,990'},statement_entry:{val:'$390'},bathrooms:{val:'$390'},laundry:{val:'$790'},kdr_investigations:{val:'$2,943'},earthworks:{val:'$1,170'},spoil_removal:{val:'$3,735'},access_handling:{val:'$5,000'},safety_mesh:{val:'$590'},power_line_barrier:{val:'$1,520'},zero_lot_garage:{val:'$2,850'},extra_scaffold:{val:'$1,500'},slab_reactive:{val:'$6,589',note:'H2 class'},piering:{val:'$15,000',note:'Provisional'},expansion_joints:{val:'$690'},vertical_risers:{val:'$1,920'},flexible_joint:{val:'$1,830'},three_phase_power:{val:'$4,090'},wind_rating:{val:'$5,292',note:'N3 required'},gully_traps:{val:'$700'},kerb_adapter:{val:'$225'},generator:{val:'$1,000'},bcc_fees:{val:'INCLUDED',cls:'incl'},boundary_relaxation:{val:'$1,450'},driveway_crossover:{val:'$550'},traffic_control:{val:'$6,000'},shower_niches:{val:'$1,170',note:'3 × $390'},air_con:{val:'$14,394',note:'Rinnai Day/Night'},electrical_allowance:{val:'$8,000'},colour_studio:{val:'$8,000'},driveway_aggregate:{val:'$11,300'},energy_efficiency:{val:'$3,000',note:'Unused credited back'}}},
+  {id:3,builder:'Clarendon Homes',model:'Antigua 270',facade:'Portofino + Rumpus',doc:'Doc #2',date:'21/03/2026',consultant:'Jake Anderson',total:620064,basePrice:441400,pdfFile:'Initial_Sales_Estimate_-_Antigua_270_v1__3_.pdf',colorClass:'clarendon-card',barClass:'clarendon',defaultStatus:'live',notes:'Base $441,400 | Rumpus +$22,800',
+    items:{base_price:{val:'$441,400'},facade:{val:'$31,900',note:'Portofino'},entry_door_1200:{val:'$1,850'},rumpus:{val:'$22,800'},ceilings_2590_ground:{val:'$2,990'},flooring:{val:'$7,990'},bathrooms:{val:'$390'},laundry:{val:'$790'},kdr_investigations:{val:'$2,943'},earthworks:{val:'$1,170'},spoil_removal:{val:'$3,735'},access_handling:{val:'$5,000'},safety_mesh:{val:'$590'},power_line_barrier:{val:'$1,520'},zero_lot_garage:{val:'$2,850'},extra_scaffold:{val:'$1,500'},slab_reactive:{val:'$6,190',note:'H2 class'},piering:{val:'$15,000',note:'Provisional'},expansion_joints:{val:'$690'},vertical_risers:{val:'$1,920'},flexible_joint:{val:'$1,830'},three_phase_power:{val:'$4,090'},wind_rating:{val:'$5,137',note:'N3 required'},gully_traps:{val:'$700'},kerb_adapter:{val:'$225'},generator:{val:'$1,000'},bcc_fees:{val:'INCLUDED',cls:'incl'},boundary_relaxation:{val:'$1,450'},driveway_crossover:{val:'$550'},traffic_control:{val:'$6,000'},shower_niches:{val:'$1,170',note:'3 × $390'},air_con:{val:'$14,394',note:'Rinnai Day/Night'},electrical_allowance:{val:'$8,000'},colour_studio:{val:'$8,000'},driveway_aggregate:{val:'$11,300'},energy_efficiency:{val:'$3,000',note:'Unused credited back'}}}
+];
+
+// ═══ STATE ════════════════════════════════════════════════════════
+let quotes=[];
+let nextId=4;
+let _pendingCardIdx=null;
+let _pendingQuoteData=null;
+let _pendingPdfBase64=null;
+let CHAT_EXTRA='';
+const SK={status:i=>`balmoral_card_status_${i}`,cardImg:i=>`balmoral_card_img_${i}`,bgImg:'balmoral_bg_img',uploadedQuotes:'balmoral_uploaded_quotes',fp:k=>`balmoral_fp_${btoa(k).replace(/[=+/]/g,'_')}`};
+
+// Floorplan cache (keyed by "builder||model")
+let fpCache={};
+
+// ═══ INIT ═════════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded',()=>{
+  try{const s=localStorage.getItem(SK.uploadedQuotes);if(s){const u=JSON.parse(s);u.forEach(q=>{quotes.push(q);if(q.id>=nextId)nextId=q.id+1;});}}catch(e){}
+  INITIAL_QUOTES.forEach(q=>{const s=localStorage.getItem(SK.status(q.id));quotes.unshift({...q,status:s||q.defaultStatus});});
+  quotes.filter(q=>q.id>=4).forEach(q=>{const s=localStorage.getItem(SK.status(q.id));if(s)q.status=s;});
+  // Load fp cache — but discard entries where storeys or total_area are wrong
+  ['Coral Homes||Boston 297Q','Clarendon Homes||Antigua 290','Clarendon Homes||Antigua 270'].forEach(k=>{
+    try{
+      const d=localStorage.getItem(SK.fp(k));
+      if(d){
+        const parsed = JSON.parse(d);
+        const known = KNOWN_SPECS[k];
+        // Discard if key confirmed values are wrong
+        if(known && (parsed.storeys !== known.storeys || parsed.total_area_m2 !== known.total_area_m2)){
+          localStorage.removeItem(SK.fp(k));
+          console.log('[FP] Cleared stale cache for', k);
+        } else {
+          fpCache[k]=parsed;
+        }
+      }
+    }catch(e){}
+  });
+  renderAll();
+  quotes.forEach(q=>{const img=localStorage.getItem(SK.cardImg(q.id));if(img)applyCardImage(String(q.id),img);});
+  const bg=localStorage.getItem(SK.bgImg);if(bg)applyBg(bg);
+});
+
+// ═══ TABS ═════════════════════════════════════════════════════════
+let activeTab='comparison';
+function switchTab(tab){
+  activeTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.id===`tab-${tab}`));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id===`panel-${tab}`));
+  const fc=document.getElementById('filterControls');
+  fc.style.display=tab==='comparison'?'flex':'none';
+  if(tab==='floorplans')renderFloorplans();
+  if(tab==='builders')renderBuilders();
+}
+
+// ═══ RENDER COMPARISON ════════════════════════════════════════════
+function renderAll(){renderCards();renderBarChart();renderTable();updateHeaderBadges();}
+
+function renderCards(){
+  const g=document.getElementById('cardsGrid');g.innerHTML='';
+  quotes.forEach(q=>{
+    const isLive=q.status==='live';
+    const c=document.createElement('div');
+    c.className=`card ${q.colorClass||'new-card'} ${isLive?'is-live':'is-archived'}`;
+    c.id=`card-${q.id}`;c.dataset.status=q.status;
+    c.innerHTML=`<div class="card-img-zone" id="imgzone-${q.id}"><img id="cardimg-${q.id}" src="" alt="" style="display:none"><div class="card-img-overlay"></div><button class="card-img-remove" onclick="removeCardImg(event,'${q.id}')"><svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="card-accent"></div>
+    <div class="card-inner"><div class="card-top-row"><div class="card-top-left"><span class="card-builder-badge">${q.builder}</span><button class="card-img-btn" onclick="triggerCardImg('${q.id}')"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></button>${q.id>=4?`<button class="card-img-btn" style="color:var(--coral-col)" onclick="removeUploadedQuote(event,${q.id})"><svg viewBox="0 0 24 24" fill="none"><polyline points="3,6 5,6 21,6"/><path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2v2"/></svg></button>`:''}</div><div class="status-pill" onclick="toggleStatus(event,'card-${q.id}')"><div class="status-dot"></div><span class="status-text">${isLive?'Live':'Archived'}</span></div></div>
+    <div class="card-home">${q.model}</div><div class="card-facade">${q.facade} · ${q.doc}</div>
+    <div class="card-price">$${q.total.toLocaleString()}</div><div class="card-price-label">Total Estimate</div>
+    <div class="card-base">${q.notes||''}<div class="card-date">${q.date} · ${q.consultant}</div></div></div>
+    ${q.pdfFile?`<a class="card-pdf-link" href="${q.pdfFile}" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>Open PDF</a>`:'<div class="card-pdf-link" style="color:var(--text-light);cursor:default;opacity:.5">No PDF</div>'}`;
+    g.appendChild(c);
+  });
+}
+
+function renderBarChart(){
+  const MAX=Math.max(...quotes.map(q=>q.total));
+  const ch=document.getElementById('barChart');ch.innerHTML='';
+  quotes.forEach(q=>{
+    const isLive=q.status==='live';const pct=Math.round((q.total/MAX)*100);
+    const bc=isLive?(q.barClass||'new-quote')+' live-bar':(q.barClass||'new-quote');
+    const dc=isLive?'var(--green)':'#8896ab';
+    const r=document.createElement('div');r.className=`bar-row ${isLive?'is-live-bar':'is-archived-bar'}`;r.id=`bar-${q.id}`;
+    r.innerHTML=`<div class="bar-label"><div class="bar-label-name"><span class="bar-sd" id="bardot-${q.id}" style="background:${dc}"></span>${q.model} — ${q.facade}</div><div class="bar-label-sub">${q.builder} · ${q.date}</div></div><div class="bar-track"><div class="bar-fill ${bc}" id="barfill-${q.id}" style="width:${pct}%"><span class="bar-val">$${q.total.toLocaleString()}</span></div></div>`;
+    ch.appendChild(r);
+  });
+}
+
+function renderTable(){
+  const thead=document.getElementById('tableHead');thead.innerHTML='<th style="min-width:200px">Item</th>';
+  quotes.forEach(q=>{const isLive=q.status==='live';const th=document.createElement('th');th.id=`th-${q.id}`;th.className=isLive?'col-live':'col-archived';th.innerHTML=`${q.builder.replace(' Homes','')}<br>${q.model}`;thead.appendChild(th);});
+  const tbody=document.getElementById('tableBody');tbody.innerHTML='';
+  TABLE_ROWS.forEach(row=>{
+    const tr=document.createElement('tr');
+    if(row.type==='cat'){tr.className='cat-row';tr.innerHTML=`<td colspan="${quotes.length+1}">${row.label}</td>`;}
+    else{
+      let cells=`<td>${row.label}</td>`;
+      quotes.forEach(q=>{const isLive=q.status==='live';const cc=isLive?'col-live':'col-archived';const item=q.items[row.key];if(!item){cells+=`<td class="${cc}"><span class="na">—</span></td>`;}else{const note=item.note?`<span class="sub">${item.note}</span>`:'';cells+=`<td class="${cc}"><span class="${item.cls||''}">${item.val}</span>${note}</td>`;}}); 
+      tr.innerHTML=cells;
+    }
+    tbody.appendChild(tr);
+  });
+  const total=document.createElement('tr');total.className='total-row';
+  let tc='<td>TOTAL ESTIMATE</td>';quotes.forEach(q=>{const cc=q.status==='live'?'col-live':'col-archived';tc+=`<td id="total-${q.id}" class="${cc}">$${q.total.toLocaleString()}</td>`;});
+  total.innerHTML=tc;tbody.appendChild(total);
+}
+
+function updateHeaderBadges(){
+  document.getElementById('quoteCountBadge').textContent=quotes.length;
+  const t=quotes.map(q=>q.total);
+  document.getElementById('rangeBadge').textContent=`$${Math.round(Math.min(...t)/1000)}K – $${Math.round(Math.max(...t)/1000)}K`;
+}
+
+// ═══ BUILDERS TAB ═════════════════════════════════════════════════
+const BUILDER_CONTACTS = {
+  'Coral Homes': {
+    logoClass: 'coral',
+    logoText: 'CH',
+    region: 'Noosa – Gold Coast',
+    consultants: [
+      { name:'Troy Fitzpatrick', role:'New Home Consultant',
+        phone:'0436 612 699', email:'t.fitzpatrick@coralhomes.com.au' }
+    ],
+    office: { address:'Level 3, 194 Varsity Parade, Varsity Lakes QLD 4227', phone:'07 5585 2555', web:'www.coralhomes.com.au' },
+    priceLock: 'December 2026 (Price Lock promo)',
+    pricePromise: '210-day standard, extended to Dec 2026',
+    qbcc: 'Fully covered — no additional levy',
+    notes: 'Does not arrange demolition. Designer inclusions package standard.'
+  },
+  'Clarendon Homes': {
+    logoClass: 'clarendon',
+    logoText: 'CL',
+    region: 'Brisbane – South East QLD',
+    consultants: [
+      { name:'Jake Anderson', role:'Sales Consultant',
+        phone:'—', email:'—', leadRef:'L161138' }
+    ],
+    office: { address:'Brisbane QLD', phone:'—', web:'www.clarendonhomes.com.au' },
+    priceLock: '9-Month Price Promise from deposit date',
+    pricePromise: 'Standard 7 months, extended to 9 months',
+    qbcc: 'Included in contract',
+    notes: 'Strict milestone requirements. Second soil test after demolition.'
+  }
+};
+
+function renderBuilders(){
+  const grid = document.getElementById('buildersGrid');
+  grid.innerHTML = '';
+
+  // Group quotes by builder
+  const byBuilder = {};
+  quotes.forEach(q => {
+    if(!byBuilder[q.builder]) byBuilder[q.builder] = [];
+    byBuilder[q.builder].push(q);
+  });
+
+  Object.keys(byBuilder).forEach(builderName => {
+    const contact = BUILDER_CONTACTS[builderName] || {
+      logoClass:'other', logoText:builderName.charAt(0),
+      region:'—', consultants:[{name:'—',role:'—',phone:'—',email:'—'}],
+      office:{address:'—',phone:'—',web:'—'},
+      priceLock:'—', pricePromise:'—', qbcc:'—', notes:''
+    };
+    const builderQuotes = byBuilder[builderName];
+    const liveCount = builderQuotes.filter(q=>q.status==='live').length;
+    const consultant = contact.consultants[0];
+
+    const card = document.createElement('div');
+    card.className = 'bld-card';
+    card.innerHTML = `
+      <div class="bld-card-header">
+        <div class="bld-logo ${contact.logoClass}">${contact.logoText}</div>
+        <div class="bld-header-info">
+          <div class="bld-name">${builderName}</div>
+          <div class="bld-region">${contact.region}</div>
+        </div>
+        <div class="bld-live-badge">${liveCount} Live Quote${liveCount!==1?'s':''}</div>
+      </div>
+
+      <div class="bld-contact-section">
+        <div class="bld-contact-title">Consultant</div>
+        <div class="bld-contact-grid">
+          <div class="bld-contact-item">
+            <div class="bld-contact-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div>
+              <div class="bld-contact-label">Name</div>
+              <div class="bld-contact-val">${consultant.name}</div>
+              <div class="bld-contact-label" style="margin-top:2px">${consultant.role}</div>
+            </div>
+          </div>
+          <div class="bld-contact-item">
+            <div class="bld-contact-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            <div>
+              <div class="bld-contact-label">Phone</div>
+              <div class="bld-contact-val">${consultant.phone}</div>
+            </div>
+          </div>
+          <div class="bld-contact-item">
+            <div class="bld-contact-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div>
+              <div class="bld-contact-label">Email</div>
+              <div class="bld-contact-val">
+                ${consultant.email !== '—' ? `<a href="mailto:${consultant.email}">${consultant.email}</a>` : '—'}
+              </div>
+            </div>
+          </div>
+          <div class="bld-contact-item">
+            <div class="bld-contact-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+            <div>
+              <div class="bld-contact-label">Office</div>
+              <div class="bld-contact-val"><a href="https://${contact.office.web}" target="_blank">${contact.office.web}</a></div>
+              ${contact.office.phone !== '—' ? `<div style="font-size:11px;color:var(--text-mid);margin-top:1px">${contact.office.phone}</div>` : ''}
+            </div>
+          </div>
+        </div>
+        ${contact.office.address !== '—' ? `<div style="margin-top:12px;font-size:11px;color:var(--text-mid);display:flex;align-items:center;gap:7px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${contact.office.address}</div>` : ''}
+      </div>
+
+      <div class="bld-terms-section">
+        <div class="bld-term"><div class="bld-term-dot"></div><span><strong>Price Lock:</strong> ${contact.priceLock}</span></div>
+        ${consultant.leadRef ? `<div class="bld-term"><div class="bld-term-dot"></div><span><strong>Lead Ref:</strong> ${consultant.leadRef}</span></div>` : ''}
+        ${contact.notes ? `<div class="bld-term" style="width:100%"><div class="bld-term-dot"></div><span>${contact.notes}</span></div>` : ''}
+      </div>
+
+      <div class="bld-quotes-section">
+        <div class="bld-quotes-title">Quotes (${builderQuotes.length})</div>
+        ${builderQuotes.map(q => `
+          <div class="bld-quote-row">
+            <div class="bld-quote-status ${q.status}"></div>
+            <div class="bld-quote-info">
+              <div class="bld-quote-model">${q.model}</div>
+              <div class="bld-quote-facade">${q.facade} · ${q.doc} · ${q.date}</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div class="bld-quote-price">$${q.total.toLocaleString()}</div>
+              <div class="bld-quote-label">${q.status}</div>
+            </div>
+            ${q.pdfFile ? `<a class="bld-quote-pdf" href="${q.pdfFile}" target="_blank" title="Open PDF">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+            </a>` : ''}
+          </div>`).join('')}
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+
+function getUniqueModels(){
+  const seen=new Set();
+  return quotes.filter(q=>{const k=`${q.builder}||${q.model}`;if(seen.has(k))return false;seen.add(k);return true;});
+}
+
+function fpColorClass(builder){
+  if(builder.includes('Coral'))return 'fp-coral';
+  if(builder.includes('Clarendon'))return 'fp-clarendon';
+  return 'fp-other';
+}
+
+function renderFloorplans(){
+  const grid=document.getElementById('fpGrid');grid.innerHTML='';
+  const models=getUniqueModels();
+  models.forEach(q=>{
+    const key=`${q.builder}||${q.model}`;
+    const usedBy=quotes.filter(x=>x.builder===q.builder&&x.model===q.model).map(x=>x.facade).join(', ');
+    const card=document.createElement('div');
+    card.className=`fp-card ${fpColorClass(q.builder)}`;
+    card.id=`fp-card-${key.replace(/[^a-z0-9]/gi,'_')}`;
+    card.innerHTML=`
+      <div class="fp-card-header">
+        <div class="fp-card-header-left">
+          <div class="fp-builder-badge">${q.builder}</div>
+          <div class="fp-model">${q.model}</div>
+          <div class="fp-used-by">Used in: ${usedBy}</div>
+        </div>
+        <div class="fp-header-actions">
+          <button class="fp-action-btn" id="fp-fetch-btn-${key.replace(/[^a-z0-9]/gi,'_')}" onclick="fetchFloorplan('${q.builder}','${q.model}',this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Fetch
+          </button>
+        </div>
+      </div>
+      <div class="fp-body" id="fp-body-${key.replace(/[^a-z0-9]/gi,'_')}">
+        <div class="fp-state active" id="fp-empty-${key.replace(/[^a-z0-9]/gi,'_')}">
+          <div class="fp-empty">
+            <div class="fp-empty-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></div>
+            <div class="fp-empty-text">No data yet</div>
+            <div class="fp-empty-sub">Click Fetch to search the builder's website for this home's specs and floorplan details</div>
+          </div>
+        </div>
+        <div class="fp-state" id="fp-loading-${key.replace(/[^a-z0-9]/gi,'_')}">
+          <div class="fp-loading">
+            <div class="fp-spinner"></div>
+            <div class="fp-loading-title">Searching builder website…</div>
+            <div class="fp-step-track" id="fp-steps-${key.replace(/[^a-z0-9]/gi,'_')}">
+              <div class="fp-step s-active"><div class="fp-step-dot"></div><span>Searching ${q.builder} website</span></div>
+              <div class="fp-step"><div class="fp-step-dot"></div><span>Extracting room counts &amp; areas</span></div>
+              <div class="fp-step"><div class="fp-step-dot"></div><span>Pulling key features</span></div>
+              <div class="fp-step"><div class="fp-step-dot"></div><span>Compiling result</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="fp-state" id="fp-error-${key.replace(/[^a-z0-9]/gi,'_')}">
+          <div class="fp-error"><div class="fp-error-icon">⚠️</div><div class="fp-error-text" id="fp-err-msg-${key.replace(/[^a-z0-9]/gi,'_')}">Could not retrieve data</div><div class="fp-error-sub">Try clicking Fetch again or check your connection</div></div>
+        </div>
+        <div class="fp-state" id="fp-data-${key.replace(/[^a-z0-9]/gi,'_')}"></div>
+      </div>`;
+    grid.appendChild(card);
+    // If cached data exists, render it
+    if(fpCache[key]) renderFpData(q.builder,q.model,fpCache[key]);
+  });
+}
+
+function setFpState(builder,model,state){
+  const key=`${builder}||${model}`;
+  const safeKey=key.replace(/[^a-z0-9]/gi,'_');
+  ['empty','loading','error','data'].forEach(s=>{
+    const el=document.getElementById(`fp-${s}-${safeKey}`);
+    if(el) el.classList.toggle('active',s===state);
+  });
+}
+
+function animateFpSteps(builder,model){
+  const key=`${builder}||${model}`.replace(/[^a-z0-9]/gi,'_');
+  const track=document.getElementById(`fp-steps-${key}`);
+  if(!track)return;
+  const steps=track.querySelectorAll('.fp-step');
+  let i=0;
+  const iv=setInterval(()=>{
+    if(i>0)steps[i-1]?.classList.replace('s-active','s-done');
+    if(i<steps.length){steps[i].classList.add('s-active');i++;}
+    else clearInterval(iv);
+  },800);
+  return iv;
+}
+
+async function callClaude(messages, useSearch){
+  const body = {
+    model:'claude-sonnet-4-20250514',
+    max_tokens:2000,
+    messages
+  };
+  if(useSearch){
+    body.tools = [{type:'web_search_20250305',name:'web_search'}];
+  }
+  const r = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if(!r.ok){
+    const err = await r.json().catch(()=>({error:{message:`HTTP ${r.status}`}}));
+    throw new Error(err?.error?.message || `HTTP ${r.status}`);
+  }
+  return r.json();
+}
+
+async function runAgenticLoop(userPrompt){
+  // Multi-turn loop handling Anthropic's built-in web_search tool.
+  // web_search is a SERVER-SIDE tool — Anthropic executes it automatically.
+  // The response includes server_tool_use + web_search_tool_result blocks.
+  // We must NOT send tool_result messages back; just re-send the conversation.
+  let messages = [{role:'user', content:userPrompt}];
+  for(let turn=0; turn<10; turn++){
+    const d = await callClaude(messages, true);
+    if(d.error) throw new Error(d.error.message);
+    console.log(`[FP turn ${turn}] stop_reason:`, d.stop_reason, '| content types:', d.content?.map(b=>b.type));
+
+    const stopReason = d.stop_reason;
+    const content = d.content || [];
+
+    // Collect text from this response
+    const textBlocks = content.filter(b => b.type === 'text');
+    const hasText = textBlocks.length > 0 && textBlocks.some(b => b.text.trim());
+
+    if(stopReason === 'end_turn'){
+      if(hasText) return textBlocks.map(b=>b.text).join('\n');
+      throw new Error('No text returned from API');
+    }
+
+    if(stopReason === 'tool_use'){
+      // Distinguish server-side tools (web_search) from client-side tools
+      const serverToolUses = content.filter(b => b.type === 'server_tool_use');
+      const clientToolUses = content.filter(b => b.type === 'tool_use');
+
+      // Push the full assistant turn (contains server_tool_use + web_search_tool_result blocks)
+      messages.push({role:'assistant', content});
+
+      if(serverToolUses.length > 0){
+        // Server already executed the search — results are embedded in content.
+        // Just continue; Claude will now synthesise the results.
+        // No user tool_result needed for server-side tools.
+        continue;
+      }
+
+      if(clientToolUses.length > 0){
+        // Regular client-side tool call — return results
+        const toolResults = clientToolUses.map(b => ({
+          type:'tool_result',
+          tool_use_id: b.id,
+          content:[{type:'text', text:'No result available.'}]
+        }));
+        messages.push({role:'user', content:toolResults});
+        continue;
+      }
+
+      // tool_use stop but no tool blocks — if we have text, return it
+      if(hasText) return textBlocks.map(b=>b.text).join('\n');
+      throw new Error('Unexpected tool_use response with no tool blocks');
+    }
+
+    // Any other stop_reason (max_tokens, stop_sequence, etc.)
+    if(hasText) return textBlocks.map(b=>b.text).join('\n');
+    throw new Error(`Unexpected stop_reason: ${stopReason}`);
+  }
+  throw new Error('Reached maximum turns without a final response');
+}
+
+async function fetchFloorplan(builder,model,btn){
+  if(btn)btn.disabled=true;
+  setFpState(builder,model,'loading');
+  const iv=animateFpSteps(builder,model);
+
+  const knownKey = `${builder}||${model}`;
+  const known = KNOWN_SPECS[knownKey] || {};
+
+  // Build a facts string from confirmed data so Claude doesn't guess wrong
+  const knownFacts = [];
+  if(known.storeys)      knownFacts.push(`- This is a ${known.storeys === 2 ? 'DOUBLE' : 'SINGLE'} STOREY home (confirmed from quote documents)`);
+  if(known.total_area_m2) knownFacts.push(`- Total floor area is ${known.total_area_m2}m² (from model name)`);
+
+  const factsSection = knownFacts.length
+    ? `\n\nCONFIRMED FACTS — you MUST use these exact values:\n${knownFacts.join('\n')}\n`
+    : '';
+
+  const domain = known.builder_url || (builder.includes('Coral') ? 'https://www.coralhomes.com.au' : 'https://www.clarendonhomes.com.au');
+
+  const prompt = `You are a knowledgeable Australian home building assistant. Provide specifications for the "${model}" home design by "${builder}".${factsSection}
+For any values you are not certain of, provide your best estimate based on the builder's range. Use the confirmed facts above exactly as given.
+
+Return ONLY a valid JSON object. No prose, no markdown, no explanation. Start with { and end with }.
+
+{
+  "bedrooms": <integer>,
+  "bathrooms": <integer>,
+  "ensuites": <integer>,
+  "garage": <integer>,
+  "powder_room": <true or false>,
+  "living_areas": <integer>,
+  "alfresco": <true or false>,
+  "total_area_m2": <number — use confirmed value if given>,
+  "ground_area_m2": <ground floor area in m², must be less than total>,
+  "upper_area_m2": <upper floor area in m², ground + upper should equal total>,
+  "storeys": <use confirmed value if given, otherwise 1 or 2>,
+  "min_lot_width_m": <number or null>,
+  "min_lot_depth_m": <number or null>,
+  "key_features": ["feature 1", "feature 2", "up to 8 total"],
+  "source_url": "${domain}",
+  "description": "2-3 sentences describing this home design, layout, and who it suits"
+}`;
+
+  try{
+    const r = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user', content:prompt}]
+      })
+    });
+
+    const d = await r.json();
+    console.log('[FP] stop_reason:', d.stop_reason, '| types:', d.content?.map(b=>b.type));
+    if(d.error) throw new Error(d.error.message);
+    if(!d.content?.length) throw new Error('Empty response from API');
+
+    const rawText = d.content.filter(b=>b.type==='text').map(b=>b.text).join('\n');
+    if(!rawText.trim()) throw new Error('No text in API response');
+
+    clearInterval(iv);
+    const data = extractJson(rawText);
+
+    // Enforce known-correct values regardless of what Claude returned
+    if(known.storeys)       data.storeys = known.storeys;
+    if(known.total_area_m2) data.total_area_m2 = known.total_area_m2;
+
+    // Recalculate floor split if Claude got it wrong
+    if(data.storeys === 2 && data.total_area_m2){
+      const total = data.total_area_m2;
+      const g = data.ground_area_m2;
+      const u = data.upper_area_m2;
+      // If both exist but don't add up, or either is >= total, re-derive
+      if(!g || !u || g >= total || u >= total || Math.abs((g+u) - total) > 5){
+        // Typical double storey split: ~55% ground, ~45% upper
+        data.ground_area_m2 = Math.round(total * 0.55);
+        data.upper_area_m2 = total - data.ground_area_m2;
+      }
+    }
+
+    const key = `${builder}||${model}`;
+    data.fetchedAt = new Date().toLocaleString('en-AU',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    data.note = 'Specs from Claude knowledge · Key values confirmed from quote docs';
+    fpCache[key] = data;
+    try{ localStorage.setItem(SK.fp(key), JSON.stringify(data)); }catch(e){}
+    renderFpData(builder,model,data);
+    setFpState(builder,model,'data');
+    if(btn){ btn.disabled=false; btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23,4 23,11 16,11"/><path d="M20.49 15a9 9 0 1 1-.08-4.76"/></svg>Refresh'; }
+  }catch(err){
+    clearInterval(iv);
+    console.error('[FP fetch error]', err);
+    const key=`${builder}||${model}`.replace(/[^a-z0-9]/gi,'_');
+    const errEl=document.getElementById(`fp-err-msg-${key}`);
+    if(errEl) errEl.textContent = err.message || 'Failed to retrieve data';
+    setFpState(builder,model,'error');
+    if(btn){ btn.disabled=false; }
+  }
+}
+
+function renderFpData(builder,model,data){
+  const key=`${builder}||${model}`.replace(/[^a-z0-9]/gi,'_');
+  const el=document.getElementById(`fp-data-${key}`);
+  if(!el)return;
+  const spec=(icon,val,label)=>`<div class="fp-spec"><div class="fp-spec-icon">${icon}</div><div class="fp-spec-val">${val??'—'}</div><div class="fp-spec-label">${label}</div></div>`;
+  const specW=(icon,label,val)=>`<div class="fp-spec-wide"><div class="fp-spec-wide-icon">${icon}</div><div><div class="fp-spec-wide-label">${label}</div><div class="fp-spec-wide-val">${val??'—'}</div></div></div>`;
+  const features=(data.key_features||[]).map(f=>`<div class="fp-feature">${f}</div>`).join('');
+  el.innerHTML=`
+    <div class="fp-specs-grid">
+      ${spec('🛏',''+data.bedrooms,'Bedrooms')}
+      ${spec('🛁',''+data.bathrooms,'Bathrooms')}
+      ${spec('🚗',''+data.garage,'Garage')}
+      ${spec('📐',data.total_area_m2?data.total_area_m2+'m²':'—','Total Area')}
+    </div>
+    <div class="fp-specs-wide">
+      ${specW('🏠','Storeys',data.storeys===2?'Double Storey':'Single Storey')}
+      ${specW('📏','Min Lot Width',data.min_lot_width_m?(data.min_lot_width_m+'m wide'):'—')}
+      ${data.ground_area_m2?specW('⬇️','Ground Floor',data.ground_area_m2+'m²'):''}
+      ${data.upper_area_m2?specW('⬆️','Upper Floor',data.upper_area_m2+'m²'):''}
+      ${data.powder_room?specW('🚿','Powder Room','Included'):''}
+      ${data.ensuites?specW('🛁','Ensuites',''+data.ensuites):''}
+    </div>
+    ${features?`<div class="fp-section-title">Key Features</div><div class="fp-features">${features}</div>`:''}
+    ${data.description?`<div class="fp-section-title">About This Design</div><div class="fp-desc">${data.description}</div>`:''}
+    ${data.source_url?`<a class="fp-source" href="${data.source_url}" target="_blank"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span class="fp-source-url">${data.source_url}</span></a>`:''}
+    <div class="fp-fetched-at">Fetched: ${data.fetchedAt||'—'}${data.note ? ' · '+data.note : ''}</div>`;
+}
+
+async function fetchAllFloorplans(){
+  const btn=document.getElementById('fetchAllBtn');
+  btn.disabled=true; btn.textContent='Fetching…';
+  const models=getUniqueModels();
+  for(const q of models){
+    const key=`${q.builder}||${q.model}`.replace(/[^a-z0-9]/gi,'_');
+    const fetchBtn=document.getElementById(`fp-fetch-btn-${key}`);
+    await fetchFloorplan(q.builder,q.model,fetchBtn);
+  }
+  btn.disabled=false; btn.textContent='Refresh All';
+}
+
+// ═══ STATUS TOGGLE ════════════════════════════════════════════════
+function toggleStatus(event,cardId){
+  event.preventDefault();event.stopPropagation();
+  const card=document.getElementById(cardId);const id=parseInt(cardId.replace('card-',''));
+  const nowLive=!card.classList.contains('is-live');
+  card.classList.toggle('is-live',nowLive);card.classList.toggle('is-archived',!nowLive);
+  card.dataset.status=nowLive?'live':'archived';card.querySelector('.status-text').textContent=nowLive?'Live':'Archived';
+  const q=quotes.find(x=>x.id===id);if(q)q.status=nowLive?'live':'archived';
+  localStorage.setItem(SK.status(id),nowLive?'live':'archived');
+  renderBarChart();renderTable();
+}
+
+function setFilter(mode,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  const c=document.getElementById('mainContent');c.classList.remove('show-live-only','show-archived-only');
+  if(mode==='live')c.classList.add('show-live-only');if(mode==='archived')c.classList.add('show-archived-only');
+}
+
+// ═══ CARD IMAGES ═══════════════════════════════════════════════
+function triggerCardImg(idx){_pendingCardIdx=idx;const i=document.getElementById('cardFileInput');i.value='';i.click();}
+function handleCardImgUpload(input){if(!input.files[0]||_pendingCardIdx===null)return;const r=new FileReader();r.onload=e=>{applyCardImage(_pendingCardIdx,e.target.result);try{localStorage.setItem(SK.cardImg(_pendingCardIdx),e.target.result);}catch(e){}; _pendingCardIdx=null;};r.readAsDataURL(input.files[0]);}
+function applyCardImage(idx,dataUrl){const z=document.getElementById(`imgzone-${idx}`);if(!z)return;const i=document.getElementById(`cardimg-${idx}`);const o=z.querySelector('.card-img-overlay');i.src=dataUrl;i.style.display='block';if(o)o.style.display='block';z.classList.add('has-img');}
+function removeCardImg(event,idx){event.stopPropagation();const z=document.getElementById(`imgzone-${idx}`);const i=document.getElementById(`cardimg-${idx}`);const o=z?.querySelector('.card-img-overlay');if(i){i.src='';i.style.display='none';}if(o)o.style.display='none';if(z)z.classList.remove('has-img');localStorage.removeItem(SK.cardImg(idx));}
+
+// ═══ BACKGROUND ═══════════════════════════════════════════════
+function handleBgUpload(input){if(!input.files[0])return;const r=new FileReader();r.onload=e=>{applyBg(e.target.result);try{localStorage.setItem(SK.bgImg,e.target.result);}catch(e){};showBgPreview(e.target.result);};r.readAsDataURL(input.files[0]);}
+function applyBg(d){const l=document.getElementById('bgLayer');l.style.backgroundImage=`url(${d})`;l.classList.add('visible');document.body.classList.add('has-bg');}
+function clearBg(){const l=document.getElementById('bgLayer');l.style.backgroundImage='';l.classList.remove('visible');document.body.classList.remove('has-bg');localStorage.removeItem(SK.bgImg);resetBgPreview();}
+function showBgPreview(d){document.getElementById('bgUploadDefault').style.display='none';const i=document.getElementById('bgPreviewImg');i.src=d;i.style.display='block';}
+function resetBgPreview(){document.getElementById('bgUploadDefault').style.display='';const i=document.getElementById('bgPreviewImg');i.src='';i.style.display='none';}
+function openSettings(){document.getElementById('settingsModal').classList.add('open');const bg=localStorage.getItem(SK.bgImg);if(bg)showBgPreview(bg);else resetBgPreview();}
+function closeSettings(){document.getElementById('settingsModal').classList.remove('open');}
+
+// ═══ UPLOAD QUOTE ════════════════════════════════════════════
+function openUploadModal(){document.getElementById('uploadModal').classList.add('open');goBackToSelect();}
+function closeUploadModal(){document.getElementById('uploadModal').classList.remove('open');_pendingPdfBase64=null;}
+function showState(id){['stateSelect','stateAnalysing','statePreview','stateError'].forEach(s=>document.getElementById(s).classList.toggle('active',s===id));}
+function handleDrop(e){e.preventDefault();document.getElementById('pdfDropZone').classList.remove('dragover');const f=e.dataTransfer.files[0];if(f&&f.type==='application/pdf')loadPdfFile(f);}
+function handleQuoteFileSelect(input){if(input.files[0])loadPdfFile(input.files[0]);}
+function loadPdfFile(file){document.getElementById('selectedFileName').textContent=file.name;document.getElementById('fileSelectedRow').style.display='flex';document.getElementById('analyseBtn').disabled=false;const r=new FileReader();r.onload=e=>{_pendingPdfBase64=e.target.result.split(',')[1];};r.readAsDataURL(file);}
+function clearSelectedFile(){_pendingPdfBase64=null;document.getElementById('fileSelectedRow').style.display='none';document.getElementById('analyseBtn').disabled=true;document.getElementById('quoteFileInput').value='';}
+function goBackToSelect(){showState('stateSelect');clearSelectedFile();_pendingQuoteData=null;}
+async function startAnalysis(){
+  if(!_pendingPdfBase64)return;showState('stateAnalysing');
+  const setStep=(n,s)=>{const e=document.getElementById(`step${n}`);if(e){e.classList.remove('done','active');if(s)e.classList.add(s);}};
+  setStep(1,'active');
+  const anim=async()=>{for(let i=1;i<4;i++){await new Promise(r=>setTimeout(r,900));setStep(i,'done');setStep(i+1,'active');}};
+  anim();
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:_pendingPdfBase64}},{type:'text',text:'Extract ALL line items from this home build quote PDF. Return ONLY valid JSON with: builder, model, facade, doc, date (DD/MM/YYYY), consultant, total (number), base_price (number), notes (2-line summary), summary (3-4 sentences), items (object keyed by snake_case item names, each with val, optional note, optional cls).'}]}]})});
+    const d=await r.json();
+    const raw=d.content?.find(b=>b.type==='text')?.text||'';
+    _pendingQuoteData=extractJson(raw);
+    const box=document.getElementById('quotePreviewBox');
+    const items=Object.entries(_pendingQuoteData.items||{}).slice(0,18);
+    box.innerHTML=`<div class="qp-header"><div class="qp-title">${_pendingQuoteData.builder} — ${_pendingQuoteData.model}</div><div class="qp-meta">${_pendingQuoteData.facade} · ${_pendingQuoteData.date} · ${_pendingQuoteData.consultant}</div><div class="qp-total">$${Number(_pendingQuoteData.total).toLocaleString()}</div></div><div class="qp-items"><div class="qp-cat">Key Items (${Object.keys(_pendingQuoteData.items||{}).length} extracted)</div>${items.map(([k,v])=>`<div class="qp-row"><span>${k.replace(/_/g,' ')}</span><span class="qp-row-val ${v.cls||''}">${v.val}</span></div>`).join('')}${_pendingQuoteData.summary?`<div class="qp-cat" style="margin-top:12px">Summary</div><div style="font-size:11.5px;color:var(--text-mid);line-height:1.6">${_pendingQuoteData.summary}</div>`:''}</div>`;
+    showState('statePreview');
+  }catch(err){document.getElementById('errorMsg').textContent=err.message||'Failed to parse this PDF.';showState('stateError');}
+}
+function addQuoteToDashboard(){
+  if(!_pendingQuoteData)return;
+  const q={..._pendingQuoteData,id:nextId++,total:Number(_pendingQuoteData.total),basePrice:Number(_pendingQuoteData.base_price||_pendingQuoteData.total),colorClass:'new-card',barClass:'new-quote',status:'live',pdfFile:null,defaultStatus:'live',doc:_pendingQuoteData.doc||`Doc #${nextId}`};
+  const s=document.createElement('style');s.textContent='.new-card .card-accent{background:var(--purple);}';document.head.appendChild(s);
+  quotes.push(q);
+  const uploaded=quotes.filter(x=>x.id>=4);
+  try{localStorage.setItem(SK.uploadedQuotes,JSON.stringify(uploaded));}catch(e){}
+  localStorage.setItem(SK.status(q.id),'live');
+  CHAT_EXTRA+=`\n\nUPLOADED QUOTE — ${q.builder}, ${q.model}, ${q.facade} (${q.date}). STATUS: Live. TOTAL: $${Number(q.total).toLocaleString()}\n${q.summary||''}\nItems: ${Object.entries(q.items||{}).map(([k,v])=>`${k}: ${v.val}`).join(' | ')}`;
+  document.getElementById('chatSubtitle').textContent=`Knows all ${quotes.length} quotes`;
+  renderAll();
+  quotes.forEach(x=>{const img=localStorage.getItem(SK.cardImg(x.id));if(img)applyCardImage(String(x.id),img);});
+  closeUploadModal();_pendingQuoteData=null;_pendingPdfBase64=null;
+}
+function removeUploadedQuote(event,id){event.stopPropagation();if(!confirm('Remove this quote?'))return;quotes=quotes.filter(q=>q.id!==id);localStorage.removeItem(SK.status(id));localStorage.removeItem(SK.cardImg(id));try{localStorage.setItem(SK.uploadedQuotes,JSON.stringify(quotes.filter(x=>x.id>=4)));}catch(e){}renderAll();}
+
+// ═══ CHAT ═════════════════════════════════════════════════════
+const BASE_SYS=`You are a knowledgeable assistant helping Simon Jones and Emma Stewart compare new home build quotes for a knock-down rebuild at 32 Grosvenor Street, Balmoral QLD 4171. Answer concisely using dollar figures. Be direct and helpful.
+
+QUOTE 1 — Coral Homes, Boston 297Q, Designer Facade (16/03/2026) STATUS: Archived. TOTAL: $535,472
+Base $470,800 | Designer facade INCLUDED | 35yr discount -$30,000 | Kitchen appliances $999 | 2590 ceilings ground $3,499 | Flooring/carpet $10,499 | Designer bathrooms/laundry INCLUDED | Service location $1,195 | Soil test+contour $1,345 | Extra survey $645 | ID survey+pegs $4,500 | Cut/fill $3,000 | Spoil removal $3,404 | Extra plumbing $1,500 | H1 slab $10,900 | Piering fixed $7,900 | On-site WHS $4,900 | Boundary garage $1,800 | Alfresco slab $2,700 | 2590 ceilings 1st $1,800 | 3-phase power $5,900 | N2 wind INCLUDED | BCC fees $1,017 | Boundary relaxation $2,000 | Entry door 2340 $206 | Alfresco doors $364 | Polar sink $617 | Fridge water $280 | Rangehood $197 | Lighting $5,000 | Daikin 16kW A/C $17,305 | Carpet upgrade $1,200 | Energy INCLUDED
+
+QUOTE 2 — Coral Homes, Boston 297Q, Hamptons Facade (20/03/2026) STATUS: Live. TOTAL: $565,662
+Same as Q1 PLUS Hamptons facade $21,690 | N3 wind $5,100 | 2740 ceilings $3,400
+
+QUOTE 3 — Clarendon Homes, Antigua 290, Portofino (15/03/2026) STATUS: Archived. TOTAL: $609,558
+Base $452,750 | Portofino facade $31,900 | 1200mm door $1,850 | Tiling/carpet $7,990 | 2590 ceilings $2,990 | Statement entry $390 | Bathrooms $390 | Laundry $790 | Earthworks $1,170 | Spoil $3,735 | KDR investigations $2,943 | Access/handling $5,000 | Safety mesh $590 | Power barrier $1,520 | Zero lot $2,850 | Extra scaffold $1,500 | 3-phase $4,090 | Gully traps $700 | Kerb $225 | Generator $1,000 | H2 slab $6,589 | Expansion joints $690 | Vertical risers $1,920 | Flexible joint $1,830 | N3 wind $5,292 | Piering provisional $15,000 | Traffic $6,000 | Driveway crossover $550 | Setback $1,450 | Energy $3,000 | Colour studio $8,000 | Driveway 50m2 $11,300 | Electrical $8,000 | Rinnai A/C $14,394 | Niches x3 $1,170 | BCC INCLUDED
+
+QUOTE 4 — Clarendon Homes, Antigua 270, Portofino+Rumpus (21/03/2026) STATUS: Live. TOTAL: $620,064
+Same as Q3 EXCEPT base $441,400 | Rumpus $22,800 | H2 slab $6,190 | N3 wind $5,137 | No statement entry
+
+KEY: Live gap $565,662 vs $620,064 = $54,402. Neither includes demolition. Coral $30k discount + designer package free. Clarendon includes driveway $11,300 + colour $8k + electrical $8k not in Coral.`;
+
+const chatMsgs=[];let isLoading=false;let chatOpen=false;
+function getSys(){return BASE_SYS+CHAT_EXTRA;}
+function toggleChat(){chatOpen=!chatOpen;document.getElementById('chatPanel').classList.toggle('collapsed',!chatOpen);const b=document.getElementById('chatToggleBtn');b.classList.toggle('active',chatOpen);b.innerHTML=chatOpen?'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Close':'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Ask Claude';if(chatOpen)setTimeout(()=>document.getElementById('chatInput').focus(),350);}
+function sendChip(el){document.getElementById('chatInput').value=el.textContent;sendMessage();}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
+async function sendMessage(){const i=document.getElementById('chatInput');const t=i.value.trim();if(!t||isLoading)return;i.value='';i.style.height='auto';isLoading=true;document.getElementById('sendBtn').disabled=true;addMsg('user',t);chatMsgs.push({role:'user',content:t});const ty=addTyping();scrollChat();
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:getSys(),messages:chatMsgs})});const d=await r.json();ty.remove();const rep=d.content?.find(b=>b.type==='text')?.text||'Sorry, no response.';chatMsgs.push({role:'assistant',content:rep});addMsg('assistant',rep);}catch(e){ty.remove();addMsg('assistant','Connection error — please try again.');}
+  isLoading=false;document.getElementById('sendBtn').disabled=false;scrollChat();}
+function addMsg(role,text){const c=document.getElementById('chatMessages');const el=document.createElement('div');el.className=`msg ${role}`;const b=document.createElement('div');b.className='msg-bubble';b.innerHTML=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');const t=document.createElement('div');t.className='msg-time';t.textContent=new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'});el.appendChild(b);el.appendChild(t);c.appendChild(el);scrollChat();return el;}
+function addTyping(){const c=document.getElementById('chatMessages');const el=document.createElement('div');el.className='msg assistant';el.innerHTML='<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';c.appendChild(el);scrollChat();return el;}
+function scrollChat(){const c=document.getElementById('chatMessages');c.scrollTop=c.scrollHeight;}
+</script>
+</body>
+</html>
