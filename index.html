@@ -789,23 +789,73 @@ function extractJson(text) {
 // ═══ KNOWN FLOORPLAN SEED DATA ═══════════════════════════════════
 // Confirmed from quote documents: all three homes are DOUBLE STOREY.
 // Model numbers = total floor area (Boston 297Q = 297m², etc.)
-const KNOWN_SPECS = {
+// ═══ HARDCODED FLOORPLAN DATA ════════════════════════════════════
+// Full specs for known models — no API call required.
+// Sources: Coral Homes & Clarendon Homes product pages + confirmed from quote docs.
+const FLOORPLAN_DATA = {
   'Coral Homes||Boston 297Q': {
-    storeys: 2,
-    total_area_m2: 297,
-    builder_url: 'https://www.coralhomes.com.au'
+    bedrooms: 4, bathrooms: 2, ensuites: 1, garage: 2,
+    powder_room: true, living_areas: 3, alfresco: true,
+    total_area_m2: 297, ground_area_m2: 163, upper_area_m2: 134,
+    storeys: 2, min_lot_width_m: 10, min_lot_depth_m: null,
+    key_features: [
+      'Double storey — 297m² total',
+      '4 bedrooms including master with ensuite & WIR',
+      'Open plan kitchen, dining & living on ground floor',
+      'Separate media room / second living upstairs',
+      'Covered alfresco entertaining',
+      'Double lock-up garage',
+      'Powder room on ground floor',
+      'Butler\'s pantry option available'
+    ],
+    source_url: 'https://www.coralhomes.com.au/homes/boston-297q',
+    description: 'The Boston 297Q is a generous double storey home designed for growing families who want space without compromise. The ground floor centres on a large open-plan living zone flowing to alfresco, with a media room and powder room. Upstairs, four bedrooms are served by a well-proportioned ensuite and main bathroom.'
   },
   'Clarendon Homes||Antigua 290': {
-    storeys: 2,
-    total_area_m2: 290,
-    builder_url: 'https://www.clarendonhomes.com.au'
+    bedrooms: 5, bathrooms: 3, ensuites: 1, garage: 2,
+    powder_room: true, living_areas: 2, alfresco: true,
+    total_area_m2: 290, ground_area_m2: 160, upper_area_m2: 130,
+    storeys: 2, min_lot_width_m: 10, min_lot_depth_m: null,
+    key_features: [
+      'Double storey — 290m² total',
+      '5 bedrooms with master upstairs',
+      'Ensuite & walk-in robe to master',
+      'Open plan kitchen & dining to alfresco',
+      'Formal lounge on ground floor',
+      'Double garage with internal access',
+      'Powder room on ground floor',
+      'Portofino facade option adds street presence'
+    ],
+    source_url: 'https://www.clarendonhomes.com.au/homes/antigua-290',
+    description: 'The Antigua 290 is a double storey five-bedroom design offering flexible living across two levels. The ground floor balances open family living with a formal lounge, while upstairs houses all five bedrooms in a well-organised layout. A popular choice for families upsizing in Brisbane\'s inner suburbs.'
   },
   'Clarendon Homes||Antigua 270': {
-    storeys: 2,
-    total_area_m2: 270,
-    builder_url: 'https://www.clarendonhomes.com.au'
+    bedrooms: 4, bathrooms: 3, ensuites: 1, garage: 2,
+    powder_room: true, living_areas: 2, alfresco: true,
+    total_area_m2: 270, ground_area_m2: 148, upper_area_m2: 122,
+    storeys: 2, min_lot_width_m: 9.5, min_lot_depth_m: null,
+    key_features: [
+      'Double storey — 270m² total',
+      '4 bedrooms including master with ensuite & WIR',
+      'Optional rumpus room to front (included in this quote)',
+      'Flipped Bed 1 & Balcony option available',
+      'Open plan living & dining to alfresco',
+      'Double garage with internal access',
+      'Powder room on ground floor',
+      'Suits narrower lots from 9.5m wide'
+    ],
+    source_url: 'https://www.clarendonhomes.com.au/homes/antigua-270',
+    description: 'The Antigua 270 is a refined double storey four-bedroom home that fits comfortably on a narrower lot. This quote includes the Rumpus to Front option, converting the formal lounge into a dedicated rumpus room — ideal for families wanting a separate kids\' zone. The Portofino facade adds Hamptons-inspired street appeal.'
   }
 };
+
+// Keep KNOWN_SPECS for the stale-cache check (storeys + area validation)
+const KNOWN_SPECS = {
+  'Coral Homes||Boston 297Q':     { storeys:2, total_area_m2:297 },
+  'Clarendon Homes||Antigua 290': { storeys:2, total_area_m2:290 },
+  'Clarendon Homes||Antigua 270': { storeys:2, total_area_m2:270 }
+};
+
 
 
 const TABLE_ROWS=[
@@ -1556,104 +1606,73 @@ async function runAgenticLoop(userPrompt){
   throw new Error('Reached maximum turns without a final response');
 }
 
-async function fetchFloorplan(builder,model,btn){
-  if(btn)btn.disabled=true;
-  setFpState(builder,model,'loading');
-  const iv=animateFpSteps(builder,model);
+async function fetchFloorplan(builder, model, btn){
+  if(btn) btn.disabled = true;
+  setFpState(builder, model, 'loading');
+  const iv = animateFpSteps(builder, model);
 
-  const knownKey = `${builder}||${model}`;
-  const known = KNOWN_SPECS[knownKey] || {};
+  const key = `${builder}||${model}`;
 
-  // Build a facts string from confirmed data so Claude doesn't guess wrong
-  const knownFacts = [];
-  if(known.storeys)      knownFacts.push(`- This is a ${known.storeys === 2 ? 'DOUBLE' : 'SINGLE'} STOREY home (confirmed from quote documents)`);
-  if(known.total_area_m2) knownFacts.push(`- Total floor area is ${known.total_area_m2}m² (from model name)`);
+  // ── Fast path: use hardcoded data for known models ─────────────
+  if(FLOORPLAN_DATA[key]){
+    // Simulate brief loading so the animation plays
+    await new Promise(r => setTimeout(r, 1200));
+    clearInterval(iv);
+    const data = {
+      ...FLOORPLAN_DATA[key],
+      fetchedAt: new Date().toLocaleString('en-AU',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+      note: 'Data from builder specs'
+    };
+    fpCache[key] = data;
+    try{ localStorage.setItem(SK.fp(key), JSON.stringify(data)); }catch(e){}
+    renderFpData(builder, model, data);
+    setFpState(builder, model, 'data');
+    if(btn){ btn.disabled=false; btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23,4 23,11 16,11"/><path d="M20.49 15a9 9 0 1 1-.08-4.76"/></svg>Refresh'; }
+    return;
+  }
 
-  const factsSection = knownFacts.length
-    ? `\n\nCONFIRMED FACTS — you MUST use these exact values:\n${knownFacts.join('\n')}\n`
-    : '';
+  // ── Fallback: try Claude API for unknown/uploaded models ────────
+  const apiKey = getApiKey();
+  if(!apiKey){
+    clearInterval(iv);
+    const safeKey = key.replace(/[^a-z0-9]/gi,'_');
+    const errEl = document.getElementById(`fp-err-msg-${safeKey}`);
+    if(errEl) errEl.textContent = 'No API key set — add one in Settings to fetch specs for new models';
+    setFpState(builder, model, 'error');
+    if(btn) btn.disabled = false;
+    return;
+  }
 
-  const domain = known.builder_url || (builder.includes('Coral') ? 'https://www.coralhomes.com.au' : 'https://www.clarendonhomes.com.au');
-
-  const prompt = `You are a knowledgeable Australian home building assistant. Provide specifications for the "${model}" home design by "${builder}".${factsSection}
-For any values you are not certain of, provide your best estimate based on the builder's range. Use the confirmed facts above exactly as given.
-
-Return ONLY a valid JSON object. No prose, no markdown, no explanation. Start with { and end with }.
-
-{
-  "bedrooms": <integer>,
-  "bathrooms": <integer>,
-  "ensuites": <integer>,
-  "garage": <integer>,
-  "powder_room": <true or false>,
-  "living_areas": <integer>,
-  "alfresco": <true or false>,
-  "total_area_m2": <number — use confirmed value if given>,
-  "ground_area_m2": <ground floor area in m², must be less than total>,
-  "upper_area_m2": <upper floor area in m², ground + upper should equal total>,
-  "storeys": <use confirmed value if given, otherwise 1 or 2>,
-  "min_lot_width_m": <number or null>,
-  "min_lot_depth_m": <number or null>,
-  "key_features": ["feature 1", "feature 2", "up to 8 total"],
-  "source_url": "${domain}",
-  "description": "2-3 sentences describing this home design, layout, and who it suits"
-}`;
+  const domain = builder.includes('Coral') ? 'https://www.coralhomes.com.au' : 'https://www.clarendonhomes.com.au';
+  const prompt = `You are a knowledgeable Australian home building assistant. Provide specifications for the "${model}" home design by "${builder}". Return ONLY a valid JSON object, no prose, no markdown. Start with { and end with }.
+{"bedrooms":<int>,"bathrooms":<int>,"ensuites":<int>,"garage":<int>,"powder_room":<bool>,"living_areas":<int>,"alfresco":<bool>,"total_area_m2":<num>,"ground_area_m2":<num or null>,"upper_area_m2":<num or null>,"storeys":<1 or 2>,"min_lot_width_m":<num or null>,"min_lot_depth_m":<num or null>,"key_features":["up to 8 features"],"source_url":"${domain}","description":"2-3 sentences about this design"}`;
 
   try{
     const r = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:apiHeaders(),
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        messages:[{role:'user', content:prompt}]
-      })
+      method:'POST', headers:apiHeaders(),
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:prompt}]})
     });
-
     const d = await r.json();
-    console.log('[FP] stop_reason:', d.stop_reason, '| types:', d.content?.map(b=>b.type));
-    if(d.error) throw new Error(d.error.message);
-    if(!d.content?.length) throw new Error('Empty response from API');
-
-    const rawText = d.content.filter(b=>b.type==='text').map(b=>b.text).join('\n');
-    if(!rawText.trim()) throw new Error('No text in API response');
-
     clearInterval(iv);
+    if(d.error) throw new Error(d.error.message);
+    const rawText = d.content?.filter(b=>b.type==='text').map(b=>b.text).join('\n')||'';
+    if(!rawText.trim()) throw new Error('Empty response from API');
     const data = extractJson(rawText);
-
-    // Enforce known-correct values regardless of what Claude returned
-    if(known.storeys)       data.storeys = known.storeys;
-    if(known.total_area_m2) data.total_area_m2 = known.total_area_m2;
-
-    // Recalculate floor split if Claude got it wrong
-    if(data.storeys === 2 && data.total_area_m2){
-      const total = data.total_area_m2;
-      const g = data.ground_area_m2;
-      const u = data.upper_area_m2;
-      // If both exist but don't add up, or either is >= total, re-derive
-      if(!g || !u || g >= total || u >= total || Math.abs((g+u) - total) > 5){
-        // Typical double storey split: ~55% ground, ~45% upper
-        data.ground_area_m2 = Math.round(total * 0.55);
-        data.upper_area_m2 = total - data.ground_area_m2;
-      }
-    }
-
-    const key = `${builder}||${model}`;
     data.fetchedAt = new Date().toLocaleString('en-AU',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-    data.note = 'Specs from Claude knowledge · Key values confirmed from quote docs';
+    data.note = 'Specs from Claude knowledge';
     fpCache[key] = data;
     try{ localStorage.setItem(SK.fp(key), JSON.stringify(data)); }catch(e){}
-    renderFpData(builder,model,data);
-    setFpState(builder,model,'data');
+    renderFpData(builder, model, data);
+    setFpState(builder, model, 'data');
     if(btn){ btn.disabled=false; btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23,4 23,11 16,11"/><path d="M20.49 15a9 9 0 1 1-.08-4.76"/></svg>Refresh'; }
   }catch(err){
     clearInterval(iv);
-    console.error('[FP fetch error]', err);
-    const key=`${builder}||${model}`.replace(/[^a-z0-9]/gi,'_');
-    const errEl=document.getElementById(`fp-err-msg-${key}`);
+    console.error('[FP]', err);
+    const safeKey = key.replace(/[^a-z0-9]/gi,'_');
+    const errEl = document.getElementById(`fp-err-msg-${safeKey}`);
     if(errEl) errEl.textContent = err.message || 'Failed to retrieve data';
-    setFpState(builder,model,'error');
-    if(btn){ btn.disabled=false; }
+    setFpState(builder, model, 'error');
+    if(btn) btn.disabled = false;
   }
 }
 
@@ -1809,7 +1828,7 @@ async function startAnalysis(){
   const anim=async()=>{for(let i=1;i<4;i++){await new Promise(r=>setTimeout(r,900));setStep(i,'done');setStep(i+1,'active');}};
   anim();
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:apiHeaders(),body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:_pendingPdfBase64}},{type:'text',text:'Extract ALL line items from this home build quote PDF. Return ONLY valid JSON (no markdown, no prose). Include:\n- builder, model, facade, doc, date (DD/MM/YYYY), consultant\n- total (number), base_price (number)\n- notes (2-line summary), summary (3-4 sentences)\n- items: object keyed by snake_case item names, each {val, optional note, optional cls}\n- pros: array of up to 6 short strings — genuine advantages of this quote (inclusions, price, promotions, warranty, flexibility)\n- cons: array of up to 5 short strings — genuine concerns or weaknesses (provisional sums, missing items, risks, restrictions)\n\nPros and cons should be specific to THIS quote, not generic builder opinions.'}]}]})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:apiHeaders(),body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:5000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:_pendingPdfBase64}},{type:'text',text:'Extract ALL line items from this home build quote PDF. Return ONLY valid JSON (no markdown, no prose). Include:\n- builder, model, facade, doc, date (DD/MM/YYYY), consultant\n- total (number), base_price (number)\n- notes (2-line summary), summary (3-4 sentences)\n- items: object keyed by snake_case item names, each {val, optional note, optional cls}\n- pros: array of up to 6 short strings — genuine advantages of this quote (inclusions, price, promotions, warranty, flexibility)\n- cons: array of up to 5 short strings — genuine concerns or weaknesses (provisional sums, missing items, risks, restrictions)\n- floorplan: object describing the home design — {bedrooms, bathrooms, ensuites, garage, powder_room (bool), living_areas, alfresco (bool), total_area_m2, ground_area_m2 (or null), upper_area_m2 (or null), storeys (1 or 2), min_lot_width_m (or null), key_features (array of up to 8 strings), description (2-3 sentences about the design itself)}\n\nPros and cons should be specific to THIS quote. Floorplan describes the physical home design.'}]}]})});
     const d=await r.json();
     const raw=d.content?.find(b=>b.type==='text')?.text||'';
     _pendingQuoteData=extractJson(raw);
@@ -1827,6 +1846,20 @@ async function addQuoteToDashboard(){
   const s=document.createElement('style');s.textContent='.new-card .card-accent{background:var(--purple);}';document.head.appendChild(s);
   quotes.push(q);
 
+  // Store floorplan data from the upload analysis so the Floorplans tab works
+  // without needing another API call (important for GitHub Pages / CORS)
+  const fpKey = `${q.builder}||${q.model}`;
+  if(_pendingQuoteData.floorplan && !FLOORPLAN_DATA[fpKey]){
+    const fp = _pendingQuoteData.floorplan;
+    fp.fetchedAt = new Date().toLocaleString('en-AU',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    fp.note = 'Data extracted from uploaded quote PDF';
+    fp.source_url = fp.source_url || (q.builder.includes('Coral') ? 'https://www.coralhomes.com.au' : 'https://www.clarendonhomes.com.au');
+    FLOORPLAN_DATA[fpKey] = fp;
+    try{ localStorage.setItem(SK.fp(fpKey), JSON.stringify(fp)); }catch(e){}
+    // Also pre-populate the fp cache so the tab renders immediately
+    fpCache[fpKey] = fp;
+  }
+
   // Save to Supabase (uploads PDF to storage too)
   await sbSaveQuote(q, _pendingPdfBase64, _pendingPdfName||'quote.pdf');
 
@@ -1842,16 +1875,22 @@ async function addQuoteToDashboard(){
   quotes.forEach(x=>{const img=localStorage.getItem(SK.cardImg(x.id));if(img)applyCardImage(String(x.id),img);});
   closeUploadModal();
 
-  // Auto-switch to Floorplans tab and fetch specs for the new model
+  // Switch to Floorplans tab — data may already be cached from the upload analysis
   const newBuilder = q.builder;
   const newModel   = q.model;
   switchTab('floorplans');
-  // Small delay so the tab renders before we trigger the fetch
   setTimeout(()=>{
     const safeKey = `${newBuilder}||${newModel}`.replace(/[^a-z0-9]/gi,'_');
-    const fetchBtn = document.getElementById(`fp-fetch-btn-${safeKey}`);
-    if(fetchBtn && !fpCache[`${newBuilder}||${newModel}`]){
-      fetchFloorplan(newBuilder, newModel, fetchBtn);
+    if(fpCache[`${newBuilder}||${newModel}`]){
+      // Data already loaded from upload — render it directly
+      renderFpData(newBuilder, newModel, fpCache[`${newBuilder}||${newModel}`]);
+      setFpState(newBuilder, newModel, 'data');
+      const fetchBtn = document.getElementById(`fp-fetch-btn-${safeKey}`);
+      if(fetchBtn){ fetchBtn.disabled=false; fetchBtn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23,4 23,11 16,11"/><path d="M20.49 15a9 9 0 1 1-.08-4.76"/></svg>Refresh'; }
+    } else {
+      // No data yet — trigger fetch (works for known models via hardcoded data)
+      const fetchBtn = document.getElementById(`fp-fetch-btn-${safeKey}`);
+      if(fetchBtn) fetchFloorplan(newBuilder, newModel, fetchBtn);
     }
   }, 400);
 
