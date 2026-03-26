@@ -636,9 +636,9 @@ function checkPw(){
       <div id="filterControls" style="display:flex;align-items:center;gap:13px">
         <span class="filter-label">Show</span>
         <div class="filter-btns">
-          <button class="filter-btn active" onclick="setFilter('all',this)">All quotes</button>
-          <button class="filter-btn live-btn" onclick="setFilter('live',this)">Live only</button>
-          <button class="filter-btn arch-btn" onclick="setFilter('archived',this)">Archived only</button>
+          <button class="filter-btn active" data-mode="all" onclick="setFilter('all',this)">All quotes</button>
+          <button class="filter-btn live-btn" data-mode="live" onclick="setFilter('live',this)">Live only</button>
+          <button class="filter-btn arch-btn" data-mode="archived" onclick="setFilter('archived',this)">Archived only</button>
         </div>
         <div class="filter-divider"></div>
         <span class="filter-hint">Click status pill on any card to toggle</span>
@@ -964,7 +964,7 @@ function b64toBlob(b64, mime){
   return new Blob([arr],{type:mime});
 }
 
-const SK={status:i=>`balmoral_card_status_${i}`,cardImg:i=>`balmoral_card_img_${i}`,bgImg:'balmoral_bg_img',uploadedQuotes:'balmoral_uploaded_quotes',fp:k=>`balmoral_fp_${btoa(k).replace(/[=+/]/g,'_')}`};
+const SK={status:i=>`balmoral_card_status_${i}`,cardImg:i=>`balmoral_card_img_${i}`,bgImg:'balmoral_bg_img',uploadedQuotes:'balmoral_uploaded_quotes',fp:k=>`balmoral_fp_${btoa(k).replace(/[=+/]/g,'_')}`,filter:'balmoral_filter_mode'};
 
 // Floorplan cache (keyed by "builder||model")
 let fpCache={};
@@ -1005,6 +1005,13 @@ window.addEventListener('DOMContentLoaded', async ()=>{
     }catch(e){}
   });
   renderAll();
+  // Restore last filter selection
+  const savedFilter = localStorage.getItem(SK.filter) || 'all';
+  setFilter(savedFilter, null, true);
+  if(savedFilter !== 'all'){
+    const activeBtn = document.querySelector(`.filter-btn[data-mode="${savedFilter}"]`);
+    if(activeBtn){ document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); activeBtn.classList.add('active'); }
+  }
   quotes.forEach(q=>{const img=localStorage.getItem(SK.cardImg(q.id));if(img)applyCardImage(String(q.id),img);});
   const bg=localStorage.getItem(SK.bgImg);if(bg)applyBg(bg);
 });
@@ -1437,8 +1444,9 @@ function renderBuilders(){
 
 
 function getUniqueModels(){
+  // Floorplans tab only shows models from live quotes
   const seen=new Set();
-  return quotes.filter(q=>{const k=`${q.builder}||${q.model}`;if(seen.has(k))return false;seen.add(k);return true;});
+  return quotes.filter(q=>q.status==='live').filter(q=>{const k=`${q.builder}||${q.model}`;if(seen.has(k))return false;seen.add(k);return true;});
 }
 
 function fpColorClass(builder){
@@ -1729,10 +1737,15 @@ function toggleStatus(event,cardId){
   renderBarChart();renderTable();
 }
 
-function setFilter(mode,btn){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
-  const c=document.getElementById('mainContent');c.classList.remove('show-live-only','show-archived-only');
-  if(mode==='live')c.classList.add('show-live-only');if(mode==='archived')c.classList.add('show-archived-only');
+function setFilter(mode,btn,skipSave){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  // Re-activate the matching button (btn may be null when restoring from storage)
+  const target = btn || document.querySelector(`.filter-btn[data-mode="${mode}"]`);
+  if(target) target.classList.add('active');
+  const mc=document.getElementById('mainContent');mc.classList.remove('show-live-only','show-archived-only');
+  if(mode==='live') mc.classList.add('show-live-only');
+  if(mode==='archived') mc.classList.add('show-archived-only');
+  if(!skipSave) try{localStorage.setItem(SK.filter, mode);}catch(e){}
 }
 
 // ═══ CARD IMAGES ═══════════════════════════════════════════════
