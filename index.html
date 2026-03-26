@@ -574,9 +574,24 @@ function checkPw(){
 <!-- SETTINGS MODAL -->
 <div class="modal-overlay" id="settingsModal" onclick="if(event.target===this)closeSettings()">
   <div class="modal"><div class="modal-header"><div><div class="modal-title-label">Dashboard</div><div class="modal-title">Settings</div></div><button class="modal-close" onclick="closeSettings()"><svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-  <div class="modal-body"><div class="modal-section"><div class="modal-section-title">Dashboard Background Image</div>
+  <div class="modal-body">
+
+  <div class="modal-section">
+    <div class="modal-section-title">Anthropic API Key</div>
+    <p style="font-size:11.5px;color:var(--text-mid);margin-bottom:12px;line-height:1.6;">Required for Ask Claude, Quote analysis, and Floorplan fetching. Stored only in this browser — never leaves your device. Get one free at <a href="https://console.anthropic.com" target="_blank" style="color:var(--clarendon-col)">console.anthropic.com</a>.</p>
+    <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-…" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:12px;font-family:'Montserrat',sans-serif;outline:none;background:var(--cream);color:var(--text);">
+    <div class="modal-btn-row" style="margin-top:10px">
+      <button class="modal-btn primary" onclick="saveApiKey()">Save Key</button>
+      <button class="modal-btn danger" onclick="clearApiKey()">Clear</button>
+    </div>
+    <div id="apiKeyStatus" style="font-size:11px;margin-top:8px;font-weight:500;min-height:16px;"></div>
+  </div>
+
+  <div class="modal-section"><div class="modal-section-title">Dashboard Background Image</div>
   <div class="bg-upload-zone" onclick="document.getElementById('bgFileInput').click()"><input type="file" accept="image/*" onchange="handleBgUpload(this)" onclick="event.stopPropagation()"><div id="bgUploadDefault"><div class="bg-upload-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div><div class="bg-upload-text">Click to upload a background image</div><div class="bg-upload-sub">JPG, PNG, WebP — 1920×1080 recommended</div></div><img id="bgPreviewImg" class="bg-preview" src="" alt=""></div>
-  <div class="modal-btn-row"><button class="modal-btn danger" onclick="clearBg()">Remove background</button></div></div></div></div>
+  <div class="modal-btn-row"><button class="modal-btn danger" onclick="clearBg()">Remove background</button></div></div>
+
+  </div></div>
 </div>
 
 <!-- UPLOAD QUOTE MODAL -->
@@ -1470,7 +1485,7 @@ async function callClaude(messages, useSearch){
   }
   const r = await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
-    headers:{'Content-Type':'application/json'},
+    headers:apiHeaders(),
     body:JSON.stringify(body)
   });
   if(!r.ok){
@@ -1587,7 +1602,7 @@ Return ONLY a valid JSON object. No prose, no markdown, no explanation. Start wi
   try{
     const r = await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:apiHeaders(),
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
         max_tokens:1000,
@@ -1713,7 +1728,69 @@ function applyBg(d){const l=document.getElementById('bgLayer');l.style.backgroun
 function clearBg(){const l=document.getElementById('bgLayer');l.style.backgroundImage='';l.classList.remove('visible');document.body.classList.remove('has-bg');localStorage.removeItem(SK.bgImg);resetBgPreview();}
 function showBgPreview(d){document.getElementById('bgUploadDefault').style.display='none';const i=document.getElementById('bgPreviewImg');i.src=d;i.style.display='block';}
 function resetBgPreview(){document.getElementById('bgUploadDefault').style.display='';const i=document.getElementById('bgPreviewImg');i.src='';i.style.display='none';}
-function openSettings(){document.getElementById('settingsModal').classList.add('open');const bg=localStorage.getItem(SK.bgImg);if(bg)showBgPreview(bg);else resetBgPreview();}
+// ═══ API KEY ══════════════════════════════════════════════════════
+const API_KEY_SK = 'balmoral_anthropic_key';
+
+function getApiKey(){
+  return localStorage.getItem(API_KEY_SK) || '';
+}
+
+function apiHeaders(){
+  const key = getApiKey();
+  const h = {'Content-Type':'application/json'};
+  if(key) h['x-api-key'] = key;
+  return h;
+}
+
+function saveApiKey(){
+  const val = document.getElementById('apiKeyInput')?.value?.trim();
+  if(!val){ showApiStatus('No key entered','var(--coral-col)'); return; }
+  if(!val.startsWith('sk-ant-')){ showApiStatus('Key should start with sk-ant-…','var(--coral-col)'); return; }
+  localStorage.setItem(API_KEY_SK, val);
+  showApiStatus('✓ Key saved','var(--green)');
+}
+
+function clearApiKey(){
+  localStorage.removeItem(API_KEY_SK);
+  const inp = document.getElementById('apiKeyInput');
+  if(inp) inp.value = '';
+  showApiStatus('Key cleared','var(--text-light)');
+}
+
+function showApiStatus(msg, color){
+  const el = document.getElementById('apiKeyStatus');
+  if(el){ el.textContent = msg; el.style.color = color; }
+}
+
+function openSettings(){
+  document.getElementById('settingsModal').classList.add('open');
+  const bg = localStorage.getItem(SK.bgImg);
+  if(bg) showBgPreview(bg); else resetBgPreview();
+  // Populate key field (masked)
+  const inp = document.getElementById('apiKeyInput');
+  const key = getApiKey();
+  if(inp) inp.value = key ? key : '';
+  const status = document.getElementById('apiKeyStatus');
+  if(status){
+    status.textContent = key ? '✓ API key is set' : 'No API key set — AI features require one';
+    status.style.color = key ? 'var(--green)' : 'var(--coral-col)';
+  }
+}
+
+// Also show a banner if no key when the page loads
+window.addEventListener('DOMContentLoaded', ()=>{
+  setTimeout(()=>{
+    if(!getApiKey() && sessionStorage.getItem('balmoral_auth')==='1'){
+      const bar = document.createElement('div');
+      bar.id = 'api-key-banner';
+      bar.style.cssText = 'background:#fff3cd;border-bottom:1px solid #ffc;padding:8px 48px;font-size:11.5px;color:#856404;display:flex;align-items:center;gap:10px;font-family:Montserrat,sans-serif;';
+      bar.innerHTML = '⚠️ <strong>No API key set</strong> — Ask Claude, Quote analysis and Floorplan fetching won\'t work. <button onclick="openSettings();document.getElementById(\'api-key-banner\').remove()" style="margin-left:8px;padding:3px 12px;border-radius:12px;border:1px solid #856404;background:transparent;cursor:pointer;font-size:11px;font-family:Montserrat,sans-serif;color:#856404;font-weight:600">Add Key in Settings →</button> <button onclick="this.parentElement.remove()" style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:16px;color:#856404;line-height:1">×</button>';
+      const tabNav = document.querySelector('.tab-nav');
+      if(tabNav) tabNav.after(bar);
+    }
+  }, 1200);
+});
+
 function closeSettings(){document.getElementById('settingsModal').classList.remove('open');}
 
 // ═══ UPLOAD QUOTE ════════════════════════════════════════════
@@ -1732,7 +1809,7 @@ async function startAnalysis(){
   const anim=async()=>{for(let i=1;i<4;i++){await new Promise(r=>setTimeout(r,900));setStep(i,'done');setStep(i+1,'active');}};
   anim();
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:_pendingPdfBase64}},{type:'text',text:'Extract ALL line items from this home build quote PDF. Return ONLY valid JSON (no markdown, no prose). Include:\n- builder, model, facade, doc, date (DD/MM/YYYY), consultant\n- total (number), base_price (number)\n- notes (2-line summary), summary (3-4 sentences)\n- items: object keyed by snake_case item names, each {val, optional note, optional cls}\n- pros: array of up to 6 short strings — genuine advantages of this quote (inclusions, price, promotions, warranty, flexibility)\n- cons: array of up to 5 short strings — genuine concerns or weaknesses (provisional sums, missing items, risks, restrictions)\n\nPros and cons should be specific to THIS quote, not generic builder opinions.'}]}]})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:apiHeaders(),body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:_pendingPdfBase64}},{type:'text',text:'Extract ALL line items from this home build quote PDF. Return ONLY valid JSON (no markdown, no prose). Include:\n- builder, model, facade, doc, date (DD/MM/YYYY), consultant\n- total (number), base_price (number)\n- notes (2-line summary), summary (3-4 sentences)\n- items: object keyed by snake_case item names, each {val, optional note, optional cls}\n- pros: array of up to 6 short strings — genuine advantages of this quote (inclusions, price, promotions, warranty, flexibility)\n- cons: array of up to 5 short strings — genuine concerns or weaknesses (provisional sums, missing items, risks, restrictions)\n\nPros and cons should be specific to THIS quote, not generic builder opinions.'}]}]})});
     const d=await r.json();
     const raw=d.content?.find(b=>b.type==='text')?.text||'';
     _pendingQuoteData=extractJson(raw);
@@ -1806,7 +1883,7 @@ function sendChip(el){document.getElementById('chatInput').value=el.textContent;
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
 async function sendMessage(){const i=document.getElementById('chatInput');const t=i.value.trim();if(!t||isLoading)return;i.value='';i.style.height='auto';isLoading=true;document.getElementById('sendBtn').disabled=true;addMsg('user',t);chatMsgs.push({role:'user',content:t});const ty=addTyping();scrollChat();
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:getSys(),messages:chatMsgs})});const d=await r.json();ty.remove();const rep=d.content?.find(b=>b.type==='text')?.text||'Sorry, no response.';chatMsgs.push({role:'assistant',content:rep});addMsg('assistant',rep);}catch(e){ty.remove();addMsg('assistant','Connection error — please try again.');}
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:apiHeaders(),body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:getSys(),messages:chatMsgs})});const d=await r.json();ty.remove();const rep=d.content?.find(b=>b.type==='text')?.text||'Sorry, no response.';chatMsgs.push({role:'assistant',content:rep});addMsg('assistant',rep);}catch(e){ty.remove();addMsg('assistant','Connection error — please try again.');}
   isLoading=false;document.getElementById('sendBtn').disabled=false;scrollChat();}
 function addMsg(role,text){const c=document.getElementById('chatMessages');const el=document.createElement('div');el.className=`msg ${role}`;const b=document.createElement('div');b.className='msg-bubble';b.innerHTML=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');const t=document.createElement('div');t.className='msg-time';t.textContent=new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'});el.appendChild(b);el.appendChild(t);c.appendChild(el);scrollChat();return el;}
 function addTyping(){const c=document.getElementById('chatMessages');const el=document.createElement('div');el.className='msg assistant';el.innerHTML='<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';c.appendChild(el);scrollChat();return el;}
