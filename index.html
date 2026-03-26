@@ -18,6 +18,7 @@
 .pw-error{margin-top:10px;font-size:12px;color:#d4634a;font-family:'Montserrat',sans-serif;height:16px;}
 .pw-addr{margin-top:24px;font-size:11px;color:#96a3b8;font-family:'Montserrat',sans-serif;}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#2c3d6b;--navy-mid:#3a4f87;--gold:#c9a84c;--cream:#f8f7f4;--cream-dark:#eeebe4;--text:#2c3d6b;--text-mid:#536080;--text-light:#96a3b8;--coral-col:#d4634a;--clarendon-col:#3a7ca5;--green:#3d8c6f;--purple:#8b5cf6;--border:rgba(44,61,107,0.10);--live-glow:0 0 0 2px #3d8c6f,0 8px 32px rgba(61,140,111,0.15);}
@@ -493,6 +494,26 @@ body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--tex
 .note-cancel-btn{padding:10px 18px;background:transparent;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:'Montserrat',sans-serif;cursor:pointer;color:var(--text-mid);transition:all .18s;}
 .note-cancel-btn:hover{background:var(--cream);}
 
+
+/* ═══ PROS / CONS ═══ */
+.card-proscons-wrap{border-top:1px solid var(--border);}
+.card-proscons{padding:4px 16px 12px;display:flex;flex-direction:column;gap:4px;}
+.pc-item{display:flex;align-items:flex-start;gap:6px;font-size:10.5px;line-height:1.45;color:var(--text-mid);padding:1px 0;}
+.pc-item.pro::before{content:"✓";color:var(--green);font-weight:700;flex-shrink:0;font-size:11px;}
+.pc-item.con::before{content:"✗";color:var(--coral-col);font-weight:700;flex-shrink:0;font-size:11px;}
+.pc-toggle{display:flex;align-items:center;gap:5px;padding:8px 16px 6px;font-size:9.5px;font-weight:700;color:var(--text-light);cursor:pointer;letter-spacing:1px;text-transform:uppercase;border:none;background:none;width:100%;transition:color .15s;}
+.pc-toggle:hover{color:var(--navy);}
+.pc-toggle svg{transition:transform .2s;flex-shrink:0;}
+.pc-toggle.open svg{transform:rotate(180deg);}
+/* pros/cons in upload preview */
+.qp-proscons{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px 15px;background:var(--cream);border-top:1px solid var(--border);}
+.qp-pc-col-title{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.qp-pc-col-title.pros{color:var(--green);}
+.qp-pc-col-title.cons{color:var(--coral-col);}
+.qp-pc-item{font-size:11px;color:var(--text-mid);line-height:1.5;display:flex;gap:5px;margin-bottom:3px;}
+.qp-pc-item.pro::before{content:"✓";color:var(--green);font-weight:700;flex-shrink:0;}
+.qp-pc-item.con::before{content:"✗";color:var(--coral-col);font-weight:700;flex-shrink:0;}
+
 #bgLayer{position:fixed;inset:0;z-index:-1;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity .4s;}
 #bgLayer.visible{opacity:1;}
 .hidden-file{display:none;}
@@ -789,12 +810,20 @@ const TABLE_ROWS=[
 // ═══ INITIAL QUOTES ═══════════════════════════════════════════════
 const INITIAL_QUOTES=[
   {id:0,builder:'Coral Homes',model:'Boston 297Q',facade:'Designer Facade',doc:'Doc #1',date:'16/03/2026',consultant:'Troy Fitzpatrick',total:535472,basePrice:470800,pdfFile:'quote_simon_and_emma_boston_297q_suit_re_development_site__2_.pdf',colorClass:'coral-card',barClass:'coral',defaultStatus:'archived',notes:'Base $470,800 | Discount −$30,000',
+    pros:['Lowest total at $535,472','$30K promotion discount applied','Caesarstone, freestanding bath & vanity all included','Daikin 16kW A/C (4 zones) included','Price locked to December 2026','Piering fixed $7,900 — not provisional'],
+    cons:['Superseded by Hamptons facade Doc #2','H1 soil at $10,900 — higher than Clarendon H2','No driveway included','Demolition not arranged by builder'],
     items:{base_price:{val:'$470,800'},facade:{val:'INCLUDED',cls:'incl',note:'Designer'},discount_35yr:{val:'−$30,000',cls:'neg'},kitchen_appliances:{val:'$999'},ceilings_2590_ground:{val:'$3,499'},flooring:{val:'$10,499'},bathrooms:{val:'INCLUDED',cls:'incl'},laundry:{val:'INCLUDED',cls:'incl'},service_location:{val:'$1,195'},soil_test:{val:'$1,345'},extra_survey:{val:'$645'},id_survey:{val:'$4,500'},earthworks:{val:'$3,000'},spoil_removal:{val:'$3,404'},extra_plumbing:{val:'$1,500'},slab_reactive:{val:'$10,900',note:'H1 class'},piering:{val:'$7,900',note:'Fixed'},onsite_mgmt:{val:'$4,900'},boundary_garage:{val:'$1,800'},alfresco_slab:{val:'$2,700'},ceilings_2590_1st:{val:'$1,800'},three_phase_power:{val:'$5,900'},wind_rating:{val:'INCLUDED',cls:'incl',note:'N2'},bcc_fees:{val:'$1,017'},boundary_relaxation:{val:'$2,000'},entry_door_2340:{val:'$206'},alfresco_doors:{val:'$364'},polar_sink:{val:'$617'},fridge_water:{val:'$280'},rangehood:{val:'$197'},carpet_upgrade:{val:'$1,200'},lighting:{val:'$5,000'},air_con:{val:'$17,305',note:'Daikin 16kW, 4 zones'},energy_efficiency:{val:'INCLUDED',cls:'incl'}}},
   {id:1,builder:'Coral Homes',model:'Boston 297Q',facade:'Hamptons Facade',doc:'Doc #2',date:'20/03/2026',consultant:'Troy Fitzpatrick',total:565662,basePrice:470800,pdfFile:'quote_update_simon_and_emma_boston_297q_hamptons_facade__2_.pdf',colorClass:'coral-card',barClass:'coral',defaultStatus:'live',notes:'Base $470,800 | Hamptons +$21,690',
+    pros:['$30K discount + full designer inclusions package','Premium Hamptons street presence','Daikin 16kW A/C (4 zones) — largest system quoted','Price locked to December 2026','Piering fixed at $7,900 — no provisional risk','Caesarstone, freestanding bath & vanity all included'],
+    cons:['Hamptons triggers N3 wind +$5,100 & ceiling upgrade +$3,400','H1 soil at $10,900 — higher than Clarendon','No driveway included','Demolition not arranged by builder'],
     items:{base_price:{val:'$470,800'},facade:{val:'$21,690',note:'Hamptons'},discount_35yr:{val:'−$30,000',cls:'neg'},kitchen_appliances:{val:'$999'},ceilings_2590_ground:{val:'$3,499'},ceilings_2740_ground:{val:'$3,400'},flooring:{val:'$10,499'},bathrooms:{val:'INCLUDED',cls:'incl'},laundry:{val:'INCLUDED',cls:'incl'},service_location:{val:'$1,195'},soil_test:{val:'$1,345'},extra_survey:{val:'$645'},id_survey:{val:'$4,500'},earthworks:{val:'$3,000'},spoil_removal:{val:'$3,404'},extra_plumbing:{val:'$1,500'},slab_reactive:{val:'$10,900',note:'H1 class'},piering:{val:'$7,900',note:'Fixed'},onsite_mgmt:{val:'$4,900'},boundary_garage:{val:'$1,800'},alfresco_slab:{val:'$2,700'},ceilings_2590_1st:{val:'$1,800'},three_phase_power:{val:'$5,900'},wind_rating:{val:'$5,100',note:'N3 upgrade'},bcc_fees:{val:'$1,017'},boundary_relaxation:{val:'$2,000'},entry_door_2340:{val:'$206'},alfresco_doors:{val:'$364'},polar_sink:{val:'$617'},fridge_water:{val:'$280'},rangehood:{val:'$197'},carpet_upgrade:{val:'$1,200'},lighting:{val:'$5,000'},air_con:{val:'$17,305',note:'Daikin 16kW, 4 zones'},energy_efficiency:{val:'INCLUDED',cls:'incl'}}},
   {id:2,builder:'Clarendon Homes',model:'Antigua 290',facade:'Portofino Facade',doc:'Doc #1',date:'15/03/2026',consultant:'Jake Anderson',total:609558,basePrice:452750,pdfFile:'Initial_Sales_Estimate_-_Antigua_290_v1__2_.pdf',colorClass:'clarendon-card',barClass:'clarendon',defaultStatus:'archived',notes:'Base $452,750 | 9-Month Price Promise',
+    pros:['9-Month Price Promise from deposit date','Exposed aggregate driveway $11,300 included','$16,000 colour & electrical allowances offer flexibility','H2 soil at $6,589 — lower slab cost than Coral','Portofino facade included'],
+    cons:['Superseded by Antigua 270 Doc #2','$15,000 piering is provisional — may change post-demolition','No designer inclusions — bathrooms/laundry charged separately','Colour/electrical allowances inflate headline price','Strict milestone requirements to maintain price lock'],
     items:{base_price:{val:'$452,750'},facade:{val:'$31,900',note:'Portofino'},entry_door_1200:{val:'$1,850'},ceilings_2590_ground:{val:'$2,990'},flooring:{val:'$7,990'},statement_entry:{val:'$390'},bathrooms:{val:'$390'},laundry:{val:'$790'},kdr_investigations:{val:'$2,943'},earthworks:{val:'$1,170'},spoil_removal:{val:'$3,735'},access_handling:{val:'$5,000'},safety_mesh:{val:'$590'},power_line_barrier:{val:'$1,520'},zero_lot_garage:{val:'$2,850'},extra_scaffold:{val:'$1,500'},slab_reactive:{val:'$6,589',note:'H2 class'},piering:{val:'$15,000',note:'Provisional'},expansion_joints:{val:'$690'},vertical_risers:{val:'$1,920'},flexible_joint:{val:'$1,830'},three_phase_power:{val:'$4,090'},wind_rating:{val:'$5,292',note:'N3 required'},gully_traps:{val:'$700'},kerb_adapter:{val:'$225'},generator:{val:'$1,000'},bcc_fees:{val:'INCLUDED',cls:'incl'},boundary_relaxation:{val:'$1,450'},driveway_crossover:{val:'$550'},traffic_control:{val:'$6,000'},shower_niches:{val:'$1,170',note:'3 × $390'},air_con:{val:'$14,394',note:'Rinnai Day/Night'},electrical_allowance:{val:'$8,000'},colour_studio:{val:'$8,000'},driveway_aggregate:{val:'$11,300'},energy_efficiency:{val:'$3,000',note:'Unused credited back'}}},
   {id:3,builder:'Clarendon Homes',model:'Antigua 270',facade:'Portofino + Rumpus',doc:'Doc #2',date:'21/03/2026',consultant:'Jake Anderson',total:620064,basePrice:441400,pdfFile:'Initial_Sales_Estimate_-_Antigua_270_v1__3_.pdf',colorClass:'clarendon-card',barClass:'clarendon',defaultStatus:'live',notes:'Base $441,400 | Rumpus +$22,800',
+    pros:['Rumpus room adds flexible living space','9-Month Price Promise from deposit date','Driveway (50m² exposed aggregate) included','H2 soil classification — lower slab cost','Colour Studio + Electrical allowances included'],
+    cons:['Most expensive quote at $620,064 — $54K above Coral live','$22,800 rumpus is the primary cost driver','$15,000 piering provisional — risk of increase post-demo','No designer inclusions package — extras charged separately','Demolition must complete 3 weeks before start date'],
     items:{base_price:{val:'$441,400'},facade:{val:'$31,900',note:'Portofino'},entry_door_1200:{val:'$1,850'},rumpus:{val:'$22,800'},ceilings_2590_ground:{val:'$2,990'},flooring:{val:'$7,990'},bathrooms:{val:'$390'},laundry:{val:'$790'},kdr_investigations:{val:'$2,943'},earthworks:{val:'$1,170'},spoil_removal:{val:'$3,735'},access_handling:{val:'$5,000'},safety_mesh:{val:'$590'},power_line_barrier:{val:'$1,520'},zero_lot_garage:{val:'$2,850'},extra_scaffold:{val:'$1,500'},slab_reactive:{val:'$6,190',note:'H2 class'},piering:{val:'$15,000',note:'Provisional'},expansion_joints:{val:'$690'},vertical_risers:{val:'$1,920'},flexible_joint:{val:'$1,830'},three_phase_power:{val:'$4,090'},wind_rating:{val:'$5,137',note:'N3 required'},gully_traps:{val:'$700'},kerb_adapter:{val:'$225'},generator:{val:'$1,000'},bcc_fees:{val:'INCLUDED',cls:'incl'},boundary_relaxation:{val:'$1,450'},driveway_crossover:{val:'$550'},traffic_control:{val:'$6,000'},shower_niches:{val:'$1,170',note:'3 × $390'},air_con:{val:'$14,394',note:'Rinnai Day/Night'},electrical_allowance:{val:'$8,000'},colour_studio:{val:'$8,000'},driveway_aggregate:{val:'$11,300'},energy_efficiency:{val:'$3,000',note:'Unused credited back'}}}
 ];
 
@@ -804,15 +833,93 @@ let nextId=4;
 let _pendingCardIdx=null;
 let _pendingQuoteData=null;
 let _pendingPdfBase64=null;
+let _pendingPdfName=null;
 let CHAT_EXTRA='';
+
+// ═══ SUPABASE ═════════════════════════════════════════════════════
+const SB_URL  = 'https://xclfcpgykpkfbjkgqgsz.supabase.co';
+const SB_KEY  = 'YOUR_SUPABASE_ANON_KEY'; // ← paste your anon key here
+let sb = null;
+function initSupabase(){
+  try{
+    if(window.supabase && SB_KEY !== 'YOUR_SUPABASE_ANON_KEY'){
+      sb = window.supabase.createClient(SB_URL, SB_KEY);
+      console.log('[SB] Supabase initialised');
+    } else {
+      console.warn('[SB] Supabase skipped — anon key not set');
+    }
+  }catch(e){ console.warn('[SB] Init error:', e); }
+}
+
+async function sbLoadQuotes(){
+  if(!sb) return null;
+  try{
+    const {data,error} = await sb.from('quotes_v2').select('*').order('quote_id',{ascending:true});
+    if(error) throw error;
+    return data.map(row => ({...row.data, id:row.quote_id, status:row.status||row.data.defaultStatus, pdfFile:row.pdf_url||row.data.pdfFile}));
+  }catch(e){ console.warn('[SB] Load failed:', e.message); return null; }
+}
+
+async function sbSaveQuote(q, pdfBase64, pdfName){
+  if(!sb) return;
+  let pdf_url = q.pdfFile || null;
+  // Upload PDF to storage if we have base64 data
+  if(pdfBase64 && pdfName){
+    try{
+      const blob = b64toBlob(pdfBase64, 'application/pdf');
+      const safeName = `${Date.now()}_${pdfName.replace(/[^a-z0-9._-]/gi,'_')}`;
+      const {data:upData, error:upErr} = await sb.storage.from('quotes').upload(safeName, blob, {contentType:'application/pdf', upsert:false});
+      if(upErr) throw upErr;
+      const {data:{publicUrl}} = sb.storage.from('quotes').getPublicUrl(safeName);
+      pdf_url = publicUrl;
+      console.log('[SB] PDF uploaded:', publicUrl);
+    }catch(e){ console.warn('[SB] PDF upload failed:', e.message); }
+  }
+  try{
+    const {error} = await sb.from('quotes_v2').upsert({
+      quote_id: q.id,
+      status:   q.status,
+      pdf_url,
+      data:     {...q, pdfFile: pdf_url}
+    }, {onConflict:'quote_id'});
+    if(error) throw error;
+    console.log('[SB] Quote saved id:', q.id);
+  }catch(e){ console.warn('[SB] Save failed:', e.message); }
+}
+
+async function sbUpdateStatus(id, status){
+  if(!sb) return;
+  try{ await sb.from('quotes_v2').update({status}).eq('quote_id',id); }catch(e){}
+}
+
+function b64toBlob(b64, mime){
+  const bytes = atob(b64);
+  const arr = new Uint8Array(bytes.length);
+  for(let i=0;i<bytes.length;i++) arr[i]=bytes.charCodeAt(i);
+  return new Blob([arr],{type:mime});
+}
+
 const SK={status:i=>`balmoral_card_status_${i}`,cardImg:i=>`balmoral_card_img_${i}`,bgImg:'balmoral_bg_img',uploadedQuotes:'balmoral_uploaded_quotes',fp:k=>`balmoral_fp_${btoa(k).replace(/[=+/]/g,'_')}`};
 
 // Floorplan cache (keyed by "builder||model")
 let fpCache={};
 
 // ═══ INIT ═════════════════════════════════════════════════════════
-window.addEventListener('DOMContentLoaded',()=>{
-  try{const s=localStorage.getItem(SK.uploadedQuotes);if(s){const u=JSON.parse(s);u.forEach(q=>{quotes.push(q);if(q.id>=nextId)nextId=q.id+1;});}}catch(e){}
+window.addEventListener('DOMContentLoaded', async ()=>{
+  initSupabase();
+
+  // Try loading uploaded quotes from Supabase; fall back to localStorage
+  const sbQuotes = await sbLoadQuotes();
+  if(sbQuotes && sbQuotes.length > 0){
+    console.log('[SB] Loaded', sbQuotes.length, 'quotes from Supabase');
+    const uploaded = sbQuotes.filter(q => q.id >= 4);
+    uploaded.forEach(q=>{ quotes.push(q); if(q.id>=nextId) nextId=q.id+1; });
+  } else {
+    // Fall back to localStorage for uploaded quotes
+    try{const s=localStorage.getItem(SK.uploadedQuotes);if(s){const u=JSON.parse(s);u.forEach(q=>{quotes.push(q);if(q.id>=nextId)nextId=q.id+1;});}}catch(e){}
+  }
+
+  // Always load initial quotes with status overrides
   INITIAL_QUOTES.forEach(q=>{const s=localStorage.getItem(SK.status(q.id));quotes.unshift({...q,status:s||q.defaultStatus});});
   quotes.filter(q=>q.id>=4).forEach(q=>{const s=localStorage.getItem(SK.status(q.id));if(s)q.status=s;});
   // Load fp cache — but discard entries where storeys or total_area are wrong
@@ -1069,7 +1176,25 @@ function renderCards(){
     <div class="card-home">${q.model}</div><div class="card-facade">${q.facade} · ${q.doc}</div>
     <div class="card-price">$${q.total.toLocaleString()}</div><div class="card-price-label">Total Estimate</div>
     <div class="card-base">${q.notes||''}<div class="card-date">${q.date} · ${q.consultant}</div></div></div>
-    ${q.pdfFile?`<a class="card-pdf-link" href="${q.pdfFile}" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>Open PDF</a>`:'<div class="card-pdf-link" style="color:var(--text-light);cursor:default;opacity:.5">No PDF</div>'}`;
+    ${(()=>{
+      const pros = (q.pros||[]);
+      const cons = (q.cons||[]);
+      const pcHtml = (pros.length||cons.length) ? `
+        <div class="card-proscons-wrap">
+          <button class="pc-toggle open" onclick="event.stopPropagation();this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none'">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>
+            Pros &amp; Cons
+          </button>
+          <div class="card-proscons" style="display:block">
+            ${pros.map(p=>`<div class="pc-item pro">${p}</div>`).join('')}
+            ${cons.map(p=>`<div class="pc-item con">${p}</div>`).join('')}
+          </div>
+        </div>` : '';
+      const pdfHtml = q.pdfFile
+        ? `<a class="card-pdf-link" href="${q.pdfFile}" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>Open PDF</a>`
+        : '<div class="card-pdf-link" style="color:var(--text-light);cursor:default;opacity:.5">No PDF</div>';
+      return pcHtml + pdfHtml;
+    })()}`;
     g.appendChild(c);
   });
 }
@@ -1566,6 +1691,7 @@ function toggleStatus(event,cardId){
   card.dataset.status=nowLive?'live':'archived';card.querySelector('.status-text').textContent=nowLive?'Live':'Archived';
   const q=quotes.find(x=>x.id===id);if(q)q.status=nowLive?'live':'archived';
   localStorage.setItem(SK.status(id),nowLive?'live':'archived');
+  sbUpdateStatus(id, nowLive?'live':'archived');
   renderBarChart();renderTable();
 }
 
@@ -1596,7 +1722,7 @@ function closeUploadModal(){document.getElementById('uploadModal').classList.rem
 function showState(id){['stateSelect','stateAnalysing','statePreview','stateError'].forEach(s=>document.getElementById(s).classList.toggle('active',s===id));}
 function handleDrop(e){e.preventDefault();document.getElementById('pdfDropZone').classList.remove('dragover');const f=e.dataTransfer.files[0];if(f&&f.type==='application/pdf')loadPdfFile(f);}
 function handleQuoteFileSelect(input){if(input.files[0])loadPdfFile(input.files[0]);}
-function loadPdfFile(file){document.getElementById('selectedFileName').textContent=file.name;document.getElementById('fileSelectedRow').style.display='flex';document.getElementById('analyseBtn').disabled=false;const r=new FileReader();r.onload=e=>{_pendingPdfBase64=e.target.result.split(',')[1];};r.readAsDataURL(file);}
+function loadPdfFile(file){_pendingPdfName=file.name;document.getElementById('selectedFileName').textContent=file.name;document.getElementById('fileSelectedRow').style.display='flex';document.getElementById('analyseBtn').disabled=false;const r=new FileReader();r.onload=e=>{_pendingPdfBase64=e.target.result.split(',')[1];};r.readAsDataURL(file);}
 function clearSelectedFile(){_pendingPdfBase64=null;document.getElementById('fileSelectedRow').style.display='none';document.getElementById('analyseBtn').disabled=true;document.getElementById('quoteFileInput').value='';}
 function goBackToSelect(){showState('stateSelect');clearSelectedFile();_pendingQuoteData=null;}
 async function startAnalysis(){
@@ -1606,29 +1732,53 @@ async function startAnalysis(){
   const anim=async()=>{for(let i=1;i<4;i++){await new Promise(r=>setTimeout(r,900));setStep(i,'done');setStep(i+1,'active');}};
   anim();
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:_pendingPdfBase64}},{type:'text',text:'Extract ALL line items from this home build quote PDF. Return ONLY valid JSON with: builder, model, facade, doc, date (DD/MM/YYYY), consultant, total (number), base_price (number), notes (2-line summary), summary (3-4 sentences), items (object keyed by snake_case item names, each with val, optional note, optional cls).'}]}]})});
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:_pendingPdfBase64}},{type:'text',text:'Extract ALL line items from this home build quote PDF. Return ONLY valid JSON (no markdown, no prose). Include:\n- builder, model, facade, doc, date (DD/MM/YYYY), consultant\n- total (number), base_price (number)\n- notes (2-line summary), summary (3-4 sentences)\n- items: object keyed by snake_case item names, each {val, optional note, optional cls}\n- pros: array of up to 6 short strings — genuine advantages of this quote (inclusions, price, promotions, warranty, flexibility)\n- cons: array of up to 5 short strings — genuine concerns or weaknesses (provisional sums, missing items, risks, restrictions)\n\nPros and cons should be specific to THIS quote, not generic builder opinions.'}]}]})});
     const d=await r.json();
     const raw=d.content?.find(b=>b.type==='text')?.text||'';
     _pendingQuoteData=extractJson(raw);
     const box=document.getElementById('quotePreviewBox');
     const items=Object.entries(_pendingQuoteData.items||{}).slice(0,18);
-    box.innerHTML=`<div class="qp-header"><div class="qp-title">${_pendingQuoteData.builder} — ${_pendingQuoteData.model}</div><div class="qp-meta">${_pendingQuoteData.facade} · ${_pendingQuoteData.date} · ${_pendingQuoteData.consultant}</div><div class="qp-total">$${Number(_pendingQuoteData.total).toLocaleString()}</div></div><div class="qp-items"><div class="qp-cat">Key Items (${Object.keys(_pendingQuoteData.items||{}).length} extracted)</div>${items.map(([k,v])=>`<div class="qp-row"><span>${k.replace(/_/g,' ')}</span><span class="qp-row-val ${v.cls||''}">${v.val}</span></div>`).join('')}${_pendingQuoteData.summary?`<div class="qp-cat" style="margin-top:12px">Summary</div><div style="font-size:11.5px;color:var(--text-mid);line-height:1.6">${_pendingQuoteData.summary}</div>`:''}</div>`;
+    const pros = _pendingQuoteData.pros||[]; const cons = _pendingQuoteData.cons||[];
+    const pcSection = (pros.length||cons.length) ? `<div class="qp-proscons"><div><div class="qp-pc-col-title pros">Pros</div>${pros.map(p=>`<div class="qp-pc-item pro">${p}</div>`).join('')}</div><div><div class="qp-pc-col-title cons">Cons</div>${cons.map(p=>`<div class="qp-pc-item con">${p}</div>`).join('')}</div></div>` : '';
+    box.innerHTML=`<div class="qp-header"><div class="qp-title">${_pendingQuoteData.builder} — ${_pendingQuoteData.model}</div><div class="qp-meta">${_pendingQuoteData.facade} · ${_pendingQuoteData.date} · ${_pendingQuoteData.consultant}</div><div class="qp-total">$${Number(_pendingQuoteData.total).toLocaleString()}</div></div>${pcSection}<div class="qp-items"><div class="qp-cat">Key Items (${Object.keys(_pendingQuoteData.items||{}).length} extracted)</div>${items.map(([k,v])=>`<div class="qp-row"><span>${k.replace(/_/g,' ')}</span><span class="qp-row-val ${v.cls||''}">${v.val}</span></div>`).join('')}${_pendingQuoteData.summary?`<div class="qp-cat" style="margin-top:12px">Summary</div><div style="font-size:11.5px;color:var(--text-mid);line-height:1.6">${_pendingQuoteData.summary}</div>`:''}</div>`;
     showState('statePreview');
   }catch(err){document.getElementById('errorMsg').textContent=err.message||'Failed to parse this PDF.';showState('stateError');}
 }
-function addQuoteToDashboard(){
+async function addQuoteToDashboard(){
   if(!_pendingQuoteData)return;
   const q={..._pendingQuoteData,id:nextId++,total:Number(_pendingQuoteData.total),basePrice:Number(_pendingQuoteData.base_price||_pendingQuoteData.total),colorClass:'new-card',barClass:'new-quote',status:'live',pdfFile:null,defaultStatus:'live',doc:_pendingQuoteData.doc||`Doc #${nextId}`};
   const s=document.createElement('style');s.textContent='.new-card .card-accent{background:var(--purple);}';document.head.appendChild(s);
   quotes.push(q);
+
+  // Save to Supabase (uploads PDF to storage too)
+  await sbSaveQuote(q, _pendingPdfBase64, _pendingPdfName||'quote.pdf');
+
+  // Also save to localStorage as backup
   const uploaded=quotes.filter(x=>x.id>=4);
   try{localStorage.setItem(SK.uploadedQuotes,JSON.stringify(uploaded));}catch(e){}
   localStorage.setItem(SK.status(q.id),'live');
-  CHAT_EXTRA+=`\n\nUPLOADED QUOTE — ${q.builder}, ${q.model}, ${q.facade} (${q.date}). STATUS: Live. TOTAL: $${Number(q.total).toLocaleString()}\n${q.summary||''}\nItems: ${Object.entries(q.items||{}).map(([k,v])=>`${k}: ${v.val}`).join(' | ')}`;
+
+  CHAT_EXTRA+=`\n\nUPLOADED QUOTE — ${q.builder}, ${q.model}, ${q.facade} (${q.date}). STATUS: Live. TOTAL: $${Number(q.total).toLocaleString()}\n${q.summary||''}\nPros: ${(q.pros||[]).join('; ')} | Cons: ${(q.cons||[]).join('; ')}`;
   document.getElementById('chatSubtitle').textContent=`Knows all ${quotes.length} quotes`;
+
   renderAll();
   quotes.forEach(x=>{const img=localStorage.getItem(SK.cardImg(x.id));if(img)applyCardImage(String(x.id),img);});
-  closeUploadModal();_pendingQuoteData=null;_pendingPdfBase64=null;
+  closeUploadModal();
+
+  // Auto-switch to Floorplans tab and fetch specs for the new model
+  const newBuilder = q.builder;
+  const newModel   = q.model;
+  switchTab('floorplans');
+  // Small delay so the tab renders before we trigger the fetch
+  setTimeout(()=>{
+    const safeKey = `${newBuilder}||${newModel}`.replace(/[^a-z0-9]/gi,'_');
+    const fetchBtn = document.getElementById(`fp-fetch-btn-${safeKey}`);
+    if(fetchBtn && !fpCache[`${newBuilder}||${newModel}`]){
+      fetchFloorplan(newBuilder, newModel, fetchBtn);
+    }
+  }, 400);
+
+  _pendingQuoteData=null;_pendingPdfBase64=null;_pendingPdfName=null;
 }
 function removeUploadedQuote(event,id){event.stopPropagation();if(!confirm('Remove this quote?'))return;quotes=quotes.filter(q=>q.id!==id);localStorage.removeItem(SK.status(id));localStorage.removeItem(SK.cardImg(id));try{localStorage.setItem(SK.uploadedQuotes,JSON.stringify(quotes.filter(x=>x.id>=4)));}catch(e){}renderAll();}
 
