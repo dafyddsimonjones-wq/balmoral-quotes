@@ -885,7 +885,7 @@ const FLOORPLAN_DATA = {
       'Lowest base price of all quoted designs'
     ],
     source_url: 'https://www.neptunehomes.com.au',
-    description: 'The Stirling 30 is Neptune Homes' most affordable double storey design in this comparison, coming in at 30 squares (approx 279m²). The Sandbar facade delivers a contemporary rendered and weatherboard look. Like all Neptune Brilliance homes it includes Daikin MyAir A/C, Fisher & Paykel appliances and stone benchtops as standard inclusions.'
+    description: 'The Stirling 30 is Neptune Homes\' most affordable double storey design in this comparison, coming in at 30 squares (approx 279m²). The Sandbar facade delivers a contemporary rendered and weatherboard look. Like all Neptune Brilliance homes it includes Daikin MyAir A/C, Fisher & Paykel appliances and stone benchtops as standard inclusions.'
   },
   'Coral Homes||Boston 297Q': {
     bedrooms: 4, bathrooms: 2, ensuites: 1, garage: 2,
@@ -1089,6 +1089,8 @@ window.addEventListener('DOMContentLoaded', async ()=>{
   // Always load initial quotes with status overrides
   INITIAL_QUOTES.forEach(q=>{const s=localStorage.getItem(SK.status(q.id));quotes.unshift({...q,status:s||q.defaultStatus});});
   quotes.filter(q=>q.id>=4).forEach(q=>{const s=localStorage.getItem(SK.status(q.id));if(s)q.status=s;});
+  // Deduplicate — keep the last occurrence of each id (localStorage version wins)
+  const seen=new Set(); quotes=quotes.filter(q=>{if(seen.has(q.id))return false;seen.add(q.id);return true;});
   // Load fp cache — but discard entries where storeys or total_area are wrong
   ['Coral Homes||Boston 297Q','Clarendon Homes||Antigua 290','Clarendon Homes||Antigua 270','Neptune Homes||Noosa 31','Neptune Homes||Stirling 30'].forEach(k=>{
     try{
@@ -1335,43 +1337,122 @@ function saveNote(){
 
 
 // ═══ RENDER COMPARISON ════════════════════════════════════════════
-function renderAll(){renderCards();renderBarChart();renderTable();updateHeaderBadges();}
+function renderAll(){
+  try{renderCards();}catch(e){console.error('renderCards failed:',e);}
+  try{renderBarChart();}catch(e){console.error('renderBarChart failed:',e);}
+  try{renderTable();}catch(e){console.error('renderTable failed:',e);}
+  try{updateHeaderBadges();}catch(e){console.error('updateHeaderBadges failed:',e);}
+}
 
+function cardProsConsHtml(q){
+  var pros=q.pros||[], cons=q.cons||[];
+  if(!pros.length && !cons.length) return '';
+  var rows='';
+  pros.forEach(function(p){rows+='<div class="pc-item pro">'+escHtml(p)+'</div>';});
+  cons.forEach(function(p){rows+='<div class="pc-item con">'+escHtml(p)+'</div>';});
+  var fn="event.stopPropagation();var b=this;b.classList.toggle('open');b.nextElementSibling.style.display=b.classList.contains('open')?'block':'none'";
+  return '<div class="card-proscons-wrap"><button class="pc-toggle open" onclick="'+fn+'">'
+    +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>'
+    +' Pros &amp; Cons</button><div class="card-proscons" style="display:block">'+rows+'</div></div>';
+}
+function cardPdfHtml(q){
+  if(!q.pdfFile) return '<div class="card-pdf-link" style="color:var(--text-light);cursor:default;opacity:.5">No PDF</div>';
+  return '<a class="card-pdf-link" href="'+q.pdfFile+'" target="_blank" onclick="event.stopPropagation()">'
+    +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>Open PDF</a>';
+}
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 function renderCards(){
-  const g=document.getElementById('cardsGrid');g.innerHTML='';
-  quotes.forEach(q=>{
-    const isLive=q.status==='live';
-    const c=document.createElement('div');
-    c.className=`card ${q.colorClass||'new-card'} ${isLive?'is-live':'is-archived'}`;
-    c.id=`card-${q.id}`;c.dataset.status=q.status;
-    c.innerHTML=`<div class="card-img-zone" id="imgzone-${q.id}"><img id="cardimg-${q.id}" src="" alt="" style="display:none"><div class="card-img-overlay"></div><button class="card-img-remove" onclick="removeCardImg(event,'${q.id}')"><svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-    <div class="card-accent"></div>
-    <div class="card-inner"><div class="card-top-row"><div class="card-top-left"><span class="card-builder-badge">${q.builder}</span><button class="card-img-btn" onclick="triggerCardImg('${q.id}')"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></button>${q.id>=4?`<button class="card-img-btn" style="color:var(--coral-col)" onclick="removeUploadedQuote(event,${q.id})"><svg viewBox="0 0 24 24" fill="none"><polyline points="3,6 5,6 21,6"/><path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2v2"/></svg></button>`:''}</div><div class="status-pill" onclick="toggleStatus(event,'card-${q.id}')"><div class="status-dot"></div><span class="status-text">${isLive?'Live':'Archived'}</span></div></div>
-    <div class="card-home">${q.model}</div><div class="card-facade">${q.facade} · ${q.doc}</div>
-    <div class="card-price">$${q.total.toLocaleString()}</div><div class="card-price-label">Total Estimate</div>
-    <div class="card-base">${q.notes||''}<div class="card-date">${q.date} · ${q.consultant}</div></div></div>
-    ${(()=>{
-      const pros = (q.pros||[]);
-      const cons = (q.cons||[]);
-      const pcHtml = (pros.length||cons.length) ? `
-        <div class="card-proscons-wrap">
-          <button class="pc-toggle open" onclick="event.stopPropagation();this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none'">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>
-            Pros &amp; Cons
-          </button>
-          <div class="card-proscons" style="display:block">
-            ${pros.map(p=>`<div class="pc-item pro">${p}</div>`).join('')}
-            ${cons.map(p=>`<div class="pc-item con">${p}</div>`).join('')}
-          </div>
-        </div>` : '';
-      const pdfHtml = q.pdfFile
-        ? `<a class="card-pdf-link" href="${q.pdfFile}" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>Open PDF</a>`
-        : '<div class="card-pdf-link" style="color:var(--text-light);cursor:default;opacity:.5">No PDF</div>';
-      return pcHtml + pdfHtml;
-    })()}`;
-    g.appendChild(c);
+  var g=document.getElementById('cardsGrid');
+  if(!g) return;
+  g.innerHTML='';
+  quotes.forEach(function(q){
+    try{
+      var isLive=q.status==='live';
+      var c=document.createElement('div');
+      c.className='card '+(q.colorClass||'new-card')+' '+(isLive?'is-live':'is-archived');
+      c.id='card-'+q.id;
+      c.dataset.status=q.status;
+
+      // Build card HTML using a div element so we avoid string quoting issues
+      var imgZone=document.createElement('div');
+      imgZone.className='card-img-zone';
+      imgZone.id='imgzone-'+q.id;
+      imgZone.innerHTML='<img id="cardimg-'+q.id+'" src="" alt="" style="display:none">'
+        +'<div class="card-img-overlay"></div>';
+      var rmBtn=document.createElement('button');
+      rmBtn.className='card-img-remove';
+      rmBtn.title='Remove image';
+      rmBtn.innerHTML='<svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+      rmBtn.onclick=function(e){removeCardImg(e,q.id);};
+      imgZone.appendChild(rmBtn);
+      c.appendChild(imgZone);
+
+      var accent=document.createElement('div');
+      accent.className='card-accent';
+      c.appendChild(accent);
+
+      // Inner content
+      var inner=document.createElement('div');
+      inner.className='card-inner';
+
+      // Top row
+      var topRow=document.createElement('div');
+      topRow.className='card-top-row';
+
+      var topLeft=document.createElement('div');
+      topLeft.className='card-top-left';
+
+      var badge=document.createElement('span');
+      badge.className='card-builder-badge';
+      badge.textContent=q.builder;
+      topLeft.appendChild(badge);
+
+      var imgBtn=document.createElement('button');
+      imgBtn.className='card-img-btn';
+      imgBtn.title='Add photo';
+      imgBtn.innerHTML='<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>';
+      imgBtn.onclick=function(){triggerCardImg(q.id);};
+      topLeft.appendChild(imgBtn);
+
+      if(q.id>=4){
+        var delBtn=document.createElement('button');
+        delBtn.className='card-img-btn';
+        delBtn.style.color='var(--coral-col)';
+        delBtn.title='Remove this quote';
+        delBtn.innerHTML='<svg viewBox="0 0 24 24" fill="none"><polyline points="3,6 5,6 21,6"/><path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2v2"/></svg>';
+        delBtn.onclick=function(e){removeUploadedQuote(e,q.id);};
+        topLeft.appendChild(delBtn);
+      }
+      topRow.appendChild(topLeft);
+
+      var pill=document.createElement('div');
+      pill.className='status-pill';
+      pill.onclick=function(e){toggleStatus(e,'card-'+q.id);};
+      pill.innerHTML='<div class="status-dot"></div><span class="status-text">'+(isLive?'Live':'Archived')+'</span>';
+      topRow.appendChild(pill);
+      inner.appendChild(topRow);
+
+      var home=document.createElement('div');home.className='card-home';home.textContent=q.model;inner.appendChild(home);
+      var facade=document.createElement('div');facade.className='card-facade';facade.textContent=(q.facade||'')+' · '+(q.doc||'');inner.appendChild(facade);
+      var price=document.createElement('div');price.className='card-price';price.textContent='$'+(q.total||0).toLocaleString();inner.appendChild(price);
+      var priceLabel=document.createElement('div');priceLabel.className='card-price-label';priceLabel.textContent='Total Estimate';inner.appendChild(priceLabel);
+      var base=document.createElement('div');base.className='card-base';
+      base.innerHTML=(q.notes||'')+'<div class="card-date">'+(q.date||'')+' · '+(q.consultant||'')+'</div>';
+      inner.appendChild(base);
+      c.appendChild(inner);
+
+      // Pros/cons
+      c.insertAdjacentHTML('beforeend', cardProsConsHtml(q));
+      // PDF link
+      c.insertAdjacentHTML('beforeend', cardPdfHtml(q));
+
+      g.appendChild(c);
+    }catch(err){ console.error('Card render failed id='+q.id, err); }
   });
 }
+
 
 function renderBarChart(){
   const MAX=Math.max(...quotes.map(q=>q.total));
