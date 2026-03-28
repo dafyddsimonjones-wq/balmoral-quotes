@@ -102,6 +102,9 @@ body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--tex
 .card-builder-badge{display:inline-block;font-size:9px;font-family:'Montserrat',sans-serif;letter-spacing:1.5px;text-transform:uppercase;padding:2px 6px;border-radius:4px;font-weight:500;}
 .coral-card .card-builder-badge{background:rgba(212,99,74,.1);color:var(--coral-col);}
 .clarendon-card .card-builder-badge{background:rgba(58,124,165,.1);color:var(--clarendon-col);}
+.neptune-card .card-builder-badge{background:rgba(0,152,166,.1);color:#0098a6;}
+.neptune-card .card-accent{background:#0098a6;}
+.neptune-card.is-live .card-accent{background:var(--green)!important;}
 .card.is-live .card-builder-badge{background:rgba(61,140,111,.12);color:var(--green);}
 .card-img-btn{width:20px;height:20px;border-radius:5px;border:1px solid var(--border);background:var(--cream);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0;}
 .card-img-btn:hover{border-color:var(--gold);}
@@ -145,6 +148,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--tex
 .bar-fill.coral{background:linear-gradient(90deg,rgba(212,99,74,.7),var(--coral-col));}
 .bar-fill.clarendon{background:linear-gradient(90deg,rgba(58,124,165,.7),var(--clarendon-col));}
 .bar-fill.new-quote{background:linear-gradient(90deg,rgba(139,92,246,.7),var(--purple));}
+.bar-fill.neptune{background:linear-gradient(90deg,rgba(0,132,150,.7),#0098a6);}
 .bar-fill.live-bar{background:linear-gradient(90deg,rgba(61,140,111,.6),var(--green))!important;}
 .bar-val{font-family:'Montserrat',sans-serif;font-size:11px;color:#fff;font-weight:500;white-space:nowrap;}
 
@@ -193,6 +197,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--tex
 .bld-logo.coral{background:linear-gradient(135deg,#e07a63,var(--coral-col));}
 .bld-logo.clarendon{background:linear-gradient(135deg,#5a9ec5,var(--clarendon-col));}
 .bld-logo.other{background:linear-gradient(135deg,#a78bfa,var(--purple));}
+.bld-logo.neptune{background:linear-gradient(135deg,#00b5c8,#0098a6);}
 .bld-header-info{flex:1;}
 .bld-name{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:3px;letter-spacing:-.3px;}
 .bld-region{font-size:11px;color:var(--text-light);font-weight:500;letter-spacing:.5px;text-transform:uppercase;}
@@ -521,8 +526,56 @@ body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--tex
 .col-new{background:rgba(139,92,246,.04)!important;}
 th.col-new{background:rgba(139,92,246,.2)!important;}
 .total-row td.col-new{background:var(--purple)!important;}
-@media(max-width:1100px){.cards-grid{grid-template-columns:1fr 1fr;}.main{padding:18px;}.header{padding:22px 24px;}.filter-bar,.tab-nav{padding-left:20px;padding-right:20px;}.fp-grid{grid-template-columns:1fr;}.chat-panel{position:fixed;right:0;top:0;z-index:200;box-shadow:-4px 0 24px rgba(26,34,54,.12);}}
-@media(max-width:700px){.cards-grid{grid-template-columns:1fr;}.diff-grid{grid-template-columns:1fr;}.fp-specs-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:1100px){
+  .cards-grid{grid-template-columns:1fr 1fr;}
+  .main{padding:16px;}
+  .header{padding:18px 20px 14px;}
+  .filter-bar,.tab-nav{padding-left:16px;padding-right:16px;}
+  .fp-grid{grid-template-columns:1fr;}
+  .bld-grid{grid-template-columns:1fr;}
+  .chat-panel{position:fixed;right:0;top:0;z-index:200;box-shadow:-4px 0 24px rgba(26,34,54,.12);}
+}
+@media(max-width:700px){
+  .cards-grid{grid-template-columns:1fr;}
+  .diff-grid{grid-template-columns:1fr;}
+  .fp-specs-grid{grid-template-columns:repeat(2,1fr);}
+  .header{padding:12px 14px 10px;}
+  .header-title{font-size:17px;letter-spacing:-.2px;}
+  .header-subtitle{font-size:10px;margin-top:2px;}
+  .header-meta{display:none;}
+  .filter-bar{padding:7px 10px;gap:6px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .filter-bar::-webkit-scrollbar{display:none;}
+  .filter-label,.filter-hint,.filter-divider{display:none;}
+  .filter-btns{flex-shrink:0;}
+  .bar-btn-group{margin-left:0;gap:4px;flex-shrink:0;}
+  .bar-btn{padding:4px 9px;font-size:10px;letter-spacing:0;}
+  .tab-nav{padding:0 6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-wrap:nowrap;}
+  .tab-nav::-webkit-scrollbar{display:none;}
+  .tab-btn{padding:9px 11px;font-size:10px;letter-spacing:.2px;white-space:nowrap;gap:5px;}
+  .main{padding:10px 10px 40px;}
+  .section-label{font-size:9px;letter-spacing:2px;margin-bottom:10px;}
+  .card-inner{padding:13px 13px 10px;}
+  .card-price{font-size:19px;}
+  .card-home{font-size:13px;}
+  .card-builder-badge{font-size:8px;}
+  .bar-label{width:130px;}
+  .bar-label-name{font-size:10px;}
+  .bar-label-sub{display:none;}
+  .bar-track{height:26px;}
+  .breakdown-section{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .breakdown-table{min-width:500px;font-size:10px;}
+  .diff-item{font-size:11px;}
+  .fp-specs-wide{grid-template-columns:1fr;}
+  .fp-card-header{flex-wrap:wrap;}
+  .bld-contact-grid{grid-template-columns:1fr;}
+  .chat-panel{width:100%!important;}
+  .modal{border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0;width:100%!important;max-width:100%!important;max-height:88vh;transform:translateY(20px);}
+  .modal-overlay{align-items:flex-end;}
+  .note-modal{border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0;width:100%!important;max-width:100%!important;max-height:88vh;}
+  .note-modal-overlay{align-items:flex-end;}
+  .notes-two-col{grid-template-columns:1fr;}
+  .bld-terms-section{flex-direction:column;gap:8px;}
+}
 </style>
 </head>
 <body>
@@ -600,7 +653,12 @@ function checkPw(){
     <div class="modal-header"><div><div class="modal-title-label">Add Quote</div><div class="modal-title">Upload New Quote</div></div><button class="modal-close" onclick="closeUploadModal()"><svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
     <div class="modal-body">
       <div id="stateSelect" class="analysis-state active">
-        <div class="pdf-drop-zone" id="pdfDropZone" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event)"><input type="file" accept="application/pdf" onchange="handleQuoteFileSelect(this)"><div class="pdf-drop-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><div class="pdf-drop-text">Drop a PDF quote here</div><div class="pdf-drop-sub">or click to browse — any builder format accepted</div></div>
+        <div class="pdf-drop-zone" id="pdfDropZone" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event)" onclick="document.getElementById('quoteDropInput').click()">
+          <input type="file" id="quoteDropInput" accept="application/pdf" style="display:none" onchange="handleQuoteFileSelect(this)">
+          <div class="pdf-drop-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <div class="pdf-drop-text">Drop a PDF quote here</div>
+          <div class="pdf-drop-sub">or click / tap to browse — any builder format accepted</div>
+        </div>
         <div id="fileSelectedRow" style="display:none" class="pdf-selected"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg><span class="pdf-selected-name" id="selectedFileName">—</span><button class="pdf-clear" onclick="clearSelectedFile()">×</button></div>
         <div class="modal-btn-row" style="margin-top:16px"><button class="modal-btn primary" id="analyseBtn" onclick="startAnalysis()" disabled>Analyse Quote →</button><button class="modal-btn ghost" onclick="closeUploadModal()">Cancel</button></div>
       </div>
@@ -793,6 +851,42 @@ function extractJson(text) {
 // Full specs for known models — no API call required.
 // Sources: Coral Homes & Clarendon Homes product pages + confirmed from quote docs.
 const FLOORPLAN_DATA = {
+  'Neptune Homes||Noosa 31': {
+    bedrooms: 4, bathrooms: 2, ensuites: 1, garage: 2,
+    powder_room: true, living_areas: 2, alfresco: true,
+    total_area_m2: 288, ground_area_m2: 158, upper_area_m2: 130,
+    storeys: 2, min_lot_width_m: 10, min_lot_depth_m: null,
+    key_features: [
+      'Double storey — approx 288m² (31 squares)',
+      '4 bedrooms including master with ensuite & WIR',
+      'Driftwood facade — included at no extra cost',
+      'Daikin MyAir fully zoned ducted A/C included',
+      'Full Fisher & Paykel appliance suite',
+      '12-month Ultimate Price Guarantee',
+      '50-year structural warranty',
+      'Covered alfresco entertaining area'
+    ],
+    source_url: 'https://www.neptunehomes.com.au',
+    description: 'The Noosa 31 is a double storey four-bedroom home from Neptune Homes, part of their Brilliance inclusions range. It features a fully zoned Daikin MyAir ducted air conditioning system, Fisher & Paykel appliances, and stone benchtops all as standard. A strong option for families wanting premium inclusions without negotiating them individually.'
+  },
+  'Neptune Homes||Stirling 30': {
+    bedrooms: 4, bathrooms: 2, ensuites: 1, garage: 2,
+    powder_room: true, living_areas: 2, alfresco: true,
+    total_area_m2: 279, ground_area_m2: 153, upper_area_m2: 126,
+    storeys: 2, min_lot_width_m: 10, min_lot_depth_m: null,
+    key_features: [
+      'Double storey — approx 279m² (30 squares)',
+      '4 bedrooms including master with ensuite & WIR',
+      'Sandbar facade — contemporary render & Hardieplank mix',
+      'Daikin MyAir fully zoned ducted A/C included',
+      'Full Fisher & Paykel appliance suite',
+      '12-month Ultimate Price Guarantee',
+      '50-year structural warranty',
+      'Lowest base price of all quoted designs'
+    ],
+    source_url: 'https://www.neptunehomes.com.au',
+    description: 'The Stirling 30 is Neptune Homes' most affordable double storey design in this comparison, coming in at 30 squares (approx 279m²). The Sandbar facade delivers a contemporary rendered and weatherboard look. Like all Neptune Brilliance homes it includes Daikin MyAir A/C, Fisher & Paykel appliances and stone benchtops as standard inclusions.'
+  },
   'Coral Homes||Boston 297Q': {
     bedrooms: 4, bathrooms: 2, ensuites: 1, garage: 2,
     powder_room: true, living_areas: 3, alfresco: true,
@@ -889,12 +983,20 @@ const INITIAL_QUOTES=[
   {id:3,builder:'Clarendon Homes',model:'Antigua 270',facade:'Portofino + Rumpus',doc:'Doc #2',date:'21/03/2026',consultant:'Jake Anderson',total:620064,basePrice:441400,pdfFile:'Initial_Sales_Estimate_-_Antigua_270_v1__3_.pdf',colorClass:'clarendon-card',barClass:'clarendon',defaultStatus:'live',notes:'Base $441,400 | Rumpus +$22,800',
     pros:['Rumpus room adds flexible living space','9-Month Price Promise from deposit date','Driveway (50m² exposed aggregate) included','H2 soil classification — lower slab cost','Colour Studio + Electrical allowances included'],
     cons:['Most expensive quote at $620,064 — $54K above Coral live','$22,800 rumpus is the primary cost driver','$15,000 piering provisional — risk of increase post-demo','No designer inclusions package — extras charged separately','Demolition must complete 3 weeks before start date'],
-    items:{base_price:{val:'$441,400'},facade:{val:'$31,900',note:'Portofino'},entry_door_1200:{val:'$1,850'},rumpus:{val:'$22,800'},ceilings_2590_ground:{val:'$2,990'},flooring:{val:'$7,990'},bathrooms:{val:'$390'},laundry:{val:'$790'},kdr_investigations:{val:'$2,943'},earthworks:{val:'$1,170'},spoil_removal:{val:'$3,735'},access_handling:{val:'$5,000'},safety_mesh:{val:'$590'},power_line_barrier:{val:'$1,520'},zero_lot_garage:{val:'$2,850'},extra_scaffold:{val:'$1,500'},slab_reactive:{val:'$6,190',note:'H2 class'},piering:{val:'$15,000',note:'Provisional'},expansion_joints:{val:'$690'},vertical_risers:{val:'$1,920'},flexible_joint:{val:'$1,830'},three_phase_power:{val:'$4,090'},wind_rating:{val:'$5,137',note:'N3 required'},gully_traps:{val:'$700'},kerb_adapter:{val:'$225'},generator:{val:'$1,000'},bcc_fees:{val:'INCLUDED',cls:'incl'},boundary_relaxation:{val:'$1,450'},driveway_crossover:{val:'$550'},traffic_control:{val:'$6,000'},shower_niches:{val:'$1,170',note:'3 × $390'},air_con:{val:'$14,394',note:'Rinnai Day/Night'},electrical_allowance:{val:'$8,000'},colour_studio:{val:'$8,000'},driveway_aggregate:{val:'$11,300'},energy_efficiency:{val:'$3,000',note:'Unused credited back'}}}
+    items:{base_price:{val:'$441,400'},facade:{val:'$31,900',note:'Portofino'},entry_door_1200:{val:'$1,850'},rumpus:{val:'$22,800'},ceilings_2590_ground:{val:'$2,990'},flooring:{val:'$7,990'},bathrooms:{val:'$390'},laundry:{val:'$790'},kdr_investigations:{val:'$2,943'},earthworks:{val:'$1,170'},spoil_removal:{val:'$3,735'},access_handling:{val:'$5,000'},safety_mesh:{val:'$590'},power_line_barrier:{val:'$1,520'},zero_lot_garage:{val:'$2,850'},extra_scaffold:{val:'$1,500'},slab_reactive:{val:'$6,190',note:'H2 class'},piering:{val:'$15,000',note:'Provisional'},expansion_joints:{val:'$690'},vertical_risers:{val:'$1,920'},flexible_joint:{val:'$1,830'},three_phase_power:{val:'$4,090'},wind_rating:{val:'$5,137',note:'N3 required'},gully_traps:{val:'$700'},kerb_adapter:{val:'$225'},generator:{val:'$1,000'},bcc_fees:{val:'INCLUDED',cls:'incl'},boundary_relaxation:{val:'$1,450'},driveway_crossover:{val:'$550'},traffic_control:{val:'$6,000'},shower_niches:{val:'$1,170',note:'3 × $390'},air_con:{val:'$14,394',note:'Rinnai Day/Night'},electrical_allowance:{val:'$8,000'},colour_studio:{val:'$8,000'},driveway_aggregate:{val:'$11,300'},energy_efficiency:{val:'$3,000',note:'Unused credited back'}}},
+  {id:4,builder:'Neptune Homes',model:'Noosa 31',facade:'Driftwood Facade',doc:'Doc #1',date:'28/03/2026',consultant:'Joel Blight',total:571943,basePrice:506452,pdfFile:'Noosa_31_w_Driftwood_Facade_NHE.pdf',colorClass:'neptune-card',barClass:'neptune',defaultStatus:'live',notes:'Base $506,452 | Incentive −$8,710',
+    pros:['Full Brilliance inclusions — F&P appliances, stone benchtops, Daikin MyAir A/C all included','12-Month Ultimate Price Guarantee — longest price lock of all builders','50-year structural warranty','Driftwood facade included at no extra cost','BCC council fees included in base price','Competitive total at $571,943 after incentive'],
+    cons:['Site costs $27,600 are provisional — confirmed post soil test','Overhead power pole $4,720 extra','Demolition not arranged by Neptune Homes','Envision Studio Voucher ($11,100) fully consumed by concreting — no leftover for upgrades','No allowance for retaining walls or piering upgrades'],
+    items:{base_price:{val:'$506,452'},facade:{val:'INCLUDED',cls:'incl',note:'Driftwood'},brilliance_promo:{val:'$9,990'},flooring:{val:'INCLUDED',cls:'incl'},ceilings_2590_ground:{val:'INCLUDED',cls:'incl'},ceilings_2590_1st:{val:'INCLUDED',cls:'incl'},air_con:{val:'INCLUDED',cls:'incl',note:'Daikin MyAir, fully zoned'},entry_door_1200:{val:'INCLUDED',cls:'incl'},bcc_fees:{val:'INCLUDED',cls:'incl'},boundary_relaxation:{val:'$2,775'},qbcc_fees:{val:'$1,184'},earthworks:{val:'(in site costs)'},site_costs_neptune:{val:'$27,600',note:'Provisional'},access_handling:{val:'$1,330'},wind_rating:{val:'INCLUDED',cls:'incl',note:'N2'},spoil_removal:{val:'$2,160',note:'2× $1,080'},id_survey:{val:'$4,240'},three_phase_power:{val:'INCLUDED',cls:'incl'},overhead_power_pole:{val:'$4,720'},pool_provisions:{val:'$572'},flyscreens:{val:'$2,192'},shower_niches:{val:'$828',note:'2 × $414'},bathroom_bath:{val:'$219'},ensuite_bath:{val:'INCLUDED',cls:'incl'},clothesline:{val:'$290'},letterbox:{val:'$691'},external_concreting:{val:'$8,622'},envision_voucher:{val:'INCLUDED',cls:'incl',note:'$11,100 — used on concrete'},standard_design_incentive:{val:'−$8,710',cls:'neg'}}},
+  {id:5,builder:'Neptune Homes',model:'Stirling 30',facade:'Sandbar Facade',doc:'Doc #2',date:'28/03/2026',consultant:'Joel Blight',total:566134,basePrice:492955,pdfFile:'Stirling_30_w_Sandbar_Facade_NHE.pdf',colorClass:'neptune-card',barClass:'neptune',defaultStatus:'live',notes:'Base $492,955 | Sandbar +$7,450 | Incentive −$8,410',
+    pros:['Lowest total estimate across all builders at $566,134','Most affordable base price at $492,955','12-Month Ultimate Price Guarantee','50-year structural warranty','Full Brilliance inclusions — F&P appliances, stone benchtops, Daikin MyAir A/C all included','BCC council fees included in base price'],
+    cons:['Sandbar facade adds $7,450 to headline price','Site costs $27,100 provisional — confirmed post soil test','Overhead power pole $4,720 extra','Demolition not arranged by Neptune Homes','Envision Studio Voucher consumed by concreting — nothing left for studio upgrades'],
+    items:{base_price:{val:'$492,955'},facade:{val:'$7,450',note:'Sandbar'},brilliance_promo:{val:'$9,990'},flooring:{val:'INCLUDED',cls:'incl'},ceilings_2590_ground:{val:'INCLUDED',cls:'incl'},ceilings_2590_1st:{val:'INCLUDED',cls:'incl'},air_con:{val:'INCLUDED',cls:'incl',note:'Daikin MyAir, fully zoned'},entry_door_1200:{val:'INCLUDED',cls:'incl'},bcc_fees:{val:'INCLUDED',cls:'incl'},boundary_relaxation:{val:'$2,775'},qbcc_fees:{val:'$1,322'},earthworks:{val:'(in site costs)'},site_costs_neptune:{val:'$27,100',note:'Provisional'},access_handling:{val:'$1,330'},wind_rating:{val:'INCLUDED',cls:'incl',note:'N2'},spoil_removal:{val:'$2,160',note:'2× $1,080'},id_survey:{val:'$4,240'},three_phase_power:{val:'INCLUDED',cls:'incl'},overhead_power_pole:{val:'$4,720'},pool_provisions:{val:'$572'},flyscreens:{val:'$2,192'},shower_niches:{val:'$828',note:'2 × $414'},bathroom_bath:{val:'$219'},ensuite_bath:{val:'INCLUDED',cls:'incl'},clothesline:{val:'$290'},letterbox:{val:'$691'},external_concreting:{val:'$8,922'},envision_voucher:{val:'INCLUDED',cls:'incl',note:'$10,800 — used on concrete'},standard_design_incentive:{val:'−$8,410',cls:'neg'}}}
 ];
 
 // ═══ STATE ════════════════════════════════════════════════════════
 let quotes=[];
-let nextId=4;
+let nextId=6;
 let _pendingCardIdx=null;
 let _pendingQuoteData=null;
 let _pendingPdfBase64=null;
@@ -988,7 +1090,7 @@ window.addEventListener('DOMContentLoaded', async ()=>{
   INITIAL_QUOTES.forEach(q=>{const s=localStorage.getItem(SK.status(q.id));quotes.unshift({...q,status:s||q.defaultStatus});});
   quotes.filter(q=>q.id>=4).forEach(q=>{const s=localStorage.getItem(SK.status(q.id));if(s)q.status=s;});
   // Load fp cache — but discard entries where storeys or total_area are wrong
-  ['Coral Homes||Boston 297Q','Clarendon Homes||Antigua 290','Clarendon Homes||Antigua 270'].forEach(k=>{
+  ['Coral Homes||Boston 297Q','Clarendon Homes||Antigua 290','Clarendon Homes||Antigua 270','Neptune Homes||Noosa 31','Neptune Homes||Stirling 30'].forEach(k=>{
     try{
       const d=localStorage.getItem(SK.fp(k));
       if(d){
@@ -1311,6 +1413,20 @@ function updateHeaderBadges(){
 
 // ═══ BUILDERS TAB ═════════════════════════════════════════════════
 const BUILDER_CONTACTS = {
+  'Neptune Homes': {
+    logoClass: 'neptune',
+    logoText: 'NH',
+    region: 'South East Queensland',
+    consultants: [
+      { name:'Joel Blight', role:'New Home Consultant',
+        phone:'0411 918 968', email:'joel@neptunehomes.com.au' }
+    ],
+    office: { address:'Brisbane QLD', phone:'—', web:'www.neptunehomes.com.au' },
+    priceLock: '12-Month Ultimate Price Guarantee (6 months standard + 6 months extra)',
+    pricePromise: 'Best Price Promise — will match or reduce if base price drops before BA',
+    qbcc: '1250379',
+    notes: 'Demolition client responsibility. Envision Studio Voucher for colour selections. Capped build numbers — limited slots per year.'
+  },
   'Coral Homes': {
     logoClass: 'coral',
     logoText: 'CH',
@@ -1769,7 +1885,11 @@ function getApiKey(){
 
 function apiHeaders(){
   const key = getApiKey();
-  const h = {'Content-Type':'application/json'};
+  const h = {
+    'Content-Type': 'application/json',
+    'anthropic-version': '2023-06-01',
+    'anthropic-dangerous-direct-browser-access': 'true'
+  };
   if(key) h['x-api-key'] = key;
   return h;
 }
@@ -1832,26 +1952,77 @@ function showState(id){['stateSelect','stateAnalysing','statePreview','stateErro
 function handleDrop(e){e.preventDefault();document.getElementById('pdfDropZone').classList.remove('dragover');const f=e.dataTransfer.files[0];if(f&&f.type==='application/pdf')loadPdfFile(f);}
 function handleQuoteFileSelect(input){if(input.files[0])loadPdfFile(input.files[0]);}
 function loadPdfFile(file){_pendingPdfName=file.name;document.getElementById('selectedFileName').textContent=file.name;document.getElementById('fileSelectedRow').style.display='flex';document.getElementById('analyseBtn').disabled=false;const r=new FileReader();r.onload=e=>{_pendingPdfBase64=e.target.result.split(',')[1];};r.readAsDataURL(file);}
-function clearSelectedFile(){_pendingPdfBase64=null;document.getElementById('fileSelectedRow').style.display='none';document.getElementById('analyseBtn').disabled=true;document.getElementById('quoteFileInput').value='';}
+function clearSelectedFile(){
+  _pendingPdfBase64=null;
+  _pendingPdfName=null;
+  document.getElementById('fileSelectedRow').style.display='none';
+  document.getElementById('analyseBtn').disabled=true;
+  // Clear both file inputs
+  const di=document.getElementById('quoteDropInput');if(di)di.value='';
+  const qi=document.getElementById('quoteFileInput');if(qi)qi.value='';
+}
 function goBackToSelect(){showState('stateSelect');clearSelectedFile();_pendingQuoteData=null;}
 async function startAnalysis(){
-  if(!_pendingPdfBase64)return;showState('stateAnalysing');
+  if(!_pendingPdfBase64){ showErrMsg('No PDF loaded — please select a file first.'); return; }
+
+  // Check API key before even trying
+  if(!getApiKey()){
+    showErrMsg('No API key set. Open Settings (⚙️) and add your Anthropic API key first.');
+    return;
+  }
+
+  showState('stateAnalysing');
   const setStep=(n,s)=>{const e=document.getElementById(`step${n}`);if(e){e.classList.remove('done','active');if(s)e.classList.add(s);}};
   setStep(1,'active');
   const anim=async()=>{for(let i=1;i<4;i++){await new Promise(r=>setTimeout(r,900));setStep(i,'done');setStep(i+1,'active');}};
   anim();
+
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:apiHeaders(),body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:5000,messages:[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:_pendingPdfBase64}},{type:'text',text:'Extract ALL line items from this home build quote PDF. Return ONLY valid JSON (no markdown, no prose). Include:\n- builder, model, facade, doc, date (DD/MM/YYYY), consultant\n- total (number), base_price (number)\n- notes (2-line summary), summary (3-4 sentences)\n- items: object keyed by snake_case item names, each {val, optional note, optional cls}\n- pros: array of up to 6 short strings — genuine advantages of this quote (inclusions, price, promotions, warranty, flexibility)\n- cons: array of up to 5 short strings — genuine concerns or weaknesses (provisional sums, missing items, risks, restrictions)\n- floorplan: object describing the home design — {bedrooms, bathrooms, ensuites, garage, powder_room (bool), living_areas, alfresco (bool), total_area_m2, ground_area_m2 (or null), upper_area_m2 (or null), storeys (1 or 2), min_lot_width_m (or null), key_features (array of up to 8 strings), description (2-3 sentences about the design itself)}\n\nPros and cons should be specific to THIS quote. Floorplan describes the physical home design.'}]}]})});
-    const d=await r.json();
-    const raw=d.content?.find(b=>b.type==='text')?.text||'';
-    _pendingQuoteData=extractJson(raw);
-    const box=document.getElementById('quotePreviewBox');
-    const items=Object.entries(_pendingQuoteData.items||{}).slice(0,18);
-    const pros = _pendingQuoteData.pros||[]; const cons = _pendingQuoteData.cons||[];
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers: apiHeaders(),
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:5000,
+        messages:[{role:'user',content:[
+          {type:'document',source:{type:'base64',media_type:'application/pdf',data:_pendingPdfBase64}},
+          {type:'text',text:'Extract ALL line items from this home build quote PDF. Return ONLY valid JSON (no markdown, no prose). Include:\n- builder, model, facade, doc, date (DD/MM/YYYY), consultant\n- total (number), base_price (number)\n- notes (2-line summary), summary (3-4 sentences)\n- items: object keyed by snake_case item names, each {val, optional note, optional cls}\n- pros: array of up to 6 short strings — genuine advantages of this quote (inclusions, price, promotions, warranty, flexibility)\n- cons: array of up to 5 short strings — genuine concerns or weaknesses (provisional sums, missing items, risks, restrictions)\n- floorplan: object describing the home design — {bedrooms, bathrooms, ensuites, garage, powder_room (bool), living_areas, alfresco (bool), total_area_m2, ground_area_m2 (or null), upper_area_m2 (or null), storeys (1 or 2), min_lot_width_m (or null), key_features (array of up to 8 strings), description (2-3 sentences about the design itself)}\n\nPros and cons should be specific to THIS quote. Floorplan describes the physical home design.'}
+        ]}]
+      })
+    });
+
+    if(!resp.ok){
+      const errBody = await resp.json().catch(()=>null);
+      const msg = errBody?.error?.message || `API error ${resp.status}`;
+      throw new Error(msg);
+    }
+
+    const d = await resp.json();
+    if(d.error) throw new Error(d.error.message);
+
+    const raw = d.content?.find(b=>b.type==='text')?.text || '';
+    if(!raw.trim()) throw new Error('Empty response from API — try again');
+
+    _pendingQuoteData = extractJson(raw);
+
+    const box = document.getElementById('quotePreviewBox');
+    const items = Object.entries(_pendingQuoteData.items||{}).slice(0,18);
+    const pros = _pendingQuoteData.pros||[];
+    const cons = _pendingQuoteData.cons||[];
     const pcSection = (pros.length||cons.length) ? `<div class="qp-proscons"><div><div class="qp-pc-col-title pros">Pros</div>${pros.map(p=>`<div class="qp-pc-item pro">${p}</div>`).join('')}</div><div><div class="qp-pc-col-title cons">Cons</div>${cons.map(p=>`<div class="qp-pc-item con">${p}</div>`).join('')}</div></div>` : '';
-    box.innerHTML=`<div class="qp-header"><div class="qp-title">${_pendingQuoteData.builder} — ${_pendingQuoteData.model}</div><div class="qp-meta">${_pendingQuoteData.facade} · ${_pendingQuoteData.date} · ${_pendingQuoteData.consultant}</div><div class="qp-total">$${Number(_pendingQuoteData.total).toLocaleString()}</div></div>${pcSection}<div class="qp-items"><div class="qp-cat">Key Items (${Object.keys(_pendingQuoteData.items||{}).length} extracted)</div>${items.map(([k,v])=>`<div class="qp-row"><span>${k.replace(/_/g,' ')}</span><span class="qp-row-val ${v.cls||''}">${v.val}</span></div>`).join('')}${_pendingQuoteData.summary?`<div class="qp-cat" style="margin-top:12px">Summary</div><div style="font-size:11.5px;color:var(--text-mid);line-height:1.6">${_pendingQuoteData.summary}</div>`:''}</div>`;
+    box.innerHTML = `<div class="qp-header"><div class="qp-title">${_pendingQuoteData.builder} — ${_pendingQuoteData.model}</div><div class="qp-meta">${_pendingQuoteData.facade} · ${_pendingQuoteData.date} · ${_pendingQuoteData.consultant}</div><div class="qp-total">$${Number(_pendingQuoteData.total).toLocaleString()}</div></div>${pcSection}<div class="qp-items"><div class="qp-cat">Key Items (${Object.keys(_pendingQuoteData.items||{}).length} extracted)</div>${items.map(([k,v])=>`<div class="qp-row"><span>${k.replace(/_/g,' ')}</span><span class="qp-row-val ${v.cls||''}">${v.val}</span></div>`).join('')}${_pendingQuoteData.summary?`<div class="qp-cat" style="margin-top:12px">Summary</div><div style="font-size:11.5px;color:var(--text-mid);line-height:1.6">${_pendingQuoteData.summary}</div>`:''}</div>`;
     showState('statePreview');
-  }catch(err){document.getElementById('errorMsg').textContent=err.message||'Failed to parse this PDF.';showState('stateError');}
+
+  }catch(err){
+    console.error('[Upload]', err);
+    showErrMsg(err.message || 'Failed to analyse this PDF.');
+  }
+}
+
+function showErrMsg(msg){
+  const el = document.getElementById('errorMsg');
+  if(el) el.textContent = msg;
+  showState('stateError');
 }
 async function addQuoteToDashboard(){
   if(!_pendingQuoteData)return;
