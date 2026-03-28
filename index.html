@@ -76,7 +76,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--tex
 .section-label::after{content:'';flex:1;height:1px;background:rgba(44,61,107,.07);}
 
 /* CARDS */
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:13px;margin-bottom:34px;}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:13px;margin-bottom:34px;align-items:start;}
 .card{background:#fff;border-radius:12px;border:1px solid var(--border);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s,opacity .3s,filter .3s;display:flex;flex-direction:column;}
 .card:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(26,34,54,.12);}
 .card.is-live{box-shadow:var(--live-glow);}
@@ -502,7 +502,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--tex
 
 /* ═══ PROS / CONS ═══ */
 .card-proscons-wrap{border-top:1px solid var(--border);}
-.card-proscons{padding:4px 16px 12px;display:flex;flex-direction:column;gap:4px;}
+.card-proscons{padding:4px 16px 12px;display:flex;flex-direction:column;gap:4px;max-height:220px;overflow-y:auto;}
 .pc-item{display:flex;align-items:flex-start;gap:6px;font-size:10.5px;line-height:1.45;color:var(--text-mid);padding:1px 0;}
 .pc-item.pro::before{content:"✓";color:var(--green);font-weight:700;flex-shrink:0;font-size:11px;}
 .pc-item.con::before{content:"✗";color:var(--coral-col);font-weight:700;flex-shrink:0;font-size:11px;}
@@ -1092,6 +1092,26 @@ window.addEventListener('DOMContentLoaded', async ()=>{
   // Deduplicate — keep the last occurrence of each id (localStorage version wins)
   const seen=new Set(); quotes=quotes.filter(q=>{if(seen.has(q.id))return false;seen.add(q.id);return true;});
   // Load fp cache — but discard entries where storeys or total_area are wrong
+  // Load ALL cached floorplan data from localStorage (any builder/model ever fetched)
+  var fpKeys = Object.keys(localStorage).filter(function(k){ return k.startsWith('balmoral_fp_'); });
+  fpKeys.forEach(function(storageKey){
+    try{
+      var raw = localStorage.getItem(storageKey);
+      if(!raw) return;
+      var parsed = JSON.parse(raw);
+      // Find the original key by checking all known models
+      ['Coral Homes||Boston 297Q','Clarendon Homes||Antigua 290','Clarendon Homes||Antigua 270','Neptune Homes||Noosa 31','Neptune Homes||Stirling 30'].forEach(k=>{
+        if(SK.fp(k) === storageKey) fpCache[k] = parsed;
+      });
+      // Also load for any uploaded model keys
+      if(parsed && parsed.builder && parsed.model){
+        var mk = parsed.builder+'||'+parsed.model;
+        fpCache[mk] = parsed;
+        if(!FLOORPLAN_DATA[mk]) FLOORPLAN_DATA[mk] = parsed;
+      }
+    }catch(e){}
+  });
+  // Legacy check for known models (validate storeys/area still correct)
   ['Coral Homes||Boston 297Q','Clarendon Homes||Antigua 290','Clarendon Homes||Antigua 270','Neptune Homes||Noosa 31','Neptune Homes||Stirling 30'].forEach(k=>{
     try{
       const d=localStorage.getItem(SK.fp(k));
@@ -2107,6 +2127,17 @@ function showErrMsg(msg){
 }
 async function addQuoteToDashboard(){
   if(!_pendingQuoteData)return;
+  // Check for duplicate — same builder + model + date already exists
+  var dupCheck = quotes.find(function(x){
+    return x.builder===_pendingQuoteData.builder
+      && x.model===_pendingQuoteData.model
+      && x.date===_pendingQuoteData.date;
+  });
+  if(dupCheck){
+    if(!confirm('A quote for '+_pendingQuoteData.builder+' '+_pendingQuoteData.model+' on '+_pendingQuoteData.date+' already exists. Add anyway?')){
+      closeUploadModal(); return;
+    }
+  }
   const q={..._pendingQuoteData,id:nextId++,total:Number(_pendingQuoteData.total),basePrice:Number(_pendingQuoteData.base_price||_pendingQuoteData.total),colorClass:'new-card',barClass:'new-quote',status:'live',pdfFile:null,defaultStatus:'live',doc:_pendingQuoteData.doc||`Doc #${nextId}`};
   const s=document.createElement('style');s.textContent='.new-card .card-accent{background:var(--purple);}';document.head.appendChild(s);
   quotes.push(q);
@@ -2178,7 +2209,17 @@ Base $452,750 | Portofino facade $31,900 | 1200mm door $1,850 | Tiling/carpet $7
 QUOTE 4 — Clarendon Homes, Antigua 270, Portofino+Rumpus (21/03/2026) STATUS: Live. TOTAL: $620,064
 Same as Q3 EXCEPT base $441,400 | Rumpus $22,800 | H2 slab $6,190 | N3 wind $5,137 | No statement entry
 
-KEY: Live gap $565,662 vs $620,064 = $54,402. Neither includes demolition. Coral $30k discount + designer package free. Clarendon includes driveway $11,300 + colour $8k + electrical $8k not in Coral.`;
+KEY (original 4): Live gap Coral $565,662 vs Clarendon $620,064 = $54,402. Neither includes demolition. Coral $30k discount + designer package free. Clarendon includes driveway $11,300 + colour $8k + electrical $8k not in Coral.
+
+QUOTE 5 — Neptune Homes, Noosa 31, Driftwood Facade (28/03/2026) STATUS: Live. TOTAL: $571,943
+Base $506,452 | Brilliance inclusions $9,990 | Incentive -$8,710 | BCC fees INCLUDED | Boundary relaxation $2,775 | QBCC $1,184 | Site costs provisional $27,600 | Access/handling $1,330 | N2 wind INCLUDED | Spoil removal $2,160 | ID survey $4,240 | 3-phase INCLUDED | Overhead power pole $4,720 | Pool provisions $572 | Flyscreens $2,192 | Shower niches $828 | Bathroom bath $219 | Clothesline $290 | Letterbox $691 | Concreting $8,622 | Envision voucher $11,100 (all used on concrete)
+INCLUSIONS: Daikin MyAir fully zoned A/C, F&P appliances, stone benchtops, 1200mm entry door — all standard. 12-month price guarantee. 50-year structural warranty. Driftwood facade included free.
+
+QUOTE 6 — Neptune Homes, Stirling 30, Sandbar Facade (28/03/2026) STATUS: Live. TOTAL: $566,134
+Base $492,955 | Sandbar facade $7,450 | Brilliance inclusions $9,990 | Incentive -$8,410 | BCC fees INCLUDED | Boundary relaxation $2,775 | QBCC $1,322 | Site costs provisional $27,100 | Access/handling $1,330 | N2 wind INCLUDED | Spoil removal $2,160 | ID survey $4,240 | 3-phase INCLUDED | Overhead power pole $4,720 | Pool provisions $572 | Flyscreens $2,192 | Shower niches $828 | Bathroom bath $219 | Clothesline $290 | Letterbox $691 | Concreting $8,922 | Envision voucher $10,800 (all used on concrete)
+INCLUSIONS: Same Brilliance package as Noosa 31. Stirling 30 = approx 279m2. Lowest base price and lowest total of all 6 live quotes.
+
+ALL 4 LIVE QUOTES RANKED: Neptune Stirling $566,134 | Coral Hamptons $565,662 | Neptune Noosa $571,943 | Clarendon 270 $620,064. Neptune and Coral very close; Clarendon $54K above Coral live.`;
 
 const chatMsgs=[];let isLoading=false;let chatOpen=false;
 function getSys(){return BASE_SYS+CHAT_EXTRA;}
